@@ -17,3 +17,8 @@ dependencies {
     implementation 'commons-io:commons-io:2.11.0'
     implementation 'com.jhlabs:filters:2.0.235'
 }
+
+tasks.register('execute', JavaExec) {
+    setMainClass('dev.turtywurty.turtyapi.TurtyAPI')
+    classpath = sourceSets.main.runtimeClasspath
+}
