@@ -2,7 +2,7 @@ package dev.turtywurty.turtyapi.json;
 
 import dev.turtywurty.turtyapi.Constants;
 
-public abstract class JsonBuilder {
+public abstract sealed class JsonBuilder permits JsonBuilder.ArrayBuilder, JsonBuilder.ObjectBuilder {
     public static final class ArrayBuilder extends JsonBuilder {
         public ArrayBuilder() {
             this.builder.append("[");
