@@ -5,6 +5,7 @@ import dev.turtywurty.turtyapi.geography.Territory;
 import dev.turtywurty.turtyapi.geography.TerritoryManager;
 import dev.turtywurty.turtyapi.image.ColorFlagGenerator;
 import dev.turtywurty.turtyapi.image.ImageUtils;
+import dev.turtywurty.turtyapi.image.LGBTifier;
 import dev.turtywurty.turtyapi.json.JsonBuilder;
 import dev.turtywurty.turtyapi.minecraft.FabricVersions;
 import dev.turtywurty.turtyapi.minecraft.ForgeVersions;
@@ -468,6 +469,27 @@ public class RouteManager {
             // send image
             ctx.result(ImageUtils.toBase64(flag));
         });
+
+        app.get("/image/lgbt", ctx -> {
+            String urlStr = ctx.queryParam("url");
+
+            // validate image
+            BufferedImage image;
+            Optional<BufferedImage> optional = ImageUtils.validateURL(urlStr, Optional.of(ctx));
+            if (optional.isEmpty()) {
+                ctx.status(HttpStatus.BAD_REQUEST).result("Failed to load image!");
+                return;
+            }
+
+            image = optional.get();
+
+            // lgbt image
+            BufferedImage lgbt = LGBTifier.lgbtify(image);
+
+            // send image
+            ctx.result(ImageUtils.toBase64(lgbt));
+        });
+
         RouteManager.app = app.start(Constants.PORT);
     }
 
