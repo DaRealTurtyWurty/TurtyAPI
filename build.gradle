@@ -3,9 +3,6 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
-group = 'dev.turtywurty.turtyapi'
-version = '1.0-SNAPSHOT'
-
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(19)
