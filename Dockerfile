@@ -1,4 +1,4 @@
 FROM openjdk:19
-WORKDIR /opt/TurtyLib/
-COPY build/libs/TurtyLib-all.jar TurtyLib.jar
-CMD ["java", "-jar", "TurtyLib.jar"]
+WORKDIR /opt/TurtyAPI/
+COPY build/libs/TurtyAPI-all.jar TurtyAPI.jar
+CMD ["java", "-jar", "TurtyAPI.jar"]
