@@ -27,6 +27,7 @@ import java.nio.file.Files;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 public class RouteManager {
@@ -238,7 +239,7 @@ public class RouteManager {
 
         app.ws("/forge", wsConfig -> {
             wsConfig.onConnect(ctx -> {
-                ctx.enableAutomaticPings();
+                ctx.enableAutomaticPings(10, TimeUnit.SECONDS);
 
                 Consumer<List<ForgeVersions.ForgeUpdate>> updateListener = updates -> {
                     JsonBuilder.ObjectBuilder builder = JsonBuilder.object().add("type", "forge");
@@ -261,7 +262,7 @@ public class RouteManager {
 
         app.ws("/fabric", wsConfig -> {
             wsConfig.onConnect(ctx -> {
-                ctx.enableAutomaticPings();
+                ctx.enableAutomaticPings(10, TimeUnit.SECONDS);
 
                 Consumer<List<FabricVersions.FabricUpdate>> updateListener = updates -> {
                     JsonBuilder.ObjectBuilder builder = JsonBuilder.object().add("type", "fabric");
