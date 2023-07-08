@@ -1,6 +1,8 @@
 package dev.turtywurty.turtyapi;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import dev.turtywurty.turtyapi.geography.GeoguesserManager;
 import dev.turtywurty.turtyapi.geography.Territory;
 import dev.turtywurty.turtyapi.geography.TerritoryManager;
 import dev.turtywurty.turtyapi.image.ColorFlagGenerator;
@@ -489,6 +491,20 @@ public class RouteManager {
 
             // send image
             ctx.result(ImageUtils.toBase64(lgbt));
+        });
+
+        app.get("/geo/guesser", ctx -> {
+            Optional<Pair<String, BufferedImage>> optional = GeoguesserManager.requestStaticImage();
+            if (optional.isEmpty()) {
+                ctx.status(HttpStatus.INTERNAL_SERVER_ERROR).result("Failed to load image!");
+                return;
+            }
+
+            Pair<String, BufferedImage> pair = optional.get();
+            String country = pair.getFirst();
+            BufferedImage image = pair.getSecond();
+
+            ctx.json(new JsonBuilder.ObjectBuilder().add("country", country).add("image", ImageUtils.toBase64(image)).toJson());
         });
 
         RouteManager.app = app.start(Constants.PORT);
