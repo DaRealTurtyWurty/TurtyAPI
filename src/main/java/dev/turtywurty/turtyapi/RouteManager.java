@@ -3,6 +3,7 @@ package dev.turtywurty.turtyapi;
 import com.google.gson.JsonArray;
 import dev.turtywurty.turtyapi.geography.Territory;
 import dev.turtywurty.turtyapi.geography.TerritoryManager;
+import dev.turtywurty.turtyapi.image.ColorFlagGenerator;
 import dev.turtywurty.turtyapi.image.ImageUtils;
 import dev.turtywurty.turtyapi.json.JsonBuilder;
 import dev.turtywurty.turtyapi.minecraft.FabricVersions;
@@ -441,6 +442,32 @@ public class RouteManager {
             ctx.result(ImageUtils.toBase64(filtered.get()));
         });
 
+        app.get("/image/flag", ctx -> {
+            String urlStr = ctx.queryParam("url");
+            int colors = ctx.queryParamAsClass("colors", Integer.class).getOrDefault(5);
+
+            // validate image
+            BufferedImage image;
+            Optional<BufferedImage> optional = ImageUtils.validateURL(urlStr, Optional.of(ctx));
+            if (optional.isEmpty()) {
+                ctx.status(HttpStatus.BAD_REQUEST).result("Failed to load image!");
+                return;
+            }
+
+            image = optional.get();
+
+            // validate colors
+            if (colors < 1 || colors > 10) {
+                ctx.status(HttpStatus.BAD_REQUEST).result("Colors must be between 1 and 10!");
+                return;
+            }
+
+            // flag image
+            BufferedImage flag = ColorFlagGenerator.create(image, colors);
+
+            // send image
+            ctx.result(ImageUtils.toBase64(flag));
+        });
         RouteManager.app = app.start(Constants.PORT);
     }
 
