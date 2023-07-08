@@ -34,7 +34,7 @@ jar {
         attributes(
                 "Implementation-Title": "TurtyAPI",
                 "Implementation-Version": "1.0-alpha",
-                "Main-Class": "dev.darealturtywurty.turtyapi.TurtyAPI"
+                "Main-Class": "dev.turtywurty.turtyapi.TurtyAPI"
         )
     }
 }
