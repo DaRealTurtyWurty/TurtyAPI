@@ -94,7 +94,7 @@ public class RouteManager {
                 String base64 = ImageUtils.toBase64(image);
                 imageStream.close();
 
-                ctx.json(new JsonBuilder.ObjectBuilder().add("territory", data).add("image", base64).toJson());
+                ctx.contentType(ContentType.JSON).result(new JsonBuilder.ObjectBuilder().add("territory", data).add("image", base64).toJson());
             } catch (IOException | NullPointerException exception) {
                 ctx.status(HttpStatus.NOT_FOUND).result("Failed to find territory!");
             }
@@ -133,7 +133,7 @@ public class RouteManager {
                 String base64 = ImageUtils.toBase64(image);
                 imageStream.close();
 
-                ctx.json(new JsonBuilder.ObjectBuilder().add("territory", data).add("image", base64).toJson());
+                ctx.contentType(ContentType.JSON).result(new JsonBuilder.ObjectBuilder().add("territory", data).add("image", base64).toJson());
             } catch (IOException | NullPointerException exception) {
                 ctx.status(HttpStatus.NOT_FOUND).result("Failed to find territory!");
             }
@@ -612,7 +612,7 @@ public class RouteManager {
             String country = pair.getFirst();
             BufferedImage image = pair.getSecond();
 
-            ctx.json(new JsonBuilder.ObjectBuilder().add("country", country).add("image", ImageUtils.toBase64(image)).toJson());
+            ctx.contentType(ContentType.JSON).result(new JsonBuilder.ObjectBuilder().add("country", country).add("image", ImageUtils.toBase64(image)).toJson());
         });
 
         RouteManager.app = app.start(Constants.PORT);
