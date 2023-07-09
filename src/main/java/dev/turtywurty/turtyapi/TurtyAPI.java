@@ -36,7 +36,7 @@ public class TurtyAPI {
     }
 
     public static InputStream getResource(String location) throws NullPointerException {
-        return TurtyAPI.class.getResourceAsStream(location);
+        return TurtyAPI.class.getClassLoader().getResourceAsStream(location);
     }
 
     public static Optional<BufferedImage> getResourceAsImage(String location) throws NullPointerException {
