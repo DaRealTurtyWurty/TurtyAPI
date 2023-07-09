@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -39,5 +40,9 @@ public class TerritoryManager {
 
     public static Territory getRandomTerritory() {
         return TERRITORIES.values().stream().skip((int) (TERRITORIES.size() * Math.random())).findFirst().orElse(null);
+    }
+
+    public static List<String> getAllTerritories() {
+        return TERRITORIES.keySet().stream().toList();
     }
 }

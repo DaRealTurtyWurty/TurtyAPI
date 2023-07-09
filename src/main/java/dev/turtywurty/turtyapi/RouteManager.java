@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
@@ -165,6 +166,23 @@ public class RouteManager {
                 Constants.LOGGER.debug("Sending data for {}!", data);
 
                 ctx.contentType(ContentType.JSON).result(Constants.GSON.toJson(data));
+            } catch (NullPointerException exception) {
+                ctx.status(HttpStatus.NOT_FOUND).result("Failed to find territory!");
+            }
+        });
+
+        app.get("/geo/data/all", ctx -> {
+            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
+
+            try {
+                List<String> territories = TerritoryManager.getAllTerritories();
+
+                JsonBuilder.ArrayBuilder arrayBuilder = new JsonBuilder.ArrayBuilder();
+                for (String territory : territories) {
+                    arrayBuilder.add(TerritoryManager.getTerritory(territory));
+                }
+
+                ctx.contentType(ContentType.JSON).result(arrayBuilder.toJson());
             } catch (NullPointerException exception) {
                 ctx.status(HttpStatus.NOT_FOUND).result("Failed to find territory!");
             }
