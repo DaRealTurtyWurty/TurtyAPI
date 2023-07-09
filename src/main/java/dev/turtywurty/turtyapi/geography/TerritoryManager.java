@@ -38,6 +38,6 @@ public class TerritoryManager {
     }
 
     public static Territory getRandomTerritory() {
-        return TERRITORIES.values().stream().findAny().orElse(null);
+        return TERRITORIES.values().stream().skip((int) (TERRITORIES.size() * Math.random())).findFirst().orElse(null);
     }
 }
