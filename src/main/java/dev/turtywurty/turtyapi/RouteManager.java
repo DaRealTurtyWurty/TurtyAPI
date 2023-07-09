@@ -61,11 +61,16 @@ public class RouteManager {
 
         app.get("/", ctx -> ctx.result("Hello World!"));
 
-        app.get("/geo/flag/{cca3}", ctx -> {
+        app.get("/geo/flag", ctx -> {
             NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
 
             try {
-                String cca3 = ctx.pathParam("cca3");
+                String cca3 = ctx.queryParam("cca3");
+                if (cca3 == null) {
+                    ctx.status(HttpStatus.BAD_REQUEST).result("Missing cca3 query parameter!");
+                    return;
+                }
+
                 Territory data = TerritoryManager.getTerritory(cca3);
                 Constants.LOGGER.debug("Sending flag for {}!", data);
 
@@ -95,11 +100,16 @@ public class RouteManager {
             }
         });
 
-        app.get("/geo/outline/{cca3}", ctx -> {
+        app.get("/geo/outline", ctx -> {
             NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
 
             try {
-                String cca3 = ctx.pathParam("cca3");
+                String cca3 = ctx.queryParam("cca3");
+                if (cca3 == null) {
+                    ctx.status(HttpStatus.BAD_REQUEST).result("Missing cca3 query parameter!");
+                    return;
+                }
+
                 Territory data = TerritoryManager.getTerritory(cca3);
                 Constants.LOGGER.debug("Sending outline for {}!", data);
 
@@ -129,11 +139,16 @@ public class RouteManager {
             }
         });
 
-        app.get("/geo/data/{cca3}", ctx -> {
+        app.get("/geo/data", ctx -> {
             NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
 
             try {
-                String cca3 = ctx.pathParam("cca3");
+                String cca3 = ctx.queryParam("cca3");
+                if (cca3 == null) {
+                    ctx.status(HttpStatus.BAD_REQUEST).result("Missing cca3 query parameter!");
+                    return;
+                }
+                
                 Territory data = TerritoryManager.getTerritory(cca3);
                 Constants.LOGGER.debug("Sending data for {}!", data);
 
