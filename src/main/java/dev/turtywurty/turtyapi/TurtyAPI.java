@@ -44,10 +44,10 @@ public class TurtyAPI {
     }
 
     public static String getResourceAsString(String location) throws IOException {
-        return Files.readString(Path.of(getResource(location).toString()));
+        return new String(getResourceAsBytes(location));
     }
 
     public static byte[] getResourceAsBytes(String location) throws IOException {
-            return IOUtils.toByteArray(getResource(location));
+        return IOUtils.toByteArray(getResource(location));
     }
 }
