@@ -3,6 +3,7 @@ package dev.turtywurty.turtyapi.geography;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import dev.turtywurty.turtyapi.Constants;
+import dev.turtywurty.turtyapi.TurtyAPI;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -15,15 +16,10 @@ public class TerritoryManager {
     private static final Map<String, Territory> TERRITORIES = new HashMap<>();
 
     public static void load() {
-        Path path = Constants.DATA_FOLDER.resolve("geography/territory_data.json");
-
-        if(Files.notExists(path)) {
-            Constants.LOGGER.error("Failed to find territory data file!");
-            return;
-        }
-
         try {
-            JsonArray array = Constants.GSON.fromJson(Files.readString(path), JsonArray.class);
+            String json = TurtyAPI.getResourceAsString("geography/territory_data.json");
+
+            JsonArray array = Constants.GSON.fromJson(json, JsonArray.class);
             for (JsonElement element : array) {
                 Territory data = Constants.GSON.fromJson(element, Territory.class);
                 TERRITORIES.put(data.getCca3(), data);

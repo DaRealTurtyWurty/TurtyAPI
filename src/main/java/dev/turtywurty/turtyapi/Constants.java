@@ -6,11 +6,9 @@ import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.nio.file.Path;
 import java.util.Random;
 
 public class Constants {
-    public static final Path DATA_FOLDER = Path.of(System.getProperty("user.dir"), "src/main/resources");
     public static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
     public static final Logger LOGGER = LoggerFactory.getLogger("TurtyAPI");
     public static final short PORT = 8080;

@@ -26,6 +26,7 @@ dependencies {
 
 tasks.register('execute', JavaExec) {
     setMainClass('dev.turtywurty.turtyapi.TurtyAPI')
+    args 'dev'
     classpath = sourceSets.main.runtimeClasspath
 }
 

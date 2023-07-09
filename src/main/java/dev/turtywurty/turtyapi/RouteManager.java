@@ -18,7 +18,6 @@ import io.javalin.Javalin;
 import io.javalin.http.ContentType;
 import io.javalin.http.HttpStatus;
 import io.javalin.http.util.NaiveRateLimit;
-import io.javalin.http.util.RateLimiter;
 import io.javalin.json.JsonMapper;
 import kotlin.Pair;
 import org.jetbrains.annotations.NotNull;
@@ -74,7 +73,7 @@ public class RouteManager {
                 Territory data = TerritoryManager.getTerritory(cca3);
                 Constants.LOGGER.debug("Sending flag for {}!", data);
 
-                InputStream imageStream = Files.newInputStream(Constants.DATA_FOLDER.resolve("geography/flags").resolve(data.getFlag()));
+                InputStream imageStream = TurtyAPI.getResource("geography/flags/" + data.getFlag());
                 ctx.contentType(ContentType.IMAGE_PNG).result(imageStream.readAllBytes());
                 imageStream.close();
             } catch (IOException | NullPointerException exception) {
@@ -89,7 +88,7 @@ public class RouteManager {
                 Territory data = TerritoryManager.getRandomTerritory();
                 Constants.LOGGER.debug("Sending flag for {}!", data);
 
-                InputStream imageStream = Files.newInputStream(Constants.DATA_FOLDER.resolve("geography/flags").resolve(data.getFlag()));
+                InputStream imageStream = TurtyAPI.getResource("geography/flags/" + data.getFlag());
                 BufferedImage image = ImageIO.read(imageStream);
                 String base64 = ImageUtils.toBase64(image);
                 imageStream.close();
@@ -113,7 +112,7 @@ public class RouteManager {
                 Territory data = TerritoryManager.getTerritory(cca3);
                 Constants.LOGGER.debug("Sending outline for {}!", data);
 
-                InputStream imageStream = Files.newInputStream(Constants.DATA_FOLDER.resolve("geography/outlines").resolve(data.getOutline()));
+                InputStream imageStream = TurtyAPI.getResource("geography/outlines/" + data.getOutline());
                 ctx.contentType(ContentType.IMAGE_PNG).result(imageStream.readAllBytes());
                 imageStream.close();
             } catch (IOException | NullPointerException exception) {
@@ -128,7 +127,7 @@ public class RouteManager {
                 Territory data = TerritoryManager.getRandomTerritory();
                 Constants.LOGGER.debug("Sending outline for {}!", data);
 
-                InputStream imageStream = Files.newInputStream(Constants.DATA_FOLDER.resolve("geography/outlines").resolve(data.getOutline()));
+                InputStream imageStream = TurtyAPI.getResource("geography/outlines/" + data.getOutline());
                 BufferedImage image = ImageIO.read(imageStream);
                 String base64 = ImageUtils.toBase64(image);
                 imageStream.close();

@@ -1,6 +1,7 @@
 package dev.turtywurty.turtyapi.words;
 
 import dev.turtywurty.turtyapi.Constants;
+import dev.turtywurty.turtyapi.TurtyAPI;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,7 +12,12 @@ public class WordManager {
     private static final List<String> WORDS = List.of(getAllWordsRaw());
 
     private static String[] getAllWordsRaw() {
-        return readAllLines(Constants.DATA_FOLDER.resolve("words/all_words.txt"));
+        try {
+            return TurtyAPI.getResourceAsString("words/all_words.txt").split("\n");
+        } catch (IOException exception) {
+            exception.printStackTrace();
+            return new String[0];
+        }
     }
 
     public static List<String> getAllWords() {
@@ -44,13 +50,12 @@ public class WordManager {
 
     public static List<String> getAllWords(int length) {
         List<String> words = new ArrayList<>();
-        Path path = Constants.DATA_FOLDER.resolve("words/" + length + "_letter_words.txt");
-        if(Files.notExists(path)) {
-            return words;
+        try {
+            String[] lines = TurtyAPI.getResourceAsString("words/" + length + "_letter_words.txt").split("\n");
+            words.addAll(Arrays.asList(lines));
+        } catch (IOException exception) {
+            exception.printStackTrace();
         }
-
-        String[] lines = readAllLines(path);
-        words.addAll(Arrays.asList(lines));
 
         return words;
     }
