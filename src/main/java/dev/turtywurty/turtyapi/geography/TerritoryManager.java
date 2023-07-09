@@ -40,4 +40,8 @@ public class TerritoryManager {
     public static Map<String, Territory> getTerritories() {
         return TERRITORIES;
     }
+
+    public static Territory getRandomTerritory() {
+        return TERRITORIES.values().stream().findAny().orElse(null);
+    }
 }

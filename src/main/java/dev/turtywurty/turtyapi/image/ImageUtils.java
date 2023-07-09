@@ -133,14 +133,28 @@ public class ImageUtils {
         return rotated;
     }
 
-    public static BufferedImage getFlipped(BufferedImage image, boolean horizontal) {
+    public static BufferedImage getFlipped(BufferedImage image, FlipType flipType) {
         var flipped = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
         var graphics = flipped.createGraphics();
 
-        int x = horizontal ? image.getWidth() : 0;
-        int y = horizontal ? 0 : image.getHeight();
-        int width = horizontal ? -image.getWidth() : image.getWidth();
-        int height = horizontal ? image.getHeight() : -image.getHeight();
+        int x = 0, y = 0, width = image.getWidth(), height = image.getHeight();
+        switch (flipType) {
+            case HORIZONTAL -> {
+                x = width;
+                width = -width;
+            }
+            case VERTICAL -> {
+                y = height;
+                height = -height;
+            }
+            case BOTH -> {
+                x = width;
+                y = height;
+                width = -width;
+                height = -height;
+            }
+        }
+
         graphics.drawImage(image, x, y, width, height, null);
 
         graphics.dispose();

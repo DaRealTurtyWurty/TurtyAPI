@@ -1,11 +1,11 @@
 package dev.turtywurty.turtyapi;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import dev.turtywurty.turtyapi.geography.GeoguesserManager;
 import dev.turtywurty.turtyapi.geography.Territory;
 import dev.turtywurty.turtyapi.geography.TerritoryManager;
 import dev.turtywurty.turtyapi.image.ColorFlagGenerator;
+import dev.turtywurty.turtyapi.image.FlipType;
 import dev.turtywurty.turtyapi.image.ImageUtils;
 import dev.turtywurty.turtyapi.image.LGBTifier;
 import dev.turtywurty.turtyapi.json.JsonBuilder;
@@ -17,10 +17,13 @@ import dev.turtywurty.turtyapi.words.WordManager;
 import io.javalin.Javalin;
 import io.javalin.http.ContentType;
 import io.javalin.http.HttpStatus;
+import io.javalin.http.util.NaiveRateLimit;
+import io.javalin.http.util.RateLimiter;
 import io.javalin.json.JsonMapper;
 import kotlin.Pair;
 import org.jetbrains.annotations.NotNull;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -59,6 +62,8 @@ public class RouteManager {
         app.get("/", ctx -> ctx.result("Hello World!"));
 
         app.get("/geo/flag/{cca3}", ctx -> {
+            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
+
             try {
                 String cca3 = ctx.pathParam("cca3");
                 Territory data = TerritoryManager.getTerritory(cca3);
@@ -72,7 +77,27 @@ public class RouteManager {
             }
         });
 
+        app.get("/geo/flag/random", ctx -> {
+            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
+
+            try {
+                Territory data = TerritoryManager.getRandomTerritory();
+                Constants.LOGGER.debug("Sending flag for {}!", data);
+
+                InputStream imageStream = Files.newInputStream(Constants.DATA_FOLDER.resolve("geography/flags").resolve(data.getFlag()));
+                BufferedImage image = ImageIO.read(imageStream);
+                String base64 = ImageUtils.toBase64(image);
+                imageStream.close();
+
+                ctx.json(new JsonBuilder.ObjectBuilder().add("territory", data).add("image", base64).toJson());
+            } catch (IOException | NullPointerException exception) {
+                ctx.status(HttpStatus.NOT_FOUND).result("Failed to find territory!");
+            }
+        });
+
         app.get("/geo/outline/{cca3}", ctx -> {
+            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
+
             try {
                 String cca3 = ctx.pathParam("cca3");
                 Territory data = TerritoryManager.getTerritory(cca3);
@@ -86,7 +111,27 @@ public class RouteManager {
             }
         });
 
+        app.get("/geo/outline/random", ctx -> {
+            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
+
+            try {
+                Territory data = TerritoryManager.getRandomTerritory();
+                Constants.LOGGER.debug("Sending outline for {}!", data);
+
+                InputStream imageStream = Files.newInputStream(Constants.DATA_FOLDER.resolve("geography/outlines").resolve(data.getOutline()));
+                BufferedImage image = ImageIO.read(imageStream);
+                String base64 = ImageUtils.toBase64(image);
+                imageStream.close();
+
+                ctx.json(new JsonBuilder.ObjectBuilder().add("territory", data).add("image", base64).toJson());
+            } catch (IOException | NullPointerException exception) {
+                ctx.status(HttpStatus.NOT_FOUND).result("Failed to find territory!");
+            }
+        });
+
         app.get("/geo/data/{cca3}", ctx -> {
+            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
+
             try {
                 String cca3 = ctx.pathParam("cca3");
                 Territory data = TerritoryManager.getTerritory(cca3);
@@ -98,7 +143,22 @@ public class RouteManager {
             }
         });
 
+        app.get("/geo/data/random", ctx -> {
+            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
+
+            try {
+                Territory data = TerritoryManager.getRandomTerritory();
+                Constants.LOGGER.debug("Sending data for {}!", data);
+
+                ctx.contentType(ContentType.JSON).result(Constants.GSON.toJson(data));
+            } catch (NullPointerException exception) {
+                ctx.status(HttpStatus.NOT_FOUND).result("Failed to find territory!");
+            }
+        });
+
         app.get("/words", ctx -> {
+            NaiveRateLimit.requestPerTimeUnit(ctx, 5, TimeUnit.SECONDS);
+
             int length = ctx.queryParamAsClass("length", Integer.class).getOrDefault(-1);
             if (length <= 0 && length != -1) {
                 ctx.status(HttpStatus.BAD_REQUEST).result("You must request a word length of at least 1!");
@@ -125,6 +185,8 @@ public class RouteManager {
         });
 
         app.get("/words/random", ctx -> {
+            NaiveRateLimit.requestPerTimeUnit(ctx, 5, TimeUnit.SECONDS);
+
             int length = ctx.queryParamAsClass("length", Integer.class).getOrDefault(-1);
             if (length <= 0 && length != -1) {
                 ctx.status(HttpStatus.BAD_REQUEST).result("You must request a word with a length greater than 0!");
@@ -159,11 +221,14 @@ public class RouteManager {
         });
 
         app.get("/minecraft/latest", ctx -> {
+            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
+
             Pair<String, String> latest = MinecraftVersions.findLatestMinecraft();
             ctx.contentType(ContentType.JSON).result(JsonBuilder.object().add("release", latest.getFirst()).add("snapshot", latest.getSecond()).toJson());
         });
 
         app.get("/minecraft/all", ctx -> {
+            NaiveRateLimit.requestPerTimeUnit(ctx, 5, TimeUnit.SECONDS);
             LinkedHashMap<String, Boolean> versions = MinecraftVersions.getAllMinecraftVersions();
             JsonBuilder.ArrayBuilder builder = JsonBuilder.array();
             versions.forEach((version, isRelease) -> builder.add(JsonBuilder.object().add("version", version).add("isRelease", isRelease)));
@@ -171,11 +236,15 @@ public class RouteManager {
         });
 
         app.get("/minecraft/forge/latest", ctx -> {
+            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
+
             Pair<String, String> latest = ForgeVersions.findLatestForge();
             ctx.contentType(ContentType.JSON).result(JsonBuilder.object().add("recommended", latest.getFirst()).add("latest", latest.getSecond()).toJson());
         });
 
         app.get("/minecraft/forge/all", ctx -> {
+            NaiveRateLimit.requestPerTimeUnit(ctx, 5, TimeUnit.SECONDS);
+
             LinkedHashMap<String, Boolean> versions = ForgeVersions.getAllForgeVersions();
             JsonBuilder.ArrayBuilder builder = JsonBuilder.array();
             versions.forEach((version, isRecommended) -> builder.add(JsonBuilder.object().add("version", version).add("isRecommended", isRecommended)));
@@ -183,11 +252,15 @@ public class RouteManager {
         });
 
         app.get("/minecraft/fabric/latest", ctx -> {
+            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
+
             Pair<String, String> latest = FabricVersions.findLatestFabric();
             ctx.contentType(ContentType.JSON).result(JsonBuilder.object().add("loader", latest.getFirst()).add("mappings", latest.getSecond()).toJson());
         });
 
         app.get("/minecraft/fabric/all", ctx -> {
+            NaiveRateLimit.requestPerTimeUnit(ctx, 5, TimeUnit.SECONDS);
+
             LinkedHashMap<String, Boolean> versions = FabricVersions.getAllFabricVersions();
             JsonBuilder.ArrayBuilder builder = JsonBuilder.array();
             versions.forEach((version, isStable) -> builder.add(JsonBuilder.object().add("version", version).add("isStable", isStable)));
@@ -195,11 +268,15 @@ public class RouteManager {
         });
 
         app.get("/minecraft/parchment/latest", ctx -> {
+            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
+
             String latest = ParchmentVersions.findLatestParchment();
             ctx.contentType(ContentType.JSON).result(JsonBuilder.object().add("version", latest).toJson());
         });
 
         app.get("/minecraft/parchment/all", ctx -> {
+            NaiveRateLimit.requestPerTimeUnit(ctx, 5, TimeUnit.SECONDS);
+
             LinkedHashMap<String, String> versions = ParchmentVersions.getAllParchmentVersions();
             JsonBuilder.ArrayBuilder builder = JsonBuilder.array();
             versions.values().forEach(version -> builder.add(JsonBuilder.object().add("version", version)));
@@ -207,6 +284,8 @@ public class RouteManager {
         });
 
         app.get("/minecraft/parchment/{version}", ctx -> {
+            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
+
             String version = ParchmentVersions.getParchmentVersion(ctx.pathParam("version"));
             if (version.equalsIgnoreCase("unknown")) {
                 ctx.status(HttpStatus.NOT_FOUND).result("Failed to find Parchment version!");
@@ -309,6 +388,8 @@ public class RouteManager {
         });
 
         app.get("image/resize", ctx -> {
+            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
+
             String urlStr = ctx.queryParam("url");
 
             // validate image
@@ -344,6 +425,8 @@ public class RouteManager {
         });
 
         app.get("image/rotate", ctx -> {
+            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
+
             String urlStr = ctx.queryParam("url");
 
             // validate image
@@ -378,6 +461,8 @@ public class RouteManager {
         });
 
         app.get("image/flip", ctx -> {
+            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
+
             String urlStr = ctx.queryParam("url");
 
             // validate image
@@ -398,19 +483,21 @@ public class RouteManager {
             }
 
             // validate flip
-            if (!flipStr.equalsIgnoreCase("horizontal") && !flipStr.equalsIgnoreCase("vertical")) {
-                ctx.status(HttpStatus.BAD_REQUEST).result("Flip must be horizontal or vertical!");
+            if (!flipStr.equalsIgnoreCase("horizontal") && !flipStr.equalsIgnoreCase("vertical") && !flipStr.equalsIgnoreCase("both")) {
+                ctx.status(HttpStatus.BAD_REQUEST).result("Flip must be horizontal, vertical or both!");
                 return;
             }
 
             // flip image
-            BufferedImage flipped = ImageUtils.getFlipped(image, flipStr.equalsIgnoreCase("horizontal"));
+            BufferedImage flipped = ImageUtils.getFlipped(image, FlipType.valueOf(flipStr.toUpperCase()));
 
             // send image
             ctx.result(ImageUtils.toBase64(flipped));
         });
 
         app.get("/image/filter", ctx -> {
+            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
+
             String urlStr = ctx.queryParam("url");
 
             // validate image
@@ -447,6 +534,8 @@ public class RouteManager {
         });
 
         app.get("/image/flag", ctx -> {
+            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
+
             String urlStr = ctx.queryParam("url");
             int colors = ctx.queryParamAsClass("colors", Integer.class).getOrDefault(5);
 
@@ -474,6 +563,8 @@ public class RouteManager {
         });
 
         app.get("/image/lgbt", ctx -> {
+            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
+
             String urlStr = ctx.queryParam("url");
 
             // validate image
@@ -494,6 +585,8 @@ public class RouteManager {
         });
 
         app.get("/geo/guesser", ctx -> {
+            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.MINUTES);
+
             Optional<Pair<String, BufferedImage>> optional = GeoguesserManager.requestStaticImage();
             if (optional.isEmpty()) {
                 ctx.status(HttpStatus.INTERNAL_SERVER_ERROR).result("Failed to load image!");
