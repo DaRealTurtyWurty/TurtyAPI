@@ -2,7 +2,7 @@ package dev.turtywurty.turtyapi.geography;
 
 import java.util.Objects;
 
-public class Territory {
+public class Region {
     private double population;
     private String name;
     private String cca3;
@@ -14,7 +14,10 @@ public class Territory {
     private String flag;
     private String outline;
 
-    public Territory(double population, String name, String cca3, String cca2, String region, double landAreaKm, double densityMi, String flag, String outline) {
+    private boolean country;
+    private boolean island;
+
+    public Region(double population, String name, String cca3, String cca2, String region, double landAreaKm, double densityMi, String flag, String outline, boolean country, boolean island) {
         this.population = population;
         this.name = name;
         this.cca3 = cca3;
@@ -24,10 +27,12 @@ public class Territory {
         this.densityMi = densityMi;
         this.flag = flag;
         this.outline = outline;
+        this.country = country;
+        this.island = island;
     }
 
-    public Territory() {
-        this(0, "", "", "", "", 0, 0, "", "");
+    public Region() {
+        this(0, "", "", "", "", 0, 0, "", "", false, false);
     }
 
     public double getPopulation() {
@@ -102,17 +107,41 @@ public class Territory {
         this.outline = outline;
     }
 
+    public boolean isCountry() {
+        return country;
+    }
+
+    public void setCountry(boolean country) {
+        this.country = country;
+    }
+
+    public boolean isIsland() {
+        return island;
+    }
+
+    public void setIsland(boolean island) {
+        this.island = island;
+    }
+
+    public boolean isTerritory() {
+        return !isCountry();
+    }
+
+    public boolean isMainland() {
+        return !isIsland();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Territory that = (Territory) o;
-        return Double.compare(that.population, population) == 0 && Double.compare(that.landAreaKm, landAreaKm) == 0 && Double.compare(that.densityMi, densityMi) == 0 && Objects.equals(name, that.name) && Objects.equals(cca3, that.cca3) && Objects.equals(cca2, that.cca2) && Objects.equals(region, that.region) && Objects.equals(flag, that.flag) && Objects.equals(outline, that.outline);
+        Region that = (Region) o;
+        return Double.compare(that.population, population) == 0 && Double.compare(that.landAreaKm, landAreaKm) == 0 && Double.compare(that.densityMi, densityMi) == 0 && Objects.equals(name, that.name) && Objects.equals(cca3, that.cca3) && Objects.equals(cca2, that.cca2) && Objects.equals(region, that.region) && Objects.equals(flag, that.flag) && Objects.equals(outline, that.outline) && Objects.equals(country, that.country) && Objects.equals(island, that.island);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(population, name, cca3, cca2, region, landAreaKm, densityMi, flag, outline);
+        return Objects.hash(population, name, cca3, cca2, region, landAreaKm, densityMi, flag, outline, country, island);
     }
 
     @Override
@@ -127,6 +156,8 @@ public class Territory {
                 ", densityMi=" + densityMi +
                 ", flag='" + flag + '\'' +
                 ", outline='" + outline + '\'' +
+                ", country=" + country +
+                ", island=" + island +
                 '}';
     }
 }

@@ -41,7 +41,7 @@ public class Testing {
                 }
 
                 AtomicInteger count = new AtomicInteger();
-                TerritoryManager.getTerritories().forEach((cca3, data) -> {
+                TerritoryManager.getRegions().forEach((cca3, data) -> {
                     try(InputStream stream = new URL("http://localhost:8080/flag/" + cca3).openStream()) {
                         ImageIO.read(stream);
                     } catch (IOException exception) {

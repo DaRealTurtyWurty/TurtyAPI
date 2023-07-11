@@ -2,8 +2,8 @@ package dev.turtywurty.turtyapi;
 
 import com.google.gson.JsonArray;
 import dev.turtywurty.turtyapi.geography.GeoguesserManager;
-import dev.turtywurty.turtyapi.geography.Territory;
-import dev.turtywurty.turtyapi.geography.TerritoryManager;
+import dev.turtywurty.turtyapi.geography.Region;
+import dev.turtywurty.turtyapi.geography.RegionManager;
 import dev.turtywurty.turtyapi.image.ColorFlagGenerator;
 import dev.turtywurty.turtyapi.image.FlipType;
 import dev.turtywurty.turtyapi.image.ImageUtils;
@@ -27,11 +27,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
-import java.nio.file.Files;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
@@ -71,14 +67,14 @@ public class RouteManager {
                     return;
                 }
 
-                Territory data = TerritoryManager.getTerritory(cca3);
+                Region data = RegionManager.getRegion(cca3);
                 Constants.LOGGER.debug("Sending flag for {}!", data);
 
                 InputStream imageStream = TurtyAPI.getResource("geography/flags/" + data.getFlag());
                 ctx.contentType(ContentType.IMAGE_PNG).result(imageStream.readAllBytes());
                 imageStream.close();
             } catch (IOException | NullPointerException exception) {
-                ctx.status(HttpStatus.NOT_FOUND).result("Failed to find territory!");
+                ctx.status(HttpStatus.NOT_FOUND).result("Failed to find region!");
             }
         });
 
@@ -86,7 +82,18 @@ public class RouteManager {
             NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
 
             try {
-                Territory data = TerritoryManager.getRandomTerritory();
+                String toExclude = ctx.queryParam("exclude");
+                List<String> exclude = Arrays.stream(toExclude == null ? new String[0] : toExclude.split(","))
+                        .map(String::toLowerCase)
+                        .map(String::trim)
+                        .toList();
+
+                boolean excludeTerritories = exclude.contains("territories");
+                boolean excludeIslands = exclude.contains("islands");
+                boolean excludeCountries = exclude.contains("countries");
+                boolean excludeMainland = exclude.contains("mainland");
+
+                Region data = RegionManager.getRandomRegion(excludeTerritories, excludeIslands, excludeCountries, excludeMainland);
                 Constants.LOGGER.debug("Sending flag for {}!", data);
 
                 InputStream imageStream = TurtyAPI.getResource("geography/flags/" + data.getFlag());
@@ -94,9 +101,9 @@ public class RouteManager {
                 String base64 = ImageUtils.toBase64(image);
                 imageStream.close();
 
-                ctx.contentType(ContentType.JSON).result(new JsonBuilder.ObjectBuilder().add("territory", data).add("image", base64).toJson());
+                ctx.contentType(ContentType.JSON).result(new JsonBuilder.ObjectBuilder().add("region", data).add("image", base64).toJson());
             } catch (IOException | NullPointerException exception) {
-                ctx.status(HttpStatus.NOT_FOUND).result("Failed to find territory!");
+                ctx.status(HttpStatus.NOT_FOUND).result("Failed to find region!");
             }
         });
 
@@ -110,14 +117,14 @@ public class RouteManager {
                     return;
                 }
 
-                Territory data = TerritoryManager.getTerritory(cca3);
+                Region data = RegionManager.getRegion(cca3);
                 Constants.LOGGER.debug("Sending outline for {}!", data);
 
                 InputStream imageStream = TurtyAPI.getResource("geography/outlines/" + data.getOutline());
                 ctx.contentType(ContentType.IMAGE_PNG).result(imageStream.readAllBytes());
                 imageStream.close();
             } catch (IOException | NullPointerException exception) {
-                ctx.status(HttpStatus.NOT_FOUND).result("Failed to find territory!");
+                ctx.status(HttpStatus.NOT_FOUND).result("Failed to find region!");
             }
         });
 
@@ -125,7 +132,18 @@ public class RouteManager {
             NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
 
             try {
-                Territory data = TerritoryManager.getRandomTerritory();
+                String toExclude = ctx.queryParam("exclude");
+                List<String> exclude = Arrays.stream(toExclude == null ? new String[0] : toExclude.split(","))
+                        .map(String::toLowerCase)
+                        .map(String::trim)
+                        .toList();
+
+                boolean excludeTerritories = exclude.contains("territories");
+                boolean excludeIslands = exclude.contains("islands");
+                boolean excludeCountries = exclude.contains("countries");
+                boolean excludeMainland = exclude.contains("mainland");
+
+                Region data = RegionManager.getRandomRegion(excludeTerritories, excludeIslands, excludeCountries, excludeMainland);
                 Constants.LOGGER.debug("Sending outline for {}!", data);
 
                 InputStream imageStream = TurtyAPI.getResource("geography/outlines/" + data.getOutline());
@@ -133,9 +151,9 @@ public class RouteManager {
                 String base64 = ImageUtils.toBase64(image);
                 imageStream.close();
 
-                ctx.contentType(ContentType.JSON).result(new JsonBuilder.ObjectBuilder().add("territory", data).add("image", base64).toJson());
+                ctx.contentType(ContentType.JSON).result(new JsonBuilder.ObjectBuilder().add("region", data).add("image", base64).toJson());
             } catch (IOException | NullPointerException exception) {
-                ctx.status(HttpStatus.NOT_FOUND).result("Failed to find territory!");
+                ctx.status(HttpStatus.NOT_FOUND).result("Failed to find region!");
             }
         });
 
@@ -149,12 +167,12 @@ public class RouteManager {
                     return;
                 }
                 
-                Territory data = TerritoryManager.getTerritory(cca3);
+                Region data = RegionManager.getRegion(cca3);
                 Constants.LOGGER.debug("Sending data for {}!", data);
 
                 ctx.contentType(ContentType.JSON).result(Constants.GSON.toJson(data));
             } catch (NullPointerException exception) {
-                ctx.status(HttpStatus.NOT_FOUND).result("Failed to find territory!");
+                ctx.status(HttpStatus.NOT_FOUND).result("Failed to find region!");
             }
         });
 
@@ -162,12 +180,23 @@ public class RouteManager {
             NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
 
             try {
-                Territory data = TerritoryManager.getRandomTerritory();
+                String toExclude = ctx.queryParam("exclude");
+                List<String> exclude = Arrays.stream(toExclude == null ? new String[0] : toExclude.split(","))
+                        .map(String::toLowerCase)
+                        .map(String::trim)
+                        .toList();
+
+                boolean excludeTerritories = exclude.contains("territories");
+                boolean excludeIslands = exclude.contains("islands");
+                boolean excludeCountries = exclude.contains("countries");
+                boolean excludeMainland = exclude.contains("mainland");
+
+                Region data = RegionManager.getRandomRegion(excludeTerritories, excludeIslands, excludeCountries, excludeMainland);
                 Constants.LOGGER.debug("Sending data for {}!", data);
 
                 ctx.contentType(ContentType.JSON).result(Constants.GSON.toJson(data));
             } catch (NullPointerException exception) {
-                ctx.status(HttpStatus.NOT_FOUND).result("Failed to find territory!");
+                ctx.status(HttpStatus.NOT_FOUND).result("Failed to find region!");
             }
         });
 
@@ -175,16 +204,16 @@ public class RouteManager {
             NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
 
             try {
-                List<String> territories = TerritoryManager.getAllTerritories();
+                Set<String> regions = RegionManager.getRegions().keySet();
 
                 JsonBuilder.ArrayBuilder arrayBuilder = new JsonBuilder.ArrayBuilder();
-                for (String territory : territories) {
-                    arrayBuilder.add(TerritoryManager.getTerritory(territory));
+                for (String region : regions) {
+                    arrayBuilder.add(RegionManager.getRegion(region));
                 }
 
                 ctx.contentType(ContentType.JSON).result(arrayBuilder.toJson());
             } catch (NullPointerException exception) {
-                ctx.status(HttpStatus.NOT_FOUND).result("Failed to find territory!");
+                ctx.status(HttpStatus.NOT_FOUND).result("Failed to find region!");
             }
         });
 
