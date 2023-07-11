@@ -83,7 +83,8 @@ public class RouteManager {
 
             try {
                 String toExclude = ctx.queryParam("exclude");
-                List<String> exclude = Arrays.stream(toExclude == null ? new String[0] : toExclude.split(","))
+                String[] parts = toExclude == null ? new String[0] : (toExclude.split(",").length == 0 ? new String[]{toExclude} : toExclude.split(","));
+                List<String> exclude = Arrays.stream(toExclude == null ? new String[0] : parts)
                         .map(String::toLowerCase)
                         .map(String::trim)
                         .toList();
@@ -133,7 +134,8 @@ public class RouteManager {
 
             try {
                 String toExclude = ctx.queryParam("exclude");
-                List<String> exclude = Arrays.stream(toExclude == null ? new String[0] : toExclude.split(","))
+                String[] parts = toExclude == null ? new String[0] : (toExclude.split(",").length == 0 ? new String[]{toExclude} : toExclude.split(","));
+                List<String> exclude = Arrays.stream(toExclude == null ? new String[0] : parts)
                         .map(String::toLowerCase)
                         .map(String::trim)
                         .toList();
@@ -181,7 +183,8 @@ public class RouteManager {
 
             try {
                 String toExclude = ctx.queryParam("exclude");
-                List<String> exclude = Arrays.stream(toExclude == null ? new String[0] : toExclude.split(","))
+                String[] parts = toExclude == null ? new String[0] : (toExclude.split(",").length == 0 ? new String[]{toExclude} : toExclude.split(","));
+                List<String> exclude = Arrays.stream(toExclude == null ? new String[0] : parts)
                         .map(String::toLowerCase)
                         .map(String::trim)
                         .toList();
