@@ -1,6 +1,6 @@
 package dev.turtywurty.turtyapi;
 
-import dev.turtywurty.turtyapi.geography.TerritoryManager;
+import dev.turtywurty.turtyapi.geography.RegionManager;
 
 import javax.imageio.ImageIO;
 import java.io.IOException;
@@ -41,7 +41,7 @@ public class Testing {
                 }
 
                 AtomicInteger count = new AtomicInteger();
-                TerritoryManager.getRegions().forEach((cca3, data) -> {
+                RegionManager.getRegions().forEach((cca3, data) -> {
                     try(InputStream stream = new URL("http://localhost:8080/flag/" + cca3).openStream()) {
                         ImageIO.read(stream);
                     } catch (IOException exception) {

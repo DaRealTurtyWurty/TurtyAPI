@@ -1,14 +1,12 @@
 package dev.turtywurty.turtyapi;
 
-import dev.turtywurty.turtyapi.geography.TerritoryManager;
+import dev.turtywurty.turtyapi.geography.RegionManager;
 import dev.turtywurty.turtyapi.image.ImageUtils;
 import org.apache.commons.io.IOUtils;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Optional;
 
 public class TurtyAPI {
@@ -18,7 +16,7 @@ public class TurtyAPI {
         isDev = args.length > 0 && args[0].equalsIgnoreCase("dev");
         Constants.LOGGER.info("Starting TurtyAPI!");
 
-        TerritoryManager.load();
+        RegionManager.load();
         RouteManager.init();
         Testing.start(args);
 
