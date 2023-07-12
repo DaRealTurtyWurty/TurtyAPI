@@ -37,9 +37,10 @@ public class RegionManager {
     }
 
     public static Region getRandomRegion() {
-        return getRegions().values()
+        Map<String, Region> regions = getRegions();
+        return regions.values()
                 .stream()
-                .skip((int) (REGIONS.size() * Math.random()))
+                .skip((int) (regions.size() * Math.random()))
                 .findFirst()
                 .orElse(null);
     }
@@ -66,10 +67,10 @@ public class RegionManager {
     }
 
     public static Region getRandomRegion(boolean excludeTerritories, boolean excludeIslands, boolean excludeCountries, boolean excludeMainland) {
-        return getRegions(excludeTerritories, excludeIslands, excludeCountries, excludeMainland)
-                .values()
+        Map<String, Region> regions = getRegions(excludeTerritories, excludeIslands, excludeCountries, excludeMainland);
+        return regions.values()
                 .stream()
-                .skip((int) (REGIONS.size() * Math.random()))
+                .skip((int) (regions.size() * Math.random()))
                 .findFirst()
                 .orElse(null);
     }
