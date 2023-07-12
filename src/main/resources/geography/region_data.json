@@ -35,7 +35,7 @@
     "densityMi": 27.0272,
     "flag": "scotland.png",
     "outline": "scotland.png",
-    "country": true,
+    "country": false,
     "island": false
   },
   {
@@ -152,7 +152,7 @@
     "densityMi": 57.9153,
     "flag": "wales.png",
     "outline": "wales.png",
-    "country": true,
+    "country": false,
     "island": false
   },
   {
@@ -165,7 +165,7 @@
     "densityMi": 1120.4492,
     "flag": "curacao.png",
     "outline": "curacao.png",
-    "country": true,
+    "country": false,
     "island": true
   },
   {
@@ -516,7 +516,7 @@
     "densityMi": 1529.2079,
     "flag": "aruba.png",
     "outline": "aruba.png",
-    "country": true,
+    "country": false,
     "island": true
   },
   {
@@ -1348,7 +1348,7 @@
     "densityMi": 167.568,
     "flag": "england.png",
     "outline": "england.png",
-    "country": true,
+    "country": false,
     "island": false
   },
   {
@@ -1725,7 +1725,7 @@
     "densityMi": 452.51,
     "flag": "anguilla.png",
     "outline": "anguilla.png",
-    "country": true,
+    "country": false,
     "island": true
   },
   {
@@ -1881,7 +1881,7 @@
     "densityMi": 41.5124,
     "flag": "new_caledonia.png",
     "outline": "new_caledonia.png",
-    "country": true,
+    "country": false,
     "island": true
   },
   {
@@ -2167,7 +2167,7 @@
     "densityMi": 3072.9391,
     "flag": "bermuda.png",
     "outline": "bermuda.png",
-    "country": true,
+    "country": false,
     "island": true
   },
   {
@@ -3025,7 +3025,7 @@
     "densityMi": 349.6,
     "flag": "northern_ireland.png",
     "outline": "northern_ireland.png",
-    "country": true,
+    "country": false,
     "island": false
   },
   {
