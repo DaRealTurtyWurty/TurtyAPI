@@ -9,10 +9,7 @@ import dev.turtywurty.turtyapi.image.FlipType;
 import dev.turtywurty.turtyapi.image.ImageUtils;
 import dev.turtywurty.turtyapi.image.LGBTifier;
 import dev.turtywurty.turtyapi.json.JsonBuilder;
-import dev.turtywurty.turtyapi.minecraft.FabricVersions;
-import dev.turtywurty.turtyapi.minecraft.ForgeVersions;
-import dev.turtywurty.turtyapi.minecraft.MinecraftVersions;
-import dev.turtywurty.turtyapi.minecraft.ParchmentVersions;
+import dev.turtywurty.turtyapi.minecraft.*;
 import dev.turtywurty.turtyapi.words.WordManager;
 import io.javalin.Javalin;
 import io.javalin.http.ContentType;
@@ -319,7 +316,7 @@ public class RouteManager {
             NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
 
             Pair<String, String> latest = FabricVersions.findLatestFabric();
-            ctx.contentType(ContentType.JSON).result(JsonBuilder.object().add("loader", latest.getFirst()).add("mappings", latest.getSecond()).toJson());
+            ctx.contentType(ContentType.JSON).result(JsonBuilder.object().add("stable", latest.getFirst()).add("unstable", latest.getSecond()).toJson());
         });
 
         app.get("/minecraft/fabric/all", ctx -> {
@@ -328,6 +325,22 @@ public class RouteManager {
             LinkedHashMap<String, Boolean> versions = FabricVersions.getAllFabricVersions();
             JsonBuilder.ArrayBuilder builder = JsonBuilder.array();
             versions.forEach((version, isStable) -> builder.add(JsonBuilder.object().add("version", version).add("isStable", isStable)));
+            ctx.contentType(ContentType.JSON).result(builder.toJson());
+        });
+
+        app.get("/minecraft/quilt/latest", ctx -> {
+            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
+
+            Pair<String, String> latest = QuiltVersions.findLatestQuilt();
+            ctx.contentType(ContentType.JSON).result(JsonBuilder.object().add("stable", latest.getFirst()).add("unstable", latest.getSecond()).toJson());
+        });
+
+        app.get("/minecraft/quilt/all", ctx -> {
+            NaiveRateLimit.requestPerTimeUnit(ctx, 5, TimeUnit.SECONDS);
+
+            LinkedHashMap<String, Boolean> versions = QuiltVersions.getAllQuiltVersions();
+            JsonBuilder.ArrayBuilder builder = JsonBuilder.array();
+            versions.forEach((version, isStable) -> builder.add(JsonBuilder.object().add("version", version).add("isRelease", isStable)));
             ctx.contentType(ContentType.JSON).result(builder.toJson());
         });
 
