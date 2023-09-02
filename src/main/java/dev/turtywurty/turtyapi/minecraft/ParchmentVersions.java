@@ -55,6 +55,9 @@ public class ParchmentVersions {
     }
 
     public static String getParchmentVersion(String mcVersion) {
+        if (ALL_PARCHMENT_VERSIONS == null || ALL_PARCHMENT_VERSIONS.isEmpty())
+            return internal_getParchmentVersion(mcVersion);
+
         return ALL_PARCHMENT_VERSIONS.getOrDefault(mcVersion, internal_getParchmentVersion(mcVersion));
     }
 
