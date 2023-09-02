@@ -1,16 +1,11 @@
 package dev.turtywurty.turtyapi;
 
-import dev.turtywurty.turtyapi.geography.RegionManager;
-import dev.turtywurty.turtyapi.steam.SteamAppCache;
-
-import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Testing {
     private static final ScheduledExecutorService EXECUTOR = Executors.newSingleThreadScheduledExecutor();
