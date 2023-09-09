@@ -281,6 +281,19 @@ public class RouteManager {
             ctx.contentType(ContentType.JSON).result(Constants.GSON.toJson(array));
         });
 
+        app.get("/words/validate", ctx -> {
+            NaiveRateLimit.requestPerTimeUnit(ctx, 5, TimeUnit.SECONDS);
+
+            String word = ctx.queryParam("word");
+            if (word == null) {
+                ctx.status(HttpStatus.BAD_REQUEST).result("You must specify a word!");
+                return;
+            }
+
+            boolean valid = WordManager.isWord(word);
+            ctx.contentType(ContentType.JSON).result(Constants.GSON.toJson(JsonBuilder.object().add("valid", valid)));
+        });
+
         app.get("/minecraft/latest", ctx -> {
             NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
 

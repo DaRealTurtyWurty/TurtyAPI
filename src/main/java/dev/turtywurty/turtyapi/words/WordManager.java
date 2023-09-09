@@ -60,6 +60,16 @@ public class WordManager {
         return words;
     }
 
+    public static List<String> getAllWords(int minLength, int maxLength) {
+        List<String> words = new ArrayList<>();
+
+        for(int length = minLength; length <= maxLength; length++) {
+            words.addAll(getAllWords(length));
+        }
+
+        return words;
+    }
+
     public static Optional<String> getRandomWord(int length) {
         List<String> words = getAllWords(length);
         if(words.isEmpty()) {
@@ -109,22 +119,10 @@ public class WordManager {
         return words.subList(0, max);
     }
 
-    private static String[] readAllLines(Path path) {
-        try {
-            String content = Files.readString(path);
-            return content.split("\n");
-        } catch (IOException exception) {
-            return new String[0];
-        }
-    }
+    public static boolean isWord(String word) {
+        if(word == null || !word.matches("[a-zA-Z]+") || word.isBlank())
+            return false;
 
-    public static List<String> getAllWords(int minLength, int maxLength) {
-        List<String> words = new ArrayList<>();
-
-        for(int length = minLength; length <= maxLength; length++) {
-            words.addAll(getAllWords(length));
-        }
-
-        return words;
+        return getAllWords(word.length()).contains(word.toLowerCase());
     }
 }
