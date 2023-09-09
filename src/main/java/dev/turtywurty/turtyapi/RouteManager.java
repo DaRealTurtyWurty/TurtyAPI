@@ -291,7 +291,7 @@ public class RouteManager {
             }
 
             boolean valid = WordManager.isWord(word);
-            ctx.contentType(ContentType.JSON).result(Constants.GSON.toJson(JsonBuilder.object().add("valid", valid)));
+            ctx.contentType(ContentType.JSON).result(JsonBuilder.object().add("valid", valid).toJson());
         });
 
         app.get("/minecraft/latest", ctx -> {
