@@ -130,6 +130,8 @@ month
 major
 areas
 space
+spade
+spoon
 cards
 child
 enter
