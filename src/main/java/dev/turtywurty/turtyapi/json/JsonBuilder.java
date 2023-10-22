@@ -11,7 +11,9 @@ public abstract sealed class JsonBuilder permits JsonBuilder.ArrayBuilder, JsonB
         @Override
         void finish() {
             this.builder.append("]");
-            this.builder.deleteCharAt(this.builder.lastIndexOf(","));
+            if(this.builder.lastIndexOf(",") != -1) {
+                this.builder.deleteCharAt(this.builder.lastIndexOf(","));
+            }
         }
 
         public ArrayBuilder add(String value) {

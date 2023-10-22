@@ -10,6 +10,9 @@ import dev.turtywurty.turtyapi.image.ImageUtils;
 import dev.turtywurty.turtyapi.image.LGBTifier;
 import dev.turtywurty.turtyapi.json.JsonBuilder;
 import dev.turtywurty.turtyapi.minecraft.*;
+import dev.turtywurty.turtyapi.nsfw.NSFWManager;
+import dev.turtywurty.turtyapi.nsfw.Photo;
+import dev.turtywurty.turtyapi.nsfw.Pornstar;
 import dev.turtywurty.turtyapi.words.WordManager;
 import io.javalin.Javalin;
 import io.javalin.http.ContentType;
@@ -688,6 +691,51 @@ public class RouteManager {
             BufferedImage image = pair.getSecond();
 
             ctx.contentType(ContentType.JSON).result(new JsonBuilder.ObjectBuilder().add("country", country).add("image", ImageUtils.toBase64(image)).toJson());
+        });
+
+        app.get("/nsfw/pornstar", ctx -> {
+            NaiveRateLimit.requestPerTimeUnit(ctx, 20, TimeUnit.MINUTES);
+
+            Optional<Pornstar> optional = NSFWManager.getRandomPornstarWithPhoto();
+            if (optional.isEmpty()) {
+                ctx.status(HttpStatus.INTERNAL_SERVER_ERROR).result("Failed to load pornstar!");
+                return;
+            }
+
+            Pornstar pornstar = optional.get();
+
+            String careerStatus = pornstar.getCareer_status();
+            String country = pornstar.getCountry();
+            int dayOfBirth = pornstar.getDay_of_birth();;
+            String monthOfBirth = pornstar.getMonth_of_birth();
+            int yearOfBirth = pornstar.getYear_of_birth();
+            String gender = pornstar.getGender();
+            String id = pornstar.getId();
+            String name = pornstar.getName();
+            String profession = pornstar.getProfession();
+            List<String> nicknames = pornstar.getNicknames();
+            List<String> photos = pornstar.getPhotos().stream().map(Photo::getFull).toList();
+
+            JsonBuilder.ArrayBuilder nicknamesBuilder = new JsonBuilder.ArrayBuilder();
+            nicknames.forEach(nicknamesBuilder::add);
+
+            JsonBuilder.ArrayBuilder photosBuilder = new JsonBuilder.ArrayBuilder();
+            photos.forEach(photosBuilder::add);
+
+            ctx.contentType(ContentType.JSON).result(
+                    new JsonBuilder.ObjectBuilder()
+                            .add("careerStatus", careerStatus)
+                            .add("country", country)
+                            .add("dayOfBirth", dayOfBirth)
+                            .add("monthOfBirth", monthOfBirth)
+                            .add("yearOfBirth", yearOfBirth)
+                            .add("gender", gender)
+                            .add("id", id)
+                            .add("name", name)
+                            .add("profession", profession)
+                            .add("nicknames", nicknamesBuilder)
+                            .add("photos", photosBuilder)
+                            .toJson());
         });
 
         RouteManager.app = app.start(Constants.PORT);

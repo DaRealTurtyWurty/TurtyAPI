@@ -22,6 +22,9 @@ dependencies {
     implementation 'com.jhlabs:filters:2.0.235'
     implementation 'com.squareup.okhttp3:okhttp:4.9.1'
     implementation 'io.github.coordinates2country:coordinates2country:1.2'
+
+    annotationProcessor group: "org.projectlombok", name: "lombok", version: "1.18.30"
+    compileOnly group: "org.projectlombok", name: "lombok", version: "1.18.30"
 }
 
 tasks.register('execute', JavaExec) {
