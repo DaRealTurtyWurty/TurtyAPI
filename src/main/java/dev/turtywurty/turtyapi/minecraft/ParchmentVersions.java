@@ -75,7 +75,7 @@ public class ParchmentVersions {
             latestVersion = getParchmentVersion(minecraftVersion);
         }
 
-        return minecraftVersion + "-" + latestVersion;
+        return latestVersion + "-" + minecraftVersion;
     }
 
     public static String findLatestParchment() {
@@ -123,11 +123,14 @@ public class ParchmentVersions {
         for (String minecraftRelease : minecraftReleases) {
             String version = getParchmentVersion(minecraftRelease);
             if (!version.equals("Unknown")) {
-                versions.add(minecraftRelease + "-" + version);
+                versions.add(version + "-" + minecraftRelease);
             }
         }
 
-        return versions.stream().collect(Collectors.toMap(version -> version.split("-")[0], version -> version.split("-")[1], (a, b) -> b, LinkedHashMap::new));
+        return versions.stream().collect(Collectors.toMap(
+                version -> version.split("-")[1],
+                version -> version.split("-")[0],
+                (a, b) -> b, LinkedHashMap::new));
     }
 
     public record ParchmentUpdate(String minecraftVersion, String parchmentVersion, boolean removed) {
