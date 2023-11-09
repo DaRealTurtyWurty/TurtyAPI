@@ -1,6 +1,8 @@
 package dev.turtywurty.turtyapi;
 
 import com.google.gson.JsonArray;
+import dev.turtywurty.turtyapi.fun.WouldYouRather;
+import dev.turtywurty.turtyapi.fun.WouldYouRatherManager;
 import dev.turtywurty.turtyapi.geography.GeoguesserManager;
 import dev.turtywurty.turtyapi.geography.Region;
 import dev.turtywurty.turtyapi.geography.RegionManager;
@@ -735,6 +737,22 @@ public class RouteManager {
                             .add("profession", profession)
                             .add("nicknames", nicknamesBuilder)
                             .add("photos", photosBuilder)
+                            .toJson());
+        });
+
+        app.get("/fun/wyr/random", ctx -> {
+            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
+
+            WouldYouRather wouldYouRather = WouldYouRatherManager.getRandomWouldYouRather();
+            if (wouldYouRather == null) {
+                ctx.status(HttpStatus.INTERNAL_SERVER_ERROR).result("Failed to load would you rather!");
+                return;
+            }
+
+            ctx.contentType(ContentType.JSON).result(
+                    new JsonBuilder.ObjectBuilder()
+                            .add("optionA", wouldYouRather.optionA())
+                            .add("optionB", wouldYouRather.optionB())
                             .toJson());
         });
 
