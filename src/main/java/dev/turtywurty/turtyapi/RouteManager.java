@@ -743,7 +743,13 @@ public class RouteManager {
         app.get("/fun/wyr/random", ctx -> {
             NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
 
-            WouldYouRather wouldYouRather = WouldYouRatherManager.getRandomWouldYouRather();
+            boolean includeNSFW = ctx.queryParamAsClass("includeNSFW", Boolean.class).getOrDefault(false);
+            boolean nsfw = ctx.queryParamAsClass("nsfw", Boolean.class).getOrDefault(false);
+
+            WouldYouRather wouldYouRather = nsfw ?
+                    WouldYouRatherManager.getRandomNSFWWouldYouRather() :
+                    WouldYouRatherManager.getRandomWouldYouRather(includeNSFW);
+
             if (wouldYouRather == null) {
                 ctx.status(HttpStatus.INTERNAL_SERVER_ERROR).result("Failed to load would you rather!");
                 return;
