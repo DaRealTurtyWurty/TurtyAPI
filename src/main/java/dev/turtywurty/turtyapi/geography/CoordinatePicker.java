@@ -49,8 +49,6 @@ public class CoordinatePicker {
             throw new IllegalStateException("Unable to get feature source from shape file!", exception);
         }
 
-        System.out.println(this.shapeFileURL);
-
         this.geometryAttributeName = this.featureSource.getSchema().getGeometryDescriptor().getLocalName();
 
         GeoTools.init();
