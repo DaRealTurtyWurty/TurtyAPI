@@ -13,10 +13,27 @@ import java.util.Optional;
 
 public class TurtyAPI {
     private static boolean isDev;
-    private static final Dotenv ENVIRONMENT = Dotenv.load();
+    private static Dotenv environment;
 
     public static void main(String[] args) {
         isDev = args.length > 0 && args[0].equalsIgnoreCase("dev");
+
+        if (isDev) {
+            if(args.length > 2) {
+                String envPath = args[2];
+                environment = Dotenv.configure().directory(envPath).load();
+            }
+        } else {
+            if (args.length > 1) {
+                String envPath = args[1];
+                environment = Dotenv.configure().directory(envPath).load();
+            }
+        }
+
+        if (environment == null) {
+            environment = Dotenv.load();
+        }
+
         Constants.LOGGER.info("Starting TurtyAPI!");
 
         RegionManager.load();
@@ -57,7 +74,7 @@ public class TurtyAPI {
     }
 
     public static Optional<String> getEnvironmentValue(String key) {
-        return Optional.ofNullable(ENVIRONMENT.get(key, null));
+        return Optional.ofNullable(environment.get(key, null));
     }
 
     public static String getGoogleAPIKey() {
