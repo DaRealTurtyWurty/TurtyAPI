@@ -15,7 +15,7 @@ repositories {
     }
 
     maven {
-        url 'https://repo.osgeo.org/repository/geotools-releases/'
+        url 'https://repo.osgeo.org/repository/release/'
         name 'OSGeo Release Repository'
     }
 }
@@ -55,7 +55,6 @@ jar {
 
 shadowJar {
     zip64 true
-
     mergeServiceFiles()
     minimize()
 }
