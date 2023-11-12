@@ -3,6 +3,7 @@ package dev.turtywurty.turtyapi;
 import com.google.gson.JsonArray;
 import dev.turtywurty.turtyapi.fun.WouldYouRather;
 import dev.turtywurty.turtyapi.fun.WouldYouRatherManager;
+import dev.turtywurty.turtyapi.geography.CoordinatePicker;
 import dev.turtywurty.turtyapi.geography.GeoguesserManager;
 import dev.turtywurty.turtyapi.geography.Region;
 import dev.turtywurty.turtyapi.geography.RegionManager;
@@ -23,6 +24,7 @@ import io.javalin.http.util.NaiveRateLimit;
 import io.javalin.json.JsonMapper;
 import kotlin.Pair;
 import org.jetbrains.annotations.NotNull;
+import org.locationtech.jts.geom.Coordinate;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -759,6 +761,28 @@ public class RouteManager {
                     new JsonBuilder.ObjectBuilder()
                             .add("optionA", wouldYouRather.optionA())
                             .add("optionB", wouldYouRather.optionB())
+                            .toJson());
+        });
+
+        app.get("/geo/coordinate", ctx -> {
+            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
+
+            boolean land = ctx.queryParamAsClass("land", Boolean.class).getOrDefault(false);
+            if (!land) {
+                ctx.status(HttpStatus.BAD_REQUEST).result("You must specify land=true!");
+                return;
+            }
+
+            Coordinate coordinate = CoordinatePicker.INSTANCE.findRandomLandCoordinate();
+            if (coordinate == null) {
+                ctx.status(HttpStatus.INTERNAL_SERVER_ERROR).result("Failed to find coordinate!");
+                return;
+            }
+
+            ctx.contentType(ContentType.JSON).result(
+                    new JsonBuilder.ObjectBuilder()
+                            .add("longitude", coordinate.getX())
+                            .add("latitude", coordinate.getY())
                             .toJson());
         });
 

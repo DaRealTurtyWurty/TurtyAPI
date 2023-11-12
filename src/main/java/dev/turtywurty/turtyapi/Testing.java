@@ -54,8 +54,6 @@ public class Testing {
 //                });
 //
 //                Constants.LOGGER.info("Finished testing! {} countries tested!", count.get());
-
-
             }, 5, TimeUnit.SECONDS);
         }
     }
