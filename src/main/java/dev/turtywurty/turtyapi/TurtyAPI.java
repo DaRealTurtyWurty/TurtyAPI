@@ -86,4 +86,14 @@ public class TurtyAPI {
         return getEnvironmentValue("API_KEY").orElseThrow(
                 () -> new IllegalStateException("No API key found!"));
     }
+
+    public static String getTwitchClientId() {
+        return getEnvironmentValue("TWITCH_CLIENT_ID").orElseThrow(
+                () -> new IllegalStateException("No Twitch client ID found!"));
+    }
+
+    public static String getTwitchClientSecret() {
+        return getEnvironmentValue("TWITCH_CLIENT_SECRET").orElseThrow(
+                () -> new IllegalStateException("No Twitch client secret found!"));
+    }
 }

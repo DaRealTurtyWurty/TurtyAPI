@@ -32,6 +32,8 @@ dependencies {
     implementation 'org.geotools:gt-shapefile:30.0'
     implementation 'org.locationtech.jts:jts:1.19.0'
     implementation 'io.github.cdimascio:dotenv-java:3.0.0'
+    implementation 'com.github.twitch4j:twitch4j:1.18.0'
+    implementation 'io.github.husnjak:igdb-api-jvm:1.1.0'
 
     annotationProcessor group: "org.projectlombok", name: "lombok", version: "1.18.30"
     compileOnly group: "org.projectlombok", name: "lombok", version: "1.18.30"

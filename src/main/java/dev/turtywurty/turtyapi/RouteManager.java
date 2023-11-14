@@ -3,6 +3,7 @@ package dev.turtywurty.turtyapi;
 import com.google.gson.JsonArray;
 import dev.turtywurty.turtyapi.fun.WouldYouRather;
 import dev.turtywurty.turtyapi.fun.WouldYouRatherManager;
+import dev.turtywurty.turtyapi.games.IGDBConnector;
 import dev.turtywurty.turtyapi.geography.CoordinatePicker;
 import dev.turtywurty.turtyapi.geography.GeoguesserManager;
 import dev.turtywurty.turtyapi.geography.Region;
@@ -237,7 +238,7 @@ public class RouteManager {
                     ctx.status(HttpStatus.BAD_REQUEST).result("Missing cca3 query parameter!");
                     return;
                 }
-                
+
                 Region data = RegionManager.getRegion(cca3);
                 Constants.LOGGER.debug("Sending data for {}!", data);
 
@@ -1139,7 +1140,7 @@ public class RouteManager {
 
             String careerStatus = pornstar.getCareer_status();
             String country = pornstar.getCountry();
-            int dayOfBirth = pornstar.getDay_of_birth();;
+            int dayOfBirth = pornstar.getDay_of_birth();
             String monthOfBirth = pornstar.getMonth_of_birth();
             int yearOfBirth = pornstar.getYear_of_birth();
             String gender = pornstar.getGender();
@@ -1240,6 +1241,35 @@ public class RouteManager {
                             .add("latitude", coordinate.getY())
                             .toJson());
         });
+
+//        app.get("/games/search", ctx -> {
+//            String apiKey = ctx.queryParam("apiKey");
+//            if (apiKey == null || apiKey.isBlank()) {
+//                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+//                return;
+//            }
+//
+//            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
+//                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
+//                return;
+//            }
+//
+//            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
+//
+//            String query = ctx.queryParam("query");
+//            if (query == null || query.isBlank()) {
+//                ctx.status(HttpStatus.BAD_REQUEST).result("You must specify a query!");
+//                return;
+//            }
+//
+//            String result = IGDBConnector.INSTANCE.searchGames(query);
+//            if (result == null) {
+//                ctx.status(HttpStatus.INTERNAL_SERVER_ERROR).result("Failed to search for games!");
+//                return;
+//            }
+//
+//            ctx.contentType(ContentType.JSON).result(result);
+//        });
 
         RouteManager.app = app.start(Constants.PORT);
     }

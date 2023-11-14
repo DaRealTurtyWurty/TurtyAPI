@@ -1,0 +1,64 @@
+package dev.turtywurty.turtyapi.games;
+
+import lombok.Data;
+
+@Data
+public class Game {
+    private int[] age_ratings;
+    private double aggregated_rating;
+    private int aggregated_rating_count;
+    private int[] alternative_names;
+    private int[] artworks;
+    private int[] bundles;
+    private int category;
+    private String checksum;
+    private int collection;
+    private int[] collections;
+    private int cover;
+    private long created_at;
+    private int[] dlcs;
+    private int[] expanded_games;
+    private int[] expansions;
+    private int[] external_games;
+    private long first_release_date;
+    private int follows;
+    private int[] forks;
+    private int franchise;
+    private int[] franchises;
+    private int[] game_engines;
+    private int[] game_localizations;
+    private int[] game_modes;
+    private int[] genres;
+    private int hypes;
+    private int[] involved_companies;
+    private int[] keywords;
+    private int[] languageSupports;
+    private int[] multiplayer_modes;
+    private String name;
+    private int parent_game;
+    private int[] platforms;
+    private int[] player_perspectives;
+    private int[] ports;
+    private double rating;
+    private int rating_count;
+    private int[] release_dates;
+    private int[] remakes;
+    private int[] remasters;
+    private int[] screenshots;
+    private int[] similar_games;
+    private String slug;
+    private int standalone_expansions;
+    private int status;
+    private String storyline;
+    private String summary;
+    private int[] tags;
+    private int[] themes;
+    private double total_rating;
+    private int total_rating_count;
+    private long updated_at;
+    private String url;
+    private int version_parent;
+    private String version_title;
+    private int[] videos;
+    private int[] websites;
+}
