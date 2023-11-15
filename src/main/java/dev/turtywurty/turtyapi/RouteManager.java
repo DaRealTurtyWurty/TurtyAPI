@@ -1,8 +1,14 @@
 package dev.turtywurty.turtyapi;
 
+import com.api.igdb.utils.ImageSize;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import dev.turtywurty.turtyapi.fun.WouldYouRather;
 import dev.turtywurty.turtyapi.fun.WouldYouRatherManager;
+import dev.turtywurty.turtyapi.games.Artwork;
+import dev.turtywurty.turtyapi.games.Game;
 import dev.turtywurty.turtyapi.games.IGDBConnector;
 import dev.turtywurty.turtyapi.geography.CoordinatePicker;
 import dev.turtywurty.turtyapi.geography.GeoguesserManager;
@@ -35,6 +41,7 @@ import java.lang.reflect.Type;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class RouteManager {
     private static Javalin app;
@@ -1242,34 +1249,134 @@ public class RouteManager {
                             .toJson());
         });
 
-//        app.get("/games/search", ctx -> {
-//            String apiKey = ctx.queryParam("apiKey");
-//            if (apiKey == null || apiKey.isBlank()) {
-//                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
-//                return;
-//            }
-//
-//            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
-//                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
-//                return;
-//            }
-//
-//            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
-//
-//            String query = ctx.queryParam("query");
-//            if (query == null || query.isBlank()) {
-//                ctx.status(HttpStatus.BAD_REQUEST).result("You must specify a query!");
-//                return;
-//            }
-//
-//            String result = IGDBConnector.INSTANCE.searchGames(query);
-//            if (result == null) {
-//                ctx.status(HttpStatus.INTERNAL_SERVER_ERROR).result("Failed to search for games!");
-//                return;
-//            }
-//
-//            ctx.contentType(ContentType.JSON).result(result);
-//        });
+        app.get("/games/search", ctx -> {
+            String apiKey = ctx.queryParam("apiKey");
+            if (apiKey == null || apiKey.isBlank()) {
+                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+                return;
+            }
+
+            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
+                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
+                return;
+            }
+
+            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
+
+            String query = ctx.queryParam("query");
+            if (query == null || query.isBlank()) {
+                ctx.status(HttpStatus.BAD_REQUEST).result("You must specify a query!");
+                return;
+            }
+
+            String fields = ctx.queryParam("fields");
+            if (fields == null || fields.isBlank()) {
+                fields = "*";
+            }
+
+            final List<String> fieldsList = Arrays.asList(fields.split(","));
+            if (fieldsList.isEmpty()) {
+                fieldsList.add("*");
+            }
+
+            List<Game> results = IGDBConnector.INSTANCE.searchGames(query, fieldsList.toArray(new String[0]));
+            if (results == null) {
+                ctx.status(HttpStatus.INTERNAL_SERVER_ERROR).result("Failed to search for games!");
+                return;
+            }
+
+            var array = new JsonArray();
+            for (Game game : results) {
+                var object = new JsonObject();
+                Constants.GSON.toJsonTree(game)
+                        .getAsJsonObject()
+                        .entrySet()
+                        .stream()
+                        .filter(entry -> fieldsList.contains("*") || fieldsList.contains(entry.getKey()))
+                        .filter(entry -> !entry.getValue().isJsonPrimitive() || !entry.getValue().getAsJsonPrimitive().isNumber() || entry.getValue().getAsNumber().doubleValue() != -1)
+                        .forEach(entry -> object.add(entry.getKey(), entry.getValue()));
+                array.add(object);
+            }
+
+            ctx.contentType(ContentType.JSON).result(Constants.GSON.toJson(array));
+        });
+
+        app.get("/games/artwork", ctx -> {
+            String apiKey = ctx.queryParam("apiKey");
+            if (apiKey == null || apiKey.isBlank()) {
+                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+                return;
+            }
+
+            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
+                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
+                return;
+            }
+
+            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
+
+            String id = ctx.queryParam("id");
+            if (id == null || id.isBlank()) {
+                ctx.status(HttpStatus.BAD_REQUEST).result("You must specify an id!");
+                return;
+            }
+
+            int intId;
+            try {
+                intId = Integer.parseInt(id);
+            } catch (NumberFormatException e) {
+                ctx.status(HttpStatus.BAD_REQUEST).result("You must specify a valid id!");
+                return;
+            }
+
+            String fields = ctx.queryParam("fields");
+            if (fields == null || fields.isBlank()) {
+                fields = "*";
+            }
+
+            final List<String> fieldsList = Arrays.asList(fields.split(","));
+            if (fieldsList.isEmpty()) {
+                fieldsList.add("*");
+            }
+
+            Artwork artwork = IGDBConnector.INSTANCE.findArtwork(intId, fieldsList.toArray(new String[0]));
+            if (artwork == null) {
+                ctx.status(HttpStatus.INTERNAL_SERVER_ERROR).result("Failed to find artwork!");
+                return;
+            }
+
+            if(fields.contains("*") || fields.contains("url")) {
+                String value = artwork.getUrl().replace("//images.igdb.com/", "https://images.igdb.com/");
+
+                String imageSize = ctx.queryParam("imageSize");
+                if (imageSize == null || imageSize.isBlank()) {
+                    imageSize = ImageSize.THUMB.getTSize();
+                } else {
+                    try {
+                        imageSize = ImageSize.valueOf(imageSize.toUpperCase(Locale.ROOT)).getTSize();
+                    } catch (IllegalArgumentException e) {
+                        ctx.status(HttpStatus.BAD_REQUEST).result("You must specify a valid image size! The options are: " + Arrays.stream(ImageSize.values())
+                                .map(ImageSize::name)
+                                .collect(Collectors.joining(", ")));
+                        return;
+                    }
+                }
+
+                value = value.replace("t_thumb", imageSize);
+                artwork.setUrl(value);
+            }
+
+            var object = new JsonObject();
+            Constants.GSON.toJsonTree(artwork)
+                    .getAsJsonObject()
+                    .entrySet()
+                    .stream()
+                    .filter(entry -> fieldsList.contains("*") || fieldsList.contains(entry.getKey()))
+                    .filter(entry -> !entry.getValue().isJsonPrimitive() || !entry.getValue().getAsJsonPrimitive().isNumber() || entry.getValue().getAsNumber().doubleValue() != -1)
+                    .forEach(entry -> object.add(entry.getKey(), entry.getValue()));
+
+            ctx.contentType(ContentType.JSON).result(Constants.GSON.toJson(object));
+        });
 
         RouteManager.app = app.start(Constants.PORT);
     }

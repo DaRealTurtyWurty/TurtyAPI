@@ -8,12 +8,17 @@ import com.api.igdb.request.JsonRequestKt;
 import com.api.igdb.request.TwitchAuthenticator;
 import com.api.igdb.utils.ImageBuilderKt;
 import com.api.igdb.utils.TwitchToken;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import dev.turtywurty.turtyapi.Constants;
 import dev.turtywurty.turtyapi.TurtyAPI;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -57,21 +62,61 @@ public class IGDBConnector {
         );
     }
 
-    public @Nullable String searchGames(@NotNull String query, int limit) {
+    public @Nullable List<Game> searchGames(@NotNull String query, int limit, String... fields) {
+        String fieldsString = String.join(",", fields);
+        if (fieldsString.isBlank() || fieldsString.equals("null")) {
+            fieldsString = "*";
+        }
+
         var apiCalypse = new APICalypse()
-                .fields("age_ratings,aggregated_rating,aggregated_rating_count,alternative_names,artworks,bundles,category,checksum,collection,cover,created_at,dlcs,expansions,external_games,first_release_date,follows,franchise,franchises,game_engines,game_modes,genres,hypes,involved_companies,keywords,multiplayer_modes,name,parent_game,platforms,player_perspectives,rating,rating_count,release_dates,screenshots,similar_games,slug,standalone_expansions,status,storyline,summary,tags,themes,total_rating,total_rating_count,updated_at,url,version_parent,version_title,videos,websites")
+                .fields(fieldsString)
                 .search(query)
                 .limit(limit);
 
         try {
-            return JsonRequestKt.jsonGames(this.wrapper, apiCalypse);
+            String jsonString = JsonRequestKt.jsonGames(this.wrapper, apiCalypse);
+            JsonArray array = Constants.GSON.fromJson(jsonString, JsonArray.class);
+
+            List<Game> games = new ArrayList<>();
+            for (JsonElement element : array) {
+                games.add(Constants.GSON.fromJson(element, Game.class));
+            }
+
+            return games;
         } catch (RequestException exception) {
             Constants.LOGGER.error("Failed to search for games!", exception);
             return null;
         }
     }
 
-    public @Nullable String searchGames(@NotNull String query) {
-        return searchGames(query, 10);
+    public @Nullable List<Game> searchGames(@NotNull String query, String... fields) {
+        return searchGames(query, 10, fields);
+    }
+
+    public @Nullable List<Game> searchGames(@NotNull String query) {
+        return searchGames(query, "*");
+    }
+
+    public Artwork findArtwork(int id, String... fields) {
+        String fieldsString = String.join(",", fields);
+        if (fieldsString.isBlank() || fieldsString.equals("null")) {
+            fieldsString = "*";
+        }
+
+        var apiCalypse = new APICalypse()
+                .fields(fieldsString)
+                .where("id = " + id);
+
+        try {
+            String jsonString = JsonRequestKt.jsonArtworks(this.wrapper, apiCalypse);
+            JsonArray array = Constants.GSON.fromJson(jsonString, JsonArray.class);
+            if (array.isEmpty())
+                return null;
+
+            return Constants.GSON.fromJson(array.get(0), Artwork.class);
+        } catch (RequestException exception) {
+            Constants.LOGGER.error("Failed to search for games!", exception);
+            return null;
+        }
     }
 }
