@@ -2,12 +2,11 @@ package dev.turtywurty.turtyapi;
 
 import com.api.igdb.utils.ImageSize;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 import dev.turtywurty.turtyapi.fun.WouldYouRather;
 import dev.turtywurty.turtyapi.fun.WouldYouRatherManager;
 import dev.turtywurty.turtyapi.games.Artwork;
+import dev.turtywurty.turtyapi.games.Cover;
 import dev.turtywurty.turtyapi.games.Game;
 import dev.turtywurty.turtyapi.games.IGDBConnector;
 import dev.turtywurty.turtyapi.geography.CoordinatePicker;
@@ -1345,7 +1344,7 @@ public class RouteManager {
                 return;
             }
 
-            if(fields.contains("*") || fields.contains("url")) {
+            if (fields.contains("*") || fields.contains("url")) {
                 String value = artwork.getUrl().replace("//images.igdb.com/", "https://images.igdb.com/");
 
                 String imageSize = ctx.queryParam("imageSize");
@@ -1368,6 +1367,83 @@ public class RouteManager {
 
             var object = new JsonObject();
             Constants.GSON.toJsonTree(artwork)
+                    .getAsJsonObject()
+                    .entrySet()
+                    .stream()
+                    .filter(entry -> fieldsList.contains("*") || fieldsList.contains(entry.getKey()))
+                    .filter(entry -> !entry.getValue().isJsonPrimitive() || !entry.getValue().getAsJsonPrimitive().isNumber() || entry.getValue().getAsNumber().doubleValue() != -1)
+                    .forEach(entry -> object.add(entry.getKey(), entry.getValue()));
+
+            ctx.contentType(ContentType.JSON).result(Constants.GSON.toJson(object));
+        });
+
+        app.get("/games/cover", ctx -> {
+            String apiKey = ctx.queryParam("apiKey");
+            if (apiKey == null || apiKey.isBlank()) {
+                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+                return;
+            }
+
+            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
+                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
+                return;
+            }
+
+            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
+
+            String id = ctx.queryParam("id");
+            if (id == null || id.isBlank()) {
+                ctx.status(HttpStatus.BAD_REQUEST).result("You must specify an id!");
+                return;
+            }
+
+            int intId;
+            try {
+                intId = Integer.parseInt(id);
+            } catch (NumberFormatException e) {
+                ctx.status(HttpStatus.BAD_REQUEST).result("You must specify a valid id!");
+                return;
+            }
+
+            String fields = ctx.queryParam("fields");
+            if (fields == null || fields.isBlank()) {
+                fields = "*";
+            }
+
+            final List<String> fieldsList = Arrays.asList(fields.split(","));
+            if (fieldsList.isEmpty()) {
+                fieldsList.add("*");
+            }
+
+            Cover cover = IGDBConnector.INSTANCE.findCover(intId, fieldsList.toArray(new String[0]));
+            if (cover == null) {
+                ctx.status(HttpStatus.INTERNAL_SERVER_ERROR).result("Failed to find cover!");
+                return;
+            }
+
+            if (fields.contains("*") || fields.contains("url")) {
+                String value = cover.getUrl().replace("//images.igdb.com/", "https://images.igdb.com/");
+
+                String imageSize = ctx.queryParam("imageSize");
+                if (imageSize == null || imageSize.isBlank()) {
+                    imageSize = ImageSize.THUMB.getTSize();
+                } else {
+                    try {
+                        imageSize = ImageSize.valueOf(imageSize.toUpperCase(Locale.ROOT)).getTSize();
+                    } catch (IllegalArgumentException e) {
+                        ctx.status(HttpStatus.BAD_REQUEST).result("You must specify a valid image size! The options are: " + Arrays.stream(ImageSize.values())
+                                .map(ImageSize::name)
+                                .collect(Collectors.joining(", ")));
+                        return;
+                    }
+                }
+
+                value = value.replace("t_thumb", imageSize);
+                cover.setUrl(value);
+            }
+
+            var object = new JsonObject();
+            Constants.GSON.toJsonTree(cover)
                     .getAsJsonObject()
                     .entrySet()
                     .stream()

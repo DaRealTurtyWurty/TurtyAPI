@@ -1,16 +1,13 @@
 package dev.turtywurty.turtyapi.games;
 
 import com.api.igdb.apicalypse.APICalypse;
-import com.api.igdb.apicalypse.Sort;
 import com.api.igdb.exceptions.RequestException;
 import com.api.igdb.request.IGDBWrapper;
 import com.api.igdb.request.JsonRequestKt;
 import com.api.igdb.request.TwitchAuthenticator;
-import com.api.igdb.utils.ImageBuilderKt;
 import com.api.igdb.utils.TwitchToken;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import dev.turtywurty.turtyapi.Constants;
 import dev.turtywurty.turtyapi.TurtyAPI;
 import lombok.Getter;
@@ -114,6 +111,29 @@ public class IGDBConnector {
                 return null;
 
             return Constants.GSON.fromJson(array.get(0), Artwork.class);
+        } catch (RequestException exception) {
+            Constants.LOGGER.error("Failed to search for games!", exception);
+            return null;
+        }
+    }
+
+    public Cover findCover(int id, String... fields) {
+        String fieldsString = String.join(",", fields);
+        if (fieldsString.isBlank() || fieldsString.equals("null")) {
+            fieldsString = "*";
+        }
+
+        var apiCalypse = new APICalypse()
+                .fields(fieldsString)
+                .where("id = " + id);
+
+        try {
+            String jsonString = JsonRequestKt.jsonCovers(this.wrapper, apiCalypse);
+            JsonArray array = Constants.GSON.fromJson(jsonString, JsonArray.class);
+            if (array.isEmpty())
+                return null;
+
+            return Constants.GSON.fromJson(array.get(0), Cover.class);
         } catch (RequestException exception) {
             Constants.LOGGER.error("Failed to search for games!", exception);
             return null;
