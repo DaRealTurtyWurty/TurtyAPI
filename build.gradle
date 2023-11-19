@@ -57,7 +57,7 @@ jar {
 
 shadowJar {
     zip64 true
-    mergeServiceFiles().include("META-INF/services/*")
+    mergeServiceFiles()
     minimize()
 }
 
