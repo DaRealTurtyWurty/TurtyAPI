@@ -35,7 +35,6 @@ public class CoordinatePicker {
     private final String geometryAttributeName;
     private final ResourceInfo resourceInfo;
     private final CoordinateReferenceSystem crs;
-    private final Hints hints;
     private final FilterFactory filterFactory;
     private final GeometryFactory geometryFactory;
 
@@ -55,11 +54,9 @@ public class CoordinatePicker {
 
         this.resourceInfo = this.featureSource.getInfo();
         this.crs = this.resourceInfo.getCRS();
-        this.hints = GeoTools.getDefaultHints();
-        this.hints.put(Hints.JTS_SRID, 4326);
 
-        this.filterFactory = CommonFactoryFinder.getFilterFactory(this.hints);
-        this.geometryFactory = JTSFactoryFinder.getGeometryFactory(this.hints);
+        this.filterFactory = CommonFactoryFinder.getFilterFactory(null);
+        this.geometryFactory = JTSFactoryFinder.getGeometryFactory(null);
     }
 
     public Coordinate findRandomLandCoordinate(int maxAttempts) {

@@ -1,5 +1,6 @@
 package dev.turtywurty.turtyapi;
 
+import dev.turtywurty.turtyapi.games.IGDBConnector;
 import dev.turtywurty.turtyapi.geography.RegionManager;
 import dev.turtywurty.turtyapi.image.ImageUtils;
 import io.github.cdimascio.dotenv.Dotenv;
@@ -37,6 +38,7 @@ public class TurtyAPI {
         Constants.LOGGER.info("Starting TurtyAPI!");
 
         RegionManager.load();
+        IGDBConnector.load();
         RouteManager.init();
         Testing.start(args);
 

@@ -59,6 +59,8 @@ public class IGDBConnector {
         );
     }
 
+    public static void load() {}
+
     public @Nullable List<Game> searchGames(@NotNull String query, int limit, String... fields) {
         String fieldsString = String.join(",", fields);
         if (fieldsString.isBlank() || fieldsString.equals("null")) {
@@ -134,6 +136,29 @@ public class IGDBConnector {
                 return null;
 
             return Constants.GSON.fromJson(array.get(0), Cover.class);
+        } catch (RequestException exception) {
+            Constants.LOGGER.error("Failed to search for games!", exception);
+            return null;
+        }
+    }
+
+    public GamePlatform findPlatform(int id, String... fields) {
+        String fieldsString = String.join(",", fields);
+        if (fieldsString.isBlank() || fieldsString.equals("null")) {
+            fieldsString = "*";
+        }
+
+        var apiCalypse = new APICalypse()
+                .fields(fieldsString)
+                .where("id = " + id);
+
+        try {
+            String jsonString = JsonRequestKt.jsonPlatforms(IGDBWrapper.INSTANCE, apiCalypse);
+            JsonArray array = Constants.GSON.fromJson(jsonString, JsonArray.class);
+            if (array.isEmpty())
+                return null;
+
+            return Constants.GSON.fromJson(array.get(0), GamePlatform.class);
         } catch (RequestException exception) {
             Constants.LOGGER.error("Failed to search for games!", exception);
             return null;

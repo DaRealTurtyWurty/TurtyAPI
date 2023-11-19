@@ -5,10 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import dev.turtywurty.turtyapi.fun.WouldYouRather;
 import dev.turtywurty.turtyapi.fun.WouldYouRatherManager;
-import dev.turtywurty.turtyapi.games.Artwork;
-import dev.turtywurty.turtyapi.games.Cover;
-import dev.turtywurty.turtyapi.games.Game;
-import dev.turtywurty.turtyapi.games.IGDBConnector;
+import dev.turtywurty.turtyapi.games.*;
 import dev.turtywurty.turtyapi.geography.CoordinatePicker;
 import dev.turtywurty.turtyapi.geography.GeoguesserManager;
 import dev.turtywurty.turtyapi.geography.Region;
@@ -1444,6 +1441,62 @@ public class RouteManager {
 
             var object = new JsonObject();
             Constants.GSON.toJsonTree(cover)
+                    .getAsJsonObject()
+                    .entrySet()
+                    .stream()
+                    .filter(entry -> fieldsList.contains("*") || fieldsList.contains(entry.getKey()))
+                    .filter(entry -> !entry.getValue().isJsonPrimitive() || !entry.getValue().getAsJsonPrimitive().isNumber() || entry.getValue().getAsNumber().doubleValue() != -1)
+                    .forEach(entry -> object.add(entry.getKey(), entry.getValue()));
+
+            ctx.contentType(ContentType.JSON).result(Constants.GSON.toJson(object));
+        });
+
+        app.get("/games/platform", ctx -> {
+            String apiKey = ctx.queryParam("apiKey");
+            if (apiKey == null || apiKey.isBlank()) {
+                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+                return;
+            }
+
+            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
+                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
+                return;
+            }
+
+            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
+
+            String id = ctx.queryParam("id");
+            if (id == null || id.isBlank()) {
+                ctx.status(HttpStatus.BAD_REQUEST).result("You must specify an id!");
+                return;
+            }
+
+            int intId;
+            try {
+                intId = Integer.parseInt(id);
+            } catch (NumberFormatException e) {
+                ctx.status(HttpStatus.BAD_REQUEST).result("You must specify a valid id!");
+                return;
+            }
+
+            String fields = ctx.queryParam("fields");
+            if (fields == null || fields.isBlank()) {
+                fields = "*";
+            }
+
+            final List<String> fieldsList = Arrays.asList(fields.split(","));
+            if (fieldsList.isEmpty()) {
+                fieldsList.add("*");
+            }
+
+            GamePlatform platform = IGDBConnector.INSTANCE.findPlatform(intId, fieldsList.toArray(new String[0]));
+            if (platform == null) {
+                ctx.status(HttpStatus.INTERNAL_SERVER_ERROR).result("Failed to find platform!");
+                return;
+            }
+
+            var object = new JsonObject();
+            Constants.GSON.toJsonTree(platform)
                     .getAsJsonObject()
                     .entrySet()
                     .stream()
