@@ -108,4 +108,8 @@ public class QuiltVersions {
     public static void removeUpdateListener(Consumer<List<QuiltUpdate>> listener) {
         UPDATE_LISTENERS.remove(listener);
     }
+
+    public static void init() {
+        // Just to make sure the class is loaded
+    }
 }

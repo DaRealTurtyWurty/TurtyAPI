@@ -109,4 +109,8 @@ public class ForgeVersions {
     public static void removeUpdateListener(Consumer<List<ForgeUpdate>> listener) {
         UPDATE_LISTENERS.remove(listener);
     }
+
+    public static void init() {
+        // Just to make sure the class is loaded
+    }
 }

@@ -105,6 +105,9 @@ public class ParchmentVersions {
                 results.add(version);
             }
 
+            if (results.isEmpty())
+                return "Unknown";
+
             results.sort(Comparator.comparingInt(entry -> {
                 String[] split = entry.split("\\.");
                 return Integer.parseInt(split[0]) * 10000 + Integer.parseInt(
@@ -142,5 +145,9 @@ public class ParchmentVersions {
 
     public static void removeUpdateListener(Consumer<List<ParchmentUpdate>> listener) {
         UPDATE_LISTENERS.remove(listener);
+    }
+
+    public static void init() {
+        // Just to make sure the class is loaded
     }
 }

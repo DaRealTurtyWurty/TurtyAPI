@@ -61,6 +61,12 @@ public class RouteManager {
             }
         };
 
+        MinecraftVersions.init();
+        ForgeVersions.init();
+        FabricVersions.init();
+        QuiltVersions.init();
+        ParchmentVersions.init();
+
         Javalin app = Javalin.create(ctx -> ctx.jsonMapper(gsonMapper));
 
         app.get("/", ctx -> ctx.result("Hello World!"));
@@ -470,6 +476,7 @@ public class RouteManager {
             }
 
             NaiveRateLimit.requestPerTimeUnit(ctx, 5, TimeUnit.SECONDS);
+
             LinkedHashMap<String, Boolean> versions = MinecraftVersions.getAllMinecraftVersions();
             JsonBuilder.ArrayBuilder builder = JsonBuilder.array();
             versions.forEach((version, isRelease) -> builder.add(JsonBuilder.object().add("version", version).add("isRelease", isRelease)));

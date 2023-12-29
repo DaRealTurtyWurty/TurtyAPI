@@ -105,4 +105,8 @@ public class FabricVersions {
     public static void removeUpdateListener(Consumer<List<FabricUpdate>> listener) {
         UPDATE_LISTENERS.remove(listener);
     }
+
+    public static void init() {
+        // Just to make sure the class is loaded
+    }
 }
