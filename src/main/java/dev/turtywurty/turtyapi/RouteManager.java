@@ -3,6 +3,8 @@ package dev.turtywurty.turtyapi;
 import com.api.igdb.utils.ImageSize;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import dev.turtywurty.turtyapi.codeguesser.Code;
+import dev.turtywurty.turtyapi.codeguesser.CodeManager;
 import dev.turtywurty.turtyapi.fun.WouldYouRather;
 import dev.turtywurty.turtyapi.fun.WouldYouRatherManager;
 import dev.turtywurty.turtyapi.games.*;
@@ -34,6 +36,8 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
@@ -66,6 +70,7 @@ public class RouteManager {
         FabricVersions.init();
         QuiltVersions.init();
         ParchmentVersions.init();
+        CodeManager.init();
 
         Javalin app = Javalin.create(ctx -> ctx.jsonMapper(gsonMapper));
 
@@ -1512,6 +1517,38 @@ public class RouteManager {
                     .forEach(entry -> object.add(entry.getKey(), entry.getValue()));
 
             ctx.contentType(ContentType.JSON).result(Constants.GSON.toJson(object));
+        });
+
+        app.get("/code/guesser", ctx -> {
+            String apiKey = ctx.queryParam("apiKey");
+            if (apiKey == null || apiKey.isBlank()) {
+                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+                return;
+            }
+
+            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
+                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
+                return;
+            }
+
+            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
+
+            Code code = CodeManager.findCode();
+            if (code.code() == null || code.code().isBlank() || code.language() == null) {
+                ctx.status(HttpStatus.INTERNAL_SERVER_ERROR).result("Failed to find code!");
+                return;
+            }
+
+            // turn code into a json serializable string
+            String codeStr = URLEncoder.encode(code.code(), StandardCharsets.UTF_8);
+
+            ctx.contentType(ContentType.JSON).result(
+                    new JsonBuilder.ObjectBuilder()
+                            .add("code", codeStr)
+                            .add("language", new JsonBuilder.ObjectBuilder()
+                                    .add("name", code.language().getName())
+                                    .add("extension", code.language().getExtension()))
+                            .toJson());
         });
 
         RouteManager.app = app.start(Constants.PORT);

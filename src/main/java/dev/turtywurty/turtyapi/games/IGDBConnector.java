@@ -35,8 +35,6 @@ public class IGDBConnector {
 
     private IGDBConnector() {
         scheduleRefresh();
-
-        Constants.LOGGER.info("Successfully connected to IGDB with client ID: " + TurtyAPI.getTwitchClientId() + ", client secret: " + TurtyAPI.getTwitchClientSecret() + " and access token: " + this.twitchToken.get().getAccess_token());
     }
 
     private void scheduleRefresh() {
