@@ -99,13 +99,8 @@ public class TurtyAPI {
                 () -> new IllegalStateException("No Twitch client secret found!"));
     }
 
-    public static String getGithubUsername() {
-        return getEnvironmentValue("GITHUB_USERNAME").orElseThrow(
-                () -> new IllegalStateException("No GitHub username found!"));
-    }
-
-    public static String getGithubPassword() {
-        return getEnvironmentValue("GITHUB_PASSWORD").orElseThrow(
-                () -> new IllegalStateException("No GitHub password found!"));
+    public static String getGithubToken() {
+        return getEnvironmentValue("GITHUB_TOKEN").orElseThrow(
+                () -> new IllegalStateException("No GitHub token found!"));
     }
 }

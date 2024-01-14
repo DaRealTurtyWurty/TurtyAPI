@@ -20,8 +20,7 @@ public record Code(String code, Language language) {
         LISP("lisp", "lisp"), PROLOG("prolog", "pro"),
         SQL("sql", "sql"), HTML("html", "html"), CSS("css", "css"),
         XML("xml", "xml"), JSON("json", "json"), YAML("yaml", "yaml"),
-        TOML("toml", "toml"), MARKDOWN("markdown", "md"),
-        UNKNOWN("unknown", "??????");
+        TOML("toml", "toml"), UNKNOWN("unknown", "??????");
 
         private final String name;
         private final String extension;

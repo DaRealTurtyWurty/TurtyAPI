@@ -1,5 +1,6 @@
 package dev.turtywurty.turtyapi.codeguesser;
 
+import dev.turtywurty.turtyapi.Constants;
 import dev.turtywurty.turtyapi.TurtyAPI;
 import org.kohsuke.github.*;
 
@@ -10,33 +11,29 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.TimeZone;
+import java.util.*;
 
 public class CodeManager {
-    private static final List<GHRepository> REPOSITORIES;
     private static final GitHub GITHUB;
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
     static {
         try {
-            // TODO: Switch to OAuth
-            GITHUB = new GitHubBuilder().withPassword(TurtyAPI.getGithubUsername(), TurtyAPI.getGithubPassword()).build();
-            REPOSITORIES = findRepositories();
-            System.out.println("Shortened to " + REPOSITORIES.size() + " repositories!");
+            GITHUB = new GitHubBuilder()
+                    .withOAuthToken(TurtyAPI.getGithubToken())
+                    .build();
+            DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
         } catch (IOException exception) {
             throw new IllegalStateException("Failed to initialize GitHub!", exception);
         }
     }
 
-    public static void init() {
-        // Used to initialize the class
-    }
+    public static void init() {}
 
     public static Code findCode() {
         try {
             GHRepository repository = findRepository();
+            System.out.println("Found repository: " + repository.getFullName());
 
             // Make a request to <Repository URL>/contents to check that it doesn't 404
             HttpURLConnection connection =
@@ -47,19 +44,10 @@ public class CodeManager {
 
             connection.disconnect();
 
-            List<GHContent> files = findFiles(repository, "/");
-            while (files.isEmpty()) {
+            List<GHContent> files;
+            while ((files = findFiles(repository)).isEmpty()) {
                 repository = findRepository();
-                files = findFiles(repository, "/");
             }
-
-            files = files.stream().filter(file -> {
-                if (!file.isFile()) return false;
-
-                String[] parts = file.getName().split("\\.");
-                String extension = parts[parts.length - 1];
-                return Code.Language.fromExtension(extension).isPresent();
-            }).toList();
 
             System.out.println("Found " + files.size() + " files!");
 
@@ -71,12 +59,6 @@ public class CodeManager {
 
             String[] parts = content.getName().split("\\.");
             String extension = parts[parts.length - 1];
-            while (Code.Language.fromExtension(extension).isEmpty()) {
-                content = findFile(files);
-                parts = content.getName().split("\\.");
-                extension = parts[parts.length - 1];
-                System.out.println("File extension: " + extension);
-            }
 
             System.out.println("File extension: " + extension);
             System.out.println("File name: " + content.getName());
@@ -86,57 +68,61 @@ public class CodeManager {
 
             return new Code(code, language);
         } catch (IOException exception) {
+            Constants.LOGGER.error("Failed to find code!", exception);
             return findCode();
         }
     }
 
-    private static List<GHRepository> findRepositories() throws IOException {
-        Date weekAgo = new Date(Instant.now().minus(1, ChronoUnit.DAYS).toEpochMilli());
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-        String weekAgoString = dateFormat.format(weekAgo);
+    private static Date getYearAgo() {
+        return new Date(Instant.now().minus(365, ChronoUnit.DAYS).toEpochMilli());
+    }
+
+    private static GHRepository findRepository() {
+        String yearAgoString = DATE_FORMAT.format(getYearAgo());
+
         PagedSearchIterable<GHRepository> searchBuilder = GITHUB.searchRepositories()
-                .created(weekAgoString)
+                .created(yearAgoString)
+                .size(">1000")
                 .sort(GHRepositorySearchBuilder.Sort.UPDATED)
                 .order(GHDirection.DESC)
                 .sort(GHRepositorySearchBuilder.Sort.STARS)
                 .visibility(GHRepository.Visibility.PUBLIC)
-                .fork(GHFork.PARENT_ONLY)
                 .list()
-                .withPageSize(1000);
-        System.out.println("Found " + searchBuilder.getTotalCount() + " repositories!");
-        return searchBuilder.toList();
+                .withPageSize(100);
+
+        PagedIterator<GHRepository> iterator = searchBuilder.iterator();
+        // only get 100 repositories
+        List<GHRepository> repositories = new ArrayList<>(iterator.nextPage());
+        System.out.println("Found " + repositories.size() + " repositories!");
+
+        return repositories.get((int) (Math.random() * repositories.size()));
     }
 
-    private static List<GHContent> findFiles(GHRepository repository, String dir) throws IOException {
-        System.out.println("Repository: " + repository.getHtmlUrl() + " | Directory: " + dir);
+    private static List<GHContent> findFiles(GHRepository repository) throws IOException {
+        PagedSearchIterable<GHContent> searchBuilder = GITHUB.searchContent()
+                .repo(repository.getFullName())
+                .q("a")
+                .list()
+                .withPageSize(25);
 
+        PagedIterator<GHContent> iterator = searchBuilder.iterator();
         List<GHContent> files = new ArrayList<>();
+        // keep getting pages until we have 25 files or there are no more pages
+        do {
+            files.addAll(iterator.nextPage());
+            files.removeIf(file -> {
+                if(file.isDirectory())
+                    return true;
 
-        // List all files in directory
-        List<GHContent> found = repository.getDirectoryContent(dir);
-        System.out.println("Found " + found.size() + " content(s) in directory!");
+                String[] parts = file.getName().split("\\.");
+                String extension = parts[parts.length - 1];
+                Code.Language language = Code.Language.fromExtension(extension).orElse(Code.Language.UNKNOWN);
+                return language == Code.Language.UNKNOWN;
+            });
+        } while (files.size() < 25 && iterator.hasNext());
 
-        // Loop through all files in the repository
-        for (GHContent content : found) {
-            System.out.println("Found: " + content.getHtmlUrl());
-            if (!content.isFile()) {
-                // If the file is a directory, find all files in that directory
-                files.addAll(findFiles(repository, content.getPath()));
-                continue;
-            }
-
-            // If the file is a file, add it to the list
-            files.add(content);
-        }
-
-        System.out.println(files.size() + " files found in " + repository.getHtmlUrl() + " | Directory: " + dir);
 
         return files;
-    }
-
-    private static GHRepository findRepository() throws IOException {
-        return REPOSITORIES.get((int) (Math.random() * REPOSITORIES.size()));
     }
 
     private static String readCode(GHContent file) throws IOException {
