@@ -67,6 +67,7 @@ public class RouteManager {
 
         MinecraftVersions.init();
         ForgeVersions.init();
+        NeoforgeVersions.init();
         FabricVersions.init();
         QuiltVersions.init();
         ParchmentVersions.init();
@@ -505,7 +506,7 @@ public class RouteManager {
             NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
 
             Pair<String, String> latest = ForgeVersions.findLatestForge();
-            ctx.contentType(ContentType.JSON).result(JsonBuilder.object().add("recommended", latest.getFirst()).add("latest", latest.getSecond()).toJson());
+            ctx.contentType(ContentType.JSON).result(JsonBuilder.object().add("stable", latest.getFirst()).add("latest", latest.getSecond()).toJson());
         });
 
         app.get("/minecraft/forge/all", ctx -> {
@@ -526,7 +527,49 @@ public class RouteManager {
 
             LinkedHashMap<String, Boolean> versions = ForgeVersions.getAllForgeVersions();
             JsonBuilder.ArrayBuilder builder = JsonBuilder.array();
-            versions.forEach((version, isRecommended) -> builder.add(JsonBuilder.object().add("version", version).add("isRecommended", isRecommended)));
+            versions.forEach((version, isStable) -> builder.add(JsonBuilder.object().add("version", version).add("isStable", isStable)));
+            ctx.contentType(ContentType.JSON).result(builder.toJson());
+        });
+
+        app.get("/minecraft/neoforge/latest", ctx -> {
+            // check for api key
+            String apiKey = ctx.queryParam("apiKey");
+            if (apiKey == null || apiKey.isBlank()) {
+                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+                return;
+            }
+
+            // check for valid api key
+            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
+                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
+                return;
+            }
+
+            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
+
+            Pair<String, String> latest = NeoforgeVersions.findLatestNeoforge();
+            ctx.contentType(ContentType.JSON).result(JsonBuilder.object().add("stable", latest.getFirst()).add("latest", latest.getSecond()).toJson());
+        });
+
+        app.get("/minecraft/neoforge/all", ctx -> {
+            // check for api key
+            String apiKey = ctx.queryParam("apiKey");
+            if (apiKey == null || apiKey.isBlank()) {
+                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+                return;
+            }
+
+            // check for valid api key
+            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
+                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
+                return;
+            }
+
+            NaiveRateLimit.requestPerTimeUnit(ctx, 5, TimeUnit.SECONDS);
+
+            LinkedHashMap<String, Boolean> versions = NeoforgeVersions.getAllNeoforgeVersions();
+            JsonBuilder.ArrayBuilder builder = JsonBuilder.array();
+            versions.forEach((version, isStable) -> builder.add(JsonBuilder.object().add("version", version).add("isStable", isStable)));
             ctx.contentType(ContentType.JSON).result(builder.toJson());
         });
 

@@ -108,5 +108,6 @@ public class FabricVersions {
 
     public static void init() {
         // Just to make sure the class is loaded
+        Constants.LOGGER.info("Loaded Fabric versions!");
     }
 }
