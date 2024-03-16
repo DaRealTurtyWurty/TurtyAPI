@@ -23,12 +23,13 @@
     "flag": "fiji.png",
     "outline": "fiji.png",
     "country": true,
-    "island": true
+    "island": true,
+    "aliases": ["Republic of Fiji"]
   },
   {
     "population": 5523000,
     "name": "Scotland",
-    "cca3": "SCT",
+    "cca3": "SCT",#
     "cca2": "GB-SCT",
     "region": "Europe",
     "landAreaKm": 77910,
@@ -49,7 +50,8 @@
     "flag": "papua_new_guinea.png",
     "outline": "papua_new_guinea.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Independent State of Papua New Guinea"]
   },
   {
     "population": 395839,
@@ -62,7 +64,8 @@
     "flag": "guadeloupe.png",
     "outline": "guadeloupe.png",
     "country": false,
-    "island": true
+    "island": true,
+    "aliases": ["Department of Guadeloupe"]
   },
   {
     "population": 231856,
@@ -75,7 +78,8 @@
     "flag": "sao_tome_and_principe.png",
     "outline": "sao_tome_and_principe.png",
     "country": true,
-    "island": true
+    "island": true,
+    "aliases": ["Democratic Republic of Sao Tome and Principe"]
   },
   {
     "population": 11502,
@@ -88,7 +92,8 @@
     "flag": "wallis_and_futuna.png",
     "outline": "wallis_and_futuna.png",
     "country": false,
-    "island": true
+    "island": true,
+    "aliases": ["Territory of the Wallis and Futuna Islands"]
   },
   {
     "population": 41996,
@@ -101,7 +106,8 @@
     "flag": "marshall_islands.png",
     "outline": "marshall_islands.png",
     "country": true,
-    "island": true
+    "island": true,
+    "aliases": ["Republic of the Marshall Islands"]
   },
   {
     "population": 11194449,
@@ -114,7 +120,8 @@
     "flag": "cuba.png",
     "outline": "cuba.png",
     "country": true,
-    "island": true
+    "island": true,
+    "aliases": ["Republic of Cuba"]
   },
   {
     "population": 48109006,
@@ -127,7 +134,8 @@
     "flag": "sudan.png",
     "outline": "sudan.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of the Sudan"]
   },
   {
     "population": 2773168,
@@ -140,7 +148,8 @@
     "flag": "the_gambia.png",
     "outline": "the_gambia.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of the Gambia"]
   },
   {
     "population": 3216000,
@@ -166,7 +175,8 @@
     "flag": "curacao.png",
     "outline": "curacao.png",
     "country": false,
-    "island": true
+    "island": true,
+    "aliases": ["Country of Curacao"]
   },
   {
     "population": 34308525,
@@ -192,7 +202,8 @@
     "flag": "mayotte.png",
     "outline": "mayotte.png",
     "country": false,
-    "island": true
+    "island": true,
+    "aliases": ["Department of Mayotte"]
   },
   {
     "population": 23923276,
@@ -205,7 +216,8 @@
     "flag": "taiwan.png",
     "outline": "taiwan.png",
     "country": true,
-    "island": true
+    "island": true,
+    "aliases": ["Republic of China"]
   },
   {
     "population": 41026067,
@@ -218,7 +230,8 @@
     "flag": "poland.png",
     "outline": "poland.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Poland"]
   },
   {
     "population": 4644384,
@@ -231,7 +244,8 @@
     "flag": "oman.png",
     "outline": "oman.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Sultanate of Oman"]
   },
   {
     "population": 623236,
@@ -244,7 +258,8 @@
     "flag": "suriname.png",
     "outline": "suriname.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Suriname"]
   },
   {
     "population": 9516871,
@@ -257,7 +272,8 @@
     "flag": "united_arab_emirates.png",
     "outline": "united_arab_emirates.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["UAE", "Emirates"]
   },
   {
     "population": 55100586,
@@ -270,7 +286,8 @@
     "flag": "kenya.png",
     "outline": "kenya.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Kenya"]
   },
   {
     "population": 45773884,
@@ -283,7 +300,8 @@
     "flag": "argentina.png",
     "outline": "argentina.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Argentine Republic"]
   },
   {
     "population": 2150842,
@@ -296,7 +314,8 @@
     "flag": "guinea_bissau.png",
     "outline": "guinea_bissau.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Guinea-Bissau"]
   },
   {
     "population": 35163944,
@@ -309,7 +328,8 @@
     "flag": "uzbekistan.png",
     "outline": "uzbekistan.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Uzbekistan"]
   },
   {
     "population": 2777970,
@@ -322,7 +342,8 @@
     "flag": "armenia.png",
     "outline": "armenia.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Armenia"]
   },
   {
     "population": 17763163,
@@ -335,7 +356,8 @@
     "flag": "senegal.png",
     "outline": "senegal.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Senegal"]
   },
   {
     "population": 9053799,
@@ -348,7 +370,8 @@
     "flag": "togo.png",
     "outline": "togo.png",
     "country": true,
-    "island": true
+    "island": true,
+    "aliases": ["Togolese Republic"]
   },
   {
     "population": 787424,
@@ -361,7 +384,8 @@
     "flag": "bhutan.png",
     "outline": "bhutan.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Kingdom of Bhutan"]
   },
   {
     "population": 5056935,
@@ -374,7 +398,8 @@
     "flag": "ireland.png",
     "outline": "ireland.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Ireland"]
   },
   {
     "population": 89172767,
@@ -387,7 +412,8 @@
     "flag": "iran.png",
     "outline": "iran.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Islamic Republic of Iran", "Persia"]
   },
   {
     "population": 3791,
@@ -400,7 +426,8 @@
     "flag": "falkland_islands.png",
     "outline": "falkland_islands.png",
     "country": false,
-    "island": true
+    "island": true,
+    "aliases": ["Islas Malvinas"]
   },
   {
     "population": 2716391,
@@ -413,7 +440,8 @@
     "flag": "qatar.png",
     "outline": "qatar.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["State of Qatar"]
   },
   {
     "population": 13238559,
@@ -426,7 +454,8 @@
     "flag": "burundi.png",
     "outline": "burundi.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Burundi"]
   },
   {
     "population": 17618299,
@@ -439,7 +468,8 @@
     "flag": "netherlands.png",
     "outline": "netherlands.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Kingdom of the Netherlands", "Holland"]
   },
   {
     "population": 45504560,
@@ -452,7 +482,8 @@
     "flag": "iraq.png",
     "outline": "iraq.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Iraq"]
   },
   {
     "population": 5795199,
@@ -465,7 +496,8 @@
     "flag": "slovakia.png",
     "outline": "slovakia.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Slovak Republic"]
   },
   {
     "population": 2119675,
@@ -478,7 +510,8 @@
     "flag": "slovenia.png",
     "outline": "slovenia.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Slovenia"]
   },
   {
     "population": 1714671,
@@ -491,7 +524,8 @@
     "flag": "equatorial_guinea.png",
     "outline": "equatorial_guinea.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Equatorial Guinea"]
   },
   {
     "population": 71801279,
@@ -504,7 +538,8 @@
     "flag": "thailand.png",
     "outline": "thailand.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Kingdom of Thailand", "Siam"]
   },
   {
     "population": 106277,
@@ -517,7 +552,8 @@
     "flag": "aruba.png",
     "outline": "aruba.png",
     "country": false,
-    "island": true
+    "island": true,
+    "aliases": ["Country of Aruba"]
   },
   {
     "population": 43914,
@@ -530,7 +566,8 @@
     "flag": "american_samoa.png",
     "outline": "american_samoa.png",
     "country": false,
-    "island": true
+    "island": true,
+    "aliases": ["Territory of American Samoa"]
   },
   {
     "population": 10612086,
@@ -543,7 +580,8 @@
     "flag": "sweden.png",
     "outline": "sweden.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Kingdom of Sweden"]
   },
   {
     "population": 375318,
@@ -569,7 +607,8 @@
     "flag": "north_macedonia.png",
     "outline": "north_macedonia.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of North Macedonia"]
   },
   {
     "population": 11686140,
@@ -582,7 +621,8 @@
     "flag": "belgium.png",
     "outline": "belgium.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Kingdom of Belgium"]
   },
   {
     "population": 9174520,
@@ -595,7 +635,8 @@
     "flag": "israel.png",
     "outline": "israel.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["State of Israel"]
   },
   {
     "population": 4310108,
@@ -608,7 +649,8 @@
     "flag": "kuwait.png",
     "outline": "kuwait.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["State of Kuwait"]
   },
   {
     "population": 39584,
@@ -621,7 +663,8 @@
     "flag": "liechtenstein.png",
     "outline": "liechtenstein.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Principality of Liechtenstein"]
   },
   {
     "population": 45606480,
@@ -634,7 +677,8 @@
     "flag": "algeria.png",
     "outline": "algeria.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["People's Democratic Republic of Algeria"]
   },
   {
     "population": 13712828,
@@ -647,7 +691,8 @@
     "flag": "benin.png",
     "outline": "benin.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Benin"]
   },
   {
     "population": 144444359,
@@ -660,7 +705,8 @@
     "flag": "russia.png",
     "outline": "russia.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Russian Federation"]
   },
   {
     "population": 94298,
@@ -686,7 +732,8 @@
     "flag": "italy.png",
     "outline": "italy.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Italian Republic"]
   },
   {
     "population": 1210822,
@@ -699,7 +746,8 @@
     "flag": "eswatini.png",
     "outline": "eswatini.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Kingdom of Eswatini", "Swaziland"]
   },
   {
     "population": 67438106,
@@ -712,7 +760,8 @@
     "flag": "tanzania.png",
     "outline": "tanzania.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["United Republic of Tanzania"]
   },
   {
     "population": 240485658,
@@ -725,7 +774,8 @@
     "flag": "pakistan.png",
     "outline": "pakistan.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Islamic Republic of Pakistan"]
   },
   {
     "population": 23251485,
@@ -751,7 +801,8 @@
     "flag": "panama.png",
     "outline": "panama.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Panama"]
   },
   {
     "population": 36744634,
@@ -777,7 +828,8 @@
     "flag": "singapore.png",
     "outline": "singapore.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Singapore"]
   },
   {
     "population": 6735347,
@@ -790,7 +842,8 @@
     "flag": "kyrgyzstan.png",
     "outline": "kyrgyzstan.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Kyrgyz Republic"]
   },
   {
     "population": 111802,
@@ -803,7 +856,8 @@
     "flag": "jersey.png",
     "outline": "jersey.png",
     "country": false,
-    "island": true
+    "island": true,
+    "aliases": ["Bailiwick of Jersey"]
   },
   {
     "population": 8796669,
@@ -816,7 +870,8 @@
     "flag": "switzerland.png",
     "outline": "switzerland.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Swiss Confederation"]
   },
   {
     "population": 1136455,
@@ -829,7 +884,8 @@
     "flag": "djibouti.png",
     "outline": "djibouti.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Djibouti"]
   },
   {
     "population": 981796,
@@ -842,7 +898,8 @@
     "flag": "reunion.png",
     "outline": "reunion.png",
     "country": false,
-    "island": true
+    "island": true,
+    "aliases": ["Department of Reunion"]
   },
   {
     "population": 19629590,
@@ -855,7 +912,8 @@
     "flag": "chile.png",
     "outline": "chile.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Chile"]
   },
   {
     "population": 3260314,
@@ -868,7 +926,8 @@
     "flag": "puerto_rico.png",
     "outline": "puerto_rico.png",
     "country": false,
-    "island": true
+    "island": true,
+    "aliases": ["Commonwealth of Puerto Rico"]
   },
   {
     "population": 1425671352,
@@ -881,7 +940,8 @@
     "flag": "china.png",
     "outline": "china.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["People's Republic of China"]
   },
   {
     "population": 26160821,
@@ -894,7 +954,8 @@
     "flag": "north_korea.png",
     "outline": "north_korea.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Democratic People's Republic of Korea"]
   },
   {
     "population": 44222,
@@ -907,7 +968,8 @@
     "flag": "sint_maarten.png",
     "outline": "sint_maarten.png",
     "country": false,
-    "island": true
+    "island": true,
+    "aliases": ["Country of Sint Maarten"]
   },
   {
     "population": 23293698,
@@ -920,7 +982,8 @@
     "flag": "mali.png",
     "outline": "mali.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Mali"]
   },
   {
     "population": 2675352,
@@ -933,7 +996,8 @@
     "flag": "botswana.png",
     "outline": "botswana.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Botswana"]
   },
   {
     "population": 4008617,
@@ -946,7 +1010,8 @@
     "flag": "croatia.png",
     "outline": "croatia.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Croatia"]
   },
   {
     "population": 16944826,
@@ -959,7 +1024,8 @@
     "flag": "cambodia.png",
     "outline": "cambodia.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Kingdom of Cambodia"]
   },
   {
     "population": 277534122,
@@ -972,7 +1038,8 @@
     "flag": "indonesia.png",
     "outline": "indonesia.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Indonesia"]
   },
   {
     "population": 10247605,
@@ -985,7 +1052,8 @@
     "flag": "portugal.png",
     "outline": "portugal.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Portuguese Republic"]
   },
   {
     "population": 98858950,
@@ -998,7 +1066,8 @@
     "flag": "vietnam.png",
     "outline": "vietnam.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Socialist Republic of Vietnam"]
   },
   {
     "population": 10143543,
@@ -1011,7 +1080,8 @@
     "flag": "tajikistan.png",
     "outline": "tajikistan.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Tajikistan"]
   },
   {
     "population": 535064,
@@ -1024,7 +1094,8 @@
     "flag": "malta.png",
     "outline": "malta.png",
     "country": true,
-    "island": true
+    "island": true,
+    "aliases": ["Republic of Malta"]
   },
   {
     "population": 6861524,
@@ -1037,7 +1108,8 @@
     "flag": "paraguay.png",
     "outline": "paraguay.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Paraguay"]
   },
   {
     "population": 69310,
@@ -1063,7 +1135,8 @@
     "flag": "cyprus.png",
     "outline": "cyprus.png",
     "country": true,
-    "island": true
+    "island": true,
+    "aliases": ["Republic of Cyprus"]
   },
   {
     "population": 107660,
@@ -1076,7 +1149,8 @@
     "flag": "seychelles.png",
     "outline": "seychelles.png",
     "country": true,
-    "island": true
+    "island": true,
+    "aliases": ["Republic of Seychelles"]
   },
   {
     "population": 14094683,
@@ -1102,7 +1176,8 @@
     "flag": "bangladesh.png",
     "outline": "bangladesh.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["People's Republic of Bangladesh"]
   },
   {
     "population": 26439111,
@@ -1115,7 +1190,8 @@
     "flag": "australia.png",
     "outline": "australia.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Commonwealth of Australia"]
   },
   {
     "population": 8958960,
@@ -1128,7 +1204,8 @@
     "flag": "austria.png",
     "outline": "austria.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Austria"]
   },
   {
     "population": 21893579,
@@ -1141,7 +1218,8 @@
     "flag": "sri_lanka.png",
     "outline": "sri_lanka.png",
     "country": true,
-    "island": true
+    "island": true,
+    "aliases": ["Democratic Socialist Republic of Sri Lanka"]
   },
   {
     "population": 5371230,
@@ -1154,7 +1232,8 @@
     "flag": "palestine.png",
     "outline": "palestine.png",
     "country": false,
-    "island": false
+    "island": false,
+    "aliases": ["State of Palestine"]
   },
   {
     "population": 16665409,
@@ -1167,7 +1246,8 @@
     "flag": "zimbabwe.png",
     "outline": "zimbabwe.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Zimbabwe"]
   },
   {
     "population": 2436566,
@@ -1180,7 +1260,8 @@
     "flag": "gabon.png",
     "outline": "gabon.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Gabonese Republic"]
   },
   {
     "population": 6687717,
@@ -1193,7 +1274,8 @@
     "flag": "bulgaria.png",
     "outline": "bulgaria.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Bulgaria"]
   },
   {
     "population": 23227014,
@@ -1206,7 +1288,8 @@
     "flag": "syria.png",
     "outline": "syria.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Syrian Arab Republic"]
   },
   {
     "population": 10495295,
@@ -1219,7 +1302,8 @@
     "flag": "czech_republic.png",
     "outline": "czech_republic.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Czechia"]
   },
   {
     "population": 5474360,
@@ -1245,7 +1329,8 @@
     "flag": "cote_d'ivoire.png",
     "outline": "cote_d'ivoire.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Cote d'Ivoire", "Ivory Coast"]
   },
   {
     "population": 54577997,
@@ -1258,7 +1343,8 @@
     "flag": "myanmar.png",
     "outline": "myanmar.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of the Union of Myanmar", "Burma"]
   },
   {
     "population": 1893,
@@ -1271,7 +1357,8 @@
     "flag": "tokelau.png",
     "outline": "tokelau.png",
     "country": false,
-    "island": true
+    "island": true,
+    "aliases": ["Territory of Tokelau"]
   },
   {
     "population": 133515,
@@ -1284,7 +1371,8 @@
     "flag": "kiribati.png",
     "outline": "kiribati.png",
     "country": true,
-    "island": true
+    "island": true,
+    "aliases": ["Republic of Kiribati"]
   },
   {
     "population": 6516100,
@@ -1323,7 +1411,8 @@
     "flag": "greece.png",
     "outline": "greece.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Hellenic Republic"]
   },
   {
     "population": 11724763,
@@ -1336,7 +1425,8 @@
     "flag": "haiti.png",
     "outline": "haiti.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Haiti"]
   },
   {
     "population": 55977178,
@@ -1375,7 +1465,8 @@
     "flag": "yemen.png",
     "outline": "yemen.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Yemen"]
   },
   {
     "population": 42239854,
@@ -1388,7 +1479,8 @@
     "flag": "afghanistan.png",
     "outline": "afghanistan.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Islamic Emirate of Afghanistan"]
   },
   {
     "population": 626485,
@@ -1427,7 +1519,8 @@
     "flag": "nepal.png",
     "outline": "nepal.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Federal Democratic Republic of Nepal"]
   },
   {
     "population": 412623,
@@ -1440,7 +1533,8 @@
     "flag": "bahamas.png",
     "outline": "bahamas.png",
     "country": true,
-    "island": true
+    "island": true,
+    "aliases": ["Commonwealth of the Bahamas"]
   },
   {
     "population": 1485509,
@@ -1453,7 +1547,8 @@
     "flag": "bahrain.png",
     "outline": "bahrain.png",
     "country": true,
-    "island": true
+    "island": true,
+    "aliases": ["Kingdom of Bahrain"]
   },
   {
     "population": 49796,
@@ -1466,7 +1561,8 @@
     "flag": "northern_mariana_islands.png",
     "outline": "northern_mariana_islands.png",
     "country": false,
-    "island": true
+    "island": true,
+    "aliases": ["Commonwealth of the Northern Mariana Islands"]
   },
   {
     "population": 67736802,
@@ -1479,7 +1575,8 @@
     "flag": "united_kingdom.png",
     "outline": "united_kingdom.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["UK", "Great Britain", "Britain", "United Kingdom of Great Britain and Northern Ireland"]
   },
   {
     "population": 73040,
@@ -1492,7 +1589,8 @@
     "flag": "dominica.png",
     "outline": "dominica.png",
     "country": true,
-    "island": true
+    "island": true,
+    "aliases": ["Commonwealth of Dominica"]
   },
   {
     "population": 1360596,
@@ -1505,7 +1603,8 @@
     "flag": "timor_leste.png",
     "outline": "timor_leste.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Democratic Republic of Timor-Leste", "East Timor"]
   },
   {
     "population": 10156239,
@@ -1531,7 +1630,8 @@
     "flag": "bosnia_and_herzegovina.png",
     "outline": "bosnia_and_herzegovina.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Bosnia"]
   },
   {
     "population": 36684202,
@@ -1544,7 +1644,8 @@
     "flag": "angola.png",
     "outline": "angola.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Angola"]
   },
   {
     "population": 225681,
@@ -1557,7 +1658,8 @@
     "flag": "samoa.png",
     "outline": "samoa.png",
     "country": true,
-    "island": true
+    "island": true,
+    "aliases": ["Independent State of Samoa"]
   },
   {
     "population": 64756584,
@@ -1570,7 +1672,8 @@
     "flag": "france.png",
     "outline": "france.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["French Republic"]
   },
   {
     "population": 33897354,
@@ -1583,7 +1686,8 @@
     "flag": "mozambique.png",
     "outline": "mozambique.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Mozambique"]
   },
   {
     "population": 2604172,
@@ -1596,7 +1700,8 @@
     "flag": "namibia.png",
     "outline": "namibia.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Namibia"]
   },
   {
     "population": 34352719,
@@ -1609,7 +1714,8 @@
     "flag": "peru.png",
     "outline": "peru.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Peru"]
   },
   {
     "population": 5910913,
@@ -1622,7 +1728,8 @@
     "flag": "denmark.png",
     "outline": "denmark.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Kingdom of Denmark"]
   },
   {
     "population": 18092026,
@@ -1635,7 +1742,8 @@
     "flag": "guatemala.png",
     "outline": "guatemala.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Guatemala"]
   },
   {
     "population": 53270,
@@ -1648,7 +1756,8 @@
     "flag": "faroe_islands.png",
     "outline": "faroe_islands.png",
     "country": false,
-    "island": true
+    "island": true,
+    "aliases": ["Faeroe Islands", "The Faroes"]
   },
   {
     "population": 740424,
@@ -1661,7 +1770,8 @@
     "flag": "solomon_islands.png",
     "outline": "solomon_islands.png",
     "country": true,
-    "island": true
+    "island": true,
+    "aliases": ["The Solomons"]
   },
   {
     "population": 518,
@@ -1674,7 +1784,8 @@
     "flag": "vatican_city.png",
     "outline": "vatican_city.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Holy See"]
   },
   {
     "population": 8791092,
@@ -1687,7 +1798,8 @@
     "flag": "sierra_leone.png",
     "outline": "sierra_leone.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Sierra Leone"]
   },
   {
     "population": 12780,
@@ -1700,7 +1812,8 @@
     "flag": "nauru.png",
     "outline": "nauru.png",
     "country": true,
-    "island": true
+    "island": true,
+    "aliases": ["Republic of Nauru"]
   },
   {
     "population": 312155,
@@ -1713,7 +1826,8 @@
     "flag": "french_guiana.png",
     "outline": "french_guiana.png",
     "country": false,
-    "island": false
+    "island": false,
+    "aliases": ["Guiana"]
   },
   {
     "population": 15899,
@@ -1726,7 +1840,8 @@
     "flag": "anguilla.png",
     "outline": "anguilla.png",
     "country": false,
-    "island": true
+    "island": true,
+    "aliases": ["British Overseas Territory of Anguilla"]
   },
   {
     "population": 6364943,
@@ -1739,7 +1854,8 @@
     "flag": "el_salvador.png",
     "outline": "el_salvador.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of El Salvador"]
   },
   {
     "population": 172952,
@@ -1752,7 +1868,8 @@
     "flag": "guam.png",
     "outline": "guam.png",
     "country": false,
-    "island": true
+    "island": true,
+    "aliases": ["Territory of Guam"]
   },
   {
     "population": 115224,
@@ -1765,7 +1882,8 @@
     "flag": "micronesia.png",
     "outline": "micronesia.png",
     "country": true,
-    "island": true
+    "island": true,
+    "aliases": ["Federated States of Micronesia", "FSM"]
   },
   {
     "population": 11332972,
@@ -1791,7 +1909,8 @@
     "flag": "cameroon.png",
     "outline": "cameroon.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Cameroon"]
   },
   {
     "population": 813834,
@@ -1804,7 +1923,8 @@
     "flag": "guyana.png",
     "outline": "guyana.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Co-operative Republic of Guyana"]
   },
   {
     "population": 10412651,
@@ -1817,7 +1937,8 @@
     "flag": "azerbaijan.png",
     "outline": "azerbaijan.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Azerbaijan"]
   },
   {
     "population": 704149,
@@ -1830,7 +1951,8 @@
     "flag": "macau.png",
     "outline": "macau.png",
     "country": false,
-    "island": false
+    "island": false,
+    "aliases": ["Macao Special Administrative Region of the People's Republic of China"]
   },
   {
     "population": 3728282,
@@ -1856,7 +1978,8 @@
     "flag": "tonga.png",
     "outline": "tonga.png",
     "country": true,
-    "island": true
+    "island": true,
+    "aliases": ["Kingdom of Tonga"]
   },
   {
     "population": 32077,
@@ -1895,7 +2018,8 @@
     "flag": "san_marino.png",
     "outline": "san_marino.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Most Serene Republic of San Marino", "Republic of San Marino"]
   },
   {
     "population": 3748901,
@@ -1908,7 +2032,8 @@
     "flag": "eritrea.png",
     "outline": "eritrea.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["State of Eritrea"]
   },
   {
     "population": 37840044,
@@ -1921,7 +2046,8 @@
     "flag": "morocco.png",
     "outline": "morocco.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Kingdom of Morocco"]
   },
   {
     "population": 47755,
@@ -1934,7 +2060,8 @@
     "flag": "saint_kitts_and_nevis.png",
     "outline": "saint_kitts_and_nevis.png",
     "country": true,
-    "island": true
+    "island": true,
+    "aliases": ["Federation of Saint Christopher and Nevis", "Saint Christopher and Nevis", "St. Kitts and Nevis"]
   },
   {
     "population": 10994,
@@ -1947,7 +2074,8 @@
     "flag": "saint_barthelemy.png",
     "outline": "saint_barthelemy.png",
     "country": false,
-    "island": true
+    "island": true,
+    "aliases": ["Collectivity of Saint Barthelemy", "St. Barts", "St. Barths", "Collectivité territoriale de Saint-Barthélemy"]
   },
   {
     "population": 103698,
@@ -1960,7 +2088,8 @@
     "flag": "saint_vincent_and_the_grenadines.png",
     "outline": "saint_vincent_and_the_grenadines.png",
     "country": true,
-    "island": true
+    "island": true,
+    "aliases": ["St. Vincent and the Grenadines", "Saint Vincent"]
   },
   {
     "population": 9498238,
@@ -1973,7 +2102,8 @@
     "flag": "belarus.png",
     "outline": "belarus.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Belarus"]
   },
   {
     "population": 4862989,
@@ -1986,7 +2116,8 @@
     "flag": "mauritania.png",
     "outline": "mauritania.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Islamic Republic of Mauritania"]
   },
   {
     "population": 410825,
@@ -2012,7 +2143,8 @@
     "flag": "philippines.png",
     "outline": "philippines.png",
     "country": true,
-    "island": true
+    "island": true,
+    "aliases": ["Republic of the Philippines"]
   },
   {
     "population": 102262808,
@@ -2025,7 +2157,8 @@
     "flag": "democratic_republic_of_the_congo.png",
     "outline": "democratic_republic_of_the_congo.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["DR Congo", "DRC", "Congo", "Democratic Republic of Congo"]
   },
   {
     "population": 6106869,
@@ -2038,7 +2171,8 @@
     "flag": "republic_of_the_congo.png",
     "outline": "republic_of_the_congo.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Congo", "Congo-Brazzaville", "ROC", "Congo Republic"]
   },
   {
     "population": 587259,
@@ -2051,7 +2185,8 @@
     "flag": "western_sahara.png",
     "outline": "western_sahara.png",
     "country": false,
-    "island": false
+    "island": false,
+    "aliases": ["Sahrawi Arab Democratic Republic", "SADR"]
   },
   {
     "population": 308872,
@@ -2077,7 +2212,8 @@
     "flag": "uruguay.png",
     "outline": "uruguay.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Oriental Republic of Uruguay"]
   },
   {
     "population": 17044,
@@ -2103,7 +2239,8 @@
     "flag": "comoros.png",
     "outline": "comoros.png",
     "country": true,
-    "island": true
+    "island": true,
+    "aliases": ["Union of the Comoros"]
   },
   {
     "population": 52085168,
@@ -2116,7 +2253,8 @@
     "flag": "colombia.png",
     "outline": "colombia.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Colombia"]
   },
   {
     "population": 339996563,
@@ -2129,7 +2267,8 @@
     "flag": "united_states_of_america.png",
     "outline": "united_states_of_america.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["USA", "United States", "America", "US"]
   },
   {
     "population": 47519628,
@@ -2142,7 +2281,8 @@
     "flag": "spain.png",
     "outline": "spain.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Kingdom of Spain"]
   },
   {
     "population": 1322765,
@@ -2155,7 +2295,8 @@
     "flag": "estonia.png",
     "outline": "estonia.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Estonia"]
   },
   {
     "population": 64069,
@@ -2168,7 +2309,8 @@
     "flag": "bermuda.png",
     "outline": "bermuda.png",
     "country": false,
-    "island": true
+    "island": true,
+    "aliases": ["The Bermudas"]
   },
   {
     "population": 4386,
@@ -2194,7 +2336,8 @@
     "flag": "zambia.png",
     "outline": "zambia.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Zambia"]
   },
   {
     "population": 51784059,
@@ -2207,7 +2350,8 @@
     "flag": "south_korea.png",
     "outline": "south_korea.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Korea", "ROK", "Korea"]
   },
   {
     "population": 18143378,
@@ -2220,7 +2364,8 @@
     "flag": "somalia.png",
     "outline": "somalia.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Federal Republic of Somalia"]
   },
   {
     "population": 334506,
@@ -2233,7 +2378,8 @@
     "flag": "vanuatu.png",
     "outline": "vanuatu.png",
     "country": true,
-    "island": true
+    "island": true,
+    "aliases": ["Republic of Vanuatu"]
   },
   {
     "population": 18190484,
@@ -2246,7 +2392,8 @@
     "flag": "ecuador.png",
     "outline": "ecuador.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Ecuador"]
   },
   {
     "population": 2832439,
@@ -2259,7 +2406,8 @@
     "flag": "albania.png",
     "outline": "albania.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Albania"]
   },
   {
     "population": 126527060,
@@ -2272,7 +2420,8 @@
     "flag": "ethiopia.png",
     "outline": "ethiopia.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Federal Democratic Republic of Ethiopia"]
   },
   {
     "population": 63544,
@@ -2285,7 +2434,8 @@
     "flag": "guernsey.png",
     "outline": "guernsey.png",
     "country": false,
-    "island": true
+    "island": true,
+    "aliases": ["Bailiwick of Guernsey"]
   },
   {
     "population": 36297,
@@ -2298,7 +2448,8 @@
     "flag": "monaco.png",
     "outline": "monaco.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Principality of Monaco"]
   },
   {
     "population": 27202843,
@@ -2311,7 +2462,8 @@
     "flag": "niger.png",
     "outline": "niger.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Niger"]
   },
   {
     "population": 7633779,
@@ -2324,7 +2476,8 @@
     "flag": "laos.png",
     "outline": "laos.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Lao People's Democratic Republic"]
   },
   {
     "population": 28838499,
@@ -2337,7 +2490,8 @@
     "flag": "venezuela.png",
     "outline": "venezuela.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Bolivarian Republic of Venezuela"]
   },
   {
     "population": 34121985,
@@ -2350,7 +2504,8 @@
     "flag": "ghana.png",
     "outline": "ghana.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Ghana"]
   },
   {
     "population": 598682,
@@ -2363,7 +2518,8 @@
     "flag": "cape_verde.png",
     "outline": "cape_verde.png",
     "country": true,
-    "island": true
+    "island": true,
+    "aliases": ["Republic of Cabo Verde", "Cabo Verde", "Republic of Cape Verde"]
   },
   {
     "population": 3435931,
@@ -2376,7 +2532,8 @@
     "flag": "moldova.png",
     "outline": "moldova.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Moldova"]
   },
   {
     "population": 366981,
@@ -2389,7 +2546,8 @@
     "flag": "martinique.png",
     "outline": "martinique.png",
     "country": false,
-    "island": true
+    "island": true,
+    "aliases": ["Department of Martinique"]
   },
   {
     "population": 30325732,
@@ -2402,7 +2560,8 @@
     "flag": "madagascar.png",
     "outline": "madagascar.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Madagascar"]
   },
   {
     "population": 5840,
@@ -2415,7 +2574,8 @@
     "flag": "saint_pierre_and_miquelon.png",
     "outline": "saint_pierre_and_miquelon.png",
     "country": false,
-    "island": true
+    "island": true,
+    "aliases": ["Territorial Collectivity of Saint-Pierre and Miquelon", "Saint-Pierre-et-Miquelon", "Collectivité territoriale de Saint-Pierre-et-Miquelon"]
   },
   {
     "population": 5353930,
@@ -2428,7 +2588,8 @@
     "flag": "lebanon.png",
     "outline": "lebanon.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Lebanon"]
   },
   {
     "population": 5418377,
@@ -2441,7 +2602,8 @@
     "flag": "liberia.png",
     "outline": "liberia.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Liberia"]
   },
   {
     "population": 12388571,
@@ -2454,7 +2616,8 @@
     "flag": "bolivia.png",
     "outline": "bolivia.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Plurinational State of Bolivia"]
   },
   {
     "population": 521020.99999999994,
@@ -2467,7 +2630,8 @@
     "flag": "maldives.png",
     "outline": "maldives.png",
     "country": true,
-    "island": true
+    "island": true,
+    "aliases": ["Republic of Maldives"]
   },
   {
     "population": 32688.000000000004,
@@ -2493,7 +2657,8 @@
     "flag": "libya.png",
     "outline": "libya.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["State of Libya"]
   },
   {
     "population": 7491609,
@@ -2506,7 +2671,8 @@
     "flag": "hong_kong.png",
     "outline": "hong_kong.png",
     "country": false,
-    "island": false
+    "island": false,
+    "aliases": ["Hong Kong Special Administrative Region of the People's Republic of China"]
   },
   {
     "population": 223804632,
@@ -2519,7 +2685,8 @@
     "flag": "nigeria.png",
     "outline": "nigeria.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Federal Republic of Nigeria"]
   },
   {
     "population": 5742315,
@@ -2532,7 +2699,8 @@
     "flag": "central_african_republic.png",
     "outline": "central_african_republic.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["CAR", "Central African Empire"]
   },
   {
     "population": 2330318,
@@ -2545,7 +2713,8 @@
     "flag": "lesotho.png",
     "outline": "lesotho.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Kingdom of Lesotho"]
   },
   {
     "population": 1300557,
@@ -2558,7 +2727,8 @@
     "flag": "mauritius.png",
     "outline": "mauritius.png",
     "country": true,
-    "island": true
+    "island": true,
+    "aliases": ["Republic of Mauritius"]
   },
   {
     "population": 180251,
@@ -2571,7 +2741,8 @@
     "flag": "saint_lucia.png",
     "outline": "saint_lucia.png",
     "country": true,
-    "island": true
+    "island": true,
+    "aliases": ["St. Lucia"]
   },
   {
     "population": 84710,
@@ -2584,7 +2755,8 @@
     "flag": "isle_of_man.png",
     "outline": "isle_of_man.png",
     "country": false,
-    "island": true
+    "island": true,
+    "aliases": ["Mann"]
   },
   {
     "population": 11337052,
@@ -2597,7 +2769,8 @@
     "flag": "jordan.png",
     "outline": "jordan.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Hashemite Kingdom of Jordan"]
   },
   {
     "population": 14190612,
@@ -2610,7 +2783,8 @@
     "flag": "guinea.png",
     "outline": "guinea.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Guinea"]
   },
   {
     "population": 31538,
@@ -2623,7 +2797,8 @@
     "flag": "british_virgin_islands.png",
     "outline": "british_virgin_islands.png",
     "country": false,
-    "island": true
+    "island": true,
+    "aliases": ["Virgin Islands"]
   },
   {
     "population": 38781291,
@@ -2649,7 +2824,8 @@
     "flag": "turks_and_caicos_islands.png",
     "outline": "turks_and_caicos_islands.png",
     "country": false,
-    "island": true
+    "island": true,
+    "aliases": ["Turks and Caicos"]
   },
   {
     "population": 18278568,
@@ -2662,7 +2838,8 @@
     "flag": "chad.png",
     "outline": "chad.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Chad"]
   },
   {
     "population": 80088,
@@ -2675,7 +2852,8 @@
     "flag": "andorra.png",
     "outline": "andorra.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Principality of Andorra"]
   },
   {
     "population": 19892812,
@@ -2701,7 +2879,8 @@
     "flag": "costa_rica.png",
     "outline": "costa_rica.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Costa Rica"]
   },
   {
     "population": 1428627663,
@@ -2714,7 +2893,8 @@
     "flag": "india.png",
     "outline": "india.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of India"]
   },
   {
     "population": 128455567,
@@ -2727,7 +2907,8 @@
     "flag": "mexico.png",
     "outline": "mexico.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["United Mexican States"]
   },
   {
     "population": 7149077,
@@ -2740,7 +2921,8 @@
     "flag": "serbia.png",
     "outline": "serbia.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Serbia"]
   },
   {
     "population": 1770436,
@@ -2753,7 +2935,8 @@
     "flag": "kosovo.png",
     "outline": "kosovo.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Kosovo"]
   },
   {
     "population": 19606633,
@@ -2766,7 +2949,8 @@
     "flag": "kazakhstan.png",
     "outline": "kazakhstan.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Kazakhstan"]
   },
   {
     "population": 36947025,
@@ -2779,7 +2963,8 @@
     "flag": "saudi_arabia.png",
     "outline": "saudi_arabia.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Kingdom of Saudi Arabia"]
   },
   {
     "population": 123294513,
@@ -2792,7 +2977,8 @@
     "flag": "japan.png",
     "outline": "japan.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Nippon", "Nihon"]
   },
   {
     "population": 2718352,
@@ -2805,7 +2991,8 @@
     "flag": "lithuania.png",
     "outline": "lithuania.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Lithuania"]
   },
   {
     "population": 1534937,
@@ -2818,7 +3005,8 @@
     "flag": "trinidad_and_tobago.png",
     "outline": "trinidad_and_tobago.png",
     "country": true,
-    "island": true
+    "island": true,
+    "aliases": ["Republic of Trinidad and Tobago"]
   },
   {
     "population": 18058,
@@ -2831,7 +3019,8 @@
     "flag": "palau.png",
     "outline": "palau.png",
     "country": true,
-    "island": true
+    "island": true,
+    "aliases": ["Republic of Palau"]
   },
   {
     "population": 20931751,
@@ -2844,7 +3033,8 @@
     "flag": "malawi.png",
     "outline": "malawi.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Malawi"]
   },
   {
     "population": 11088796,
@@ -2857,7 +3047,8 @@
     "flag": "south_sudan.png",
     "outline": "south_sudan.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of South Sudan"]
   },
   {
     "population": 7046310,
@@ -2870,7 +3061,8 @@
     "flag": "nicaragua.png",
     "outline": "nicaragua.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Nicaragua"]
   },
   {
     "population": 5545475,
@@ -2883,7 +3075,8 @@
     "flag": "finland.png",
     "outline": "finland.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Finland"]
   },
   {
     "population": 12458223,
@@ -2896,7 +3089,8 @@
     "flag": "tunisia.png",
     "outline": "tunisia.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Tunisia"]
   },
   {
     "population": 48582334,
@@ -2909,7 +3103,8 @@
     "flag": "uganda.png",
     "outline": "uganda.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Uganda"]
   },
   {
     "population": 654768,
@@ -2922,7 +3117,8 @@
     "flag": "luxembourg.png",
     "outline": "luxembourg.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Grand Duchy of Luxembourg"]
   },
   {
     "population": 216422446,
@@ -2935,7 +3131,8 @@
     "flag": "brazil.png",
     "outline": "brazil.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Federative Republic of Brazil"]
   },
   {
     "population": 85816199,
@@ -2948,7 +3145,8 @@
     "flag": "turkey.png",
     "outline": "turkey.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Turkey", "Türkiye", "Turkiye", "Republic of Türkiye", "Republic of Turkiye"]
   },
   {
     "population": 281995,
@@ -2987,7 +3185,8 @@
     "flag": "germany.png",
     "outline": "germany.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Federal Republic of Germany"]
   },
   {
     "population": 112716598,
@@ -3000,7 +3199,8 @@
     "flag": "egypt.png",
     "outline": "egypt.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Arab Republic of Egypt"]
   },
   {
     "population": 1830211,
@@ -3013,7 +3213,8 @@
     "flag": "latvia.png",
     "outline": "latvia.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Latvia"]
   },
   {
     "population": 1903100,
@@ -3039,7 +3240,8 @@
     "flag": "jamaica.png",
     "outline": "jamaica.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Commonwealth of Jamaica"]
   },
   {
     "population": 1935,
@@ -3065,7 +3267,8 @@
     "flag": "south_africa.png",
     "outline": "south_africa.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of South Africa"]
   },
   {
     "population": 98750,
@@ -3078,7 +3281,8 @@
     "flag": "united_states_virgin_islands.png",
     "outline": "united_states_virgin_islands.png",
     "country": false,
-    "island": true
+    "island": true,
+    "aliases": ["Virgin Islands of the United States", "US Virgin Islands", "Virgin Islands"]
   },
   {
     "population": 10593798,
@@ -3091,7 +3295,8 @@
     "flag": "honduras.png",
     "outline": "honduras.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Republic of Honduras"]
   },
   {
     "population": 452524,
@@ -3104,6 +3309,7 @@
     "flag": "brunei.png",
     "outline": "brunei.png",
     "country": true,
-    "island": false
+    "island": false,
+    "aliases": ["Brunei Darussalam"]
   }
 ]
