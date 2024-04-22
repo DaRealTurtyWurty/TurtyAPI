@@ -200,8 +200,8 @@ public final class WouldYouRatherManager {
             }
         }
 
-        Constants.LOGGER.info("Loaded " + WOULD_YOU_RATHERS.size() + " would you rather questions!");
-        Constants.LOGGER.info("Loaded " + NSFW_WOULD_YOU_RATHERS.size() + " nsfw would you rather questions!");
+        Constants.LOGGER.info("Loaded {} would you rather questions!", WOULD_YOU_RATHERS.size());
+        Constants.LOGGER.info("Loaded {} nsfw would you rather questions!", NSFW_WOULD_YOU_RATHERS.size());
     }
 
     public static WouldYouRather getRandomWouldYouRather(boolean includeNSFW) {
@@ -220,5 +220,8 @@ public final class WouldYouRatherManager {
 
     public static WouldYouRather getRandomNSFWWouldYouRather() {
         return NSFW_WOULD_YOU_RATHERS.get(Constants.RANDOM.nextInt(NSFW_WOULD_YOU_RATHERS.size()));
+    }
+
+    public record WouldYouRather(String optionA, String optionB) {
     }
 }

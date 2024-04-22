@@ -5,7 +5,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import dev.turtywurty.turtyapi.codeguesser.Code;
 import dev.turtywurty.turtyapi.codeguesser.CodeManager;
-import dev.turtywurty.turtyapi.fun.WouldYouRather;
 import dev.turtywurty.turtyapi.fun.WouldYouRatherManager;
 import dev.turtywurty.turtyapi.games.*;
 import dev.turtywurty.turtyapi.geography.CoordinatePicker;
@@ -1249,7 +1248,7 @@ public class RouteManager {
             boolean includeNSFW = ctx.queryParamAsClass("includeNSFW", Boolean.class).getOrDefault(false);
             boolean nsfw = ctx.queryParamAsClass("nsfw", Boolean.class).getOrDefault(false);
 
-            WouldYouRather wouldYouRather = nsfw ?
+            WouldYouRatherManager.WouldYouRather wouldYouRather = nsfw ?
                     WouldYouRatherManager.getRandomNSFWWouldYouRather() :
                     WouldYouRatherManager.getRandomWouldYouRather(includeNSFW);
 

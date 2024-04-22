@@ -3,6 +3,14 @@ package dev.turtywurty.turtyapi.codeguesser;
 import dev.turtywurty.turtyapi.Constants;
 import dev.turtywurty.turtyapi.TurtyAPI;
 import org.kohsuke.github.*;
+import org.kohsuke.github.GHContent;
+import org.kohsuke.github.GHDirection;
+import org.kohsuke.github.GHRepository;
+import org.kohsuke.github.GHRepositorySearchBuilder;
+import org.kohsuke.github.GitHub;
+import org.kohsuke.github.GitHubBuilder;
+import org.kohsuke.github.PagedIterator;
+import org.kohsuke.github.PagedSearchIterable;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,7 +36,9 @@ public class CodeManager {
         }
     }
 
-    public static void init() {}
+    public static void init() {
+        // NO-OP
+    }
 
     public static Code findCode() {
         try {
