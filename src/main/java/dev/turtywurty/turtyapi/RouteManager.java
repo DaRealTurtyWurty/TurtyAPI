@@ -5,6 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import dev.turtywurty.turtyapi.codeguesser.Code;
 import dev.turtywurty.turtyapi.codeguesser.CodeManager;
+import dev.turtywurty.turtyapi.fun.CelebrityManager;
 import dev.turtywurty.turtyapi.fun.WouldYouRatherManager;
 import dev.turtywurty.turtyapi.games.*;
 import dev.turtywurty.turtyapi.geography.CoordinatePicker;
@@ -71,6 +72,7 @@ public class RouteManager {
         QuiltVersions.init();
         ParchmentVersions.init();
         CodeManager.init();
+        CelebrityManager.init();
 
         Javalin app = Javalin.create(ctx -> ctx.jsonMapper(gsonMapper));
 
@@ -1590,6 +1592,35 @@ public class RouteManager {
                             .add("language", new JsonBuilder.ObjectBuilder()
                                     .add("name", code.language().getName())
                                     .add("extension", code.language().getExtension()))
+                            .toJson());
+        });
+
+        app.get("/fun/celebrity/random", ctx -> {
+            String apiKey = ctx.queryParam("apiKey");
+            if (apiKey == null || apiKey.isBlank()) {
+                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+                return;
+            }
+
+            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
+                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
+                return;
+            }
+
+            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
+
+            Optional<CelebrityManager.Celebrity> celebrityOpt = CelebrityManager.getRandomCelebrity();
+            if (celebrityOpt.isEmpty()) {
+                ctx.status(HttpStatus.INTERNAL_SERVER_ERROR).result("Failed to find celebrity!");
+                return;
+            }
+
+            CelebrityManager.Celebrity celebrity = celebrityOpt.get();
+
+            ctx.contentType(ContentType.JSON).result(
+                    new JsonBuilder.ObjectBuilder()
+                            .add("name", celebrity.name())
+                            .add("image", celebrity.image())
                             .toJson());
         });
 
