@@ -95,7 +95,7 @@ public class TurtyAPI {
             String keysPath = cmd.getOptionValue("keys");
             TurtyAPI.keysPath = Path.of(keysPath);
 
-            if (!Files.exists(TurtyAPI.keysPath)) {
+            if (Files.notExists(TurtyAPI.keysPath)) {
                 Constants.LOGGER.error("API keys file does not exist!");
                 System.exit(1);
             }
