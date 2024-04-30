@@ -60,7 +60,7 @@ public class MinecraftVersions {
         for (Map.Entry<String, Boolean> entry : ALL_MINECRAFT_VERSIONS.entrySet()) {
             if (release == null && entry.getValue()) {
                 release = entry.getKey();
-            } else if(snapshot == null && !entry.getValue()) {
+            } else if (snapshot == null && !entry.getValue()) {
                 snapshot = entry.getKey();
             } else if (release != null && snapshot != null) {
                 break;
@@ -85,16 +85,13 @@ public class MinecraftVersions {
 
             return versionsMap;
         } catch (IOException exception) {
-            exception.printStackTrace();
+            Constants.LOGGER.error("Failed to get Minecraft versions!", exception);
             return new LinkedHashMap<>();
         }
     }
 
     public static LinkedHashMap<String, Boolean> getAllMinecraftVersions() {
         return new LinkedHashMap<>(ALL_MINECRAFT_VERSIONS);
-    }
-
-    public record MinecraftUpdate(String version, boolean release, boolean removed) {
     }
 
     public static void addUpdateListener(Consumer<List<MinecraftUpdate>> listener) {
@@ -108,5 +105,8 @@ public class MinecraftVersions {
     public static void init() {
         // Just to make sure the class is loaded
         Constants.LOGGER.info("Loaded Minecraft versions!");
+    }
+
+    public record MinecraftUpdate(String version, boolean release, boolean removed) {
     }
 }

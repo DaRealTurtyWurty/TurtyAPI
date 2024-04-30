@@ -94,12 +94,9 @@ public class ForgeVersions {
 
             return versionsMap;
         } catch (IOException exception) {
-            exception.printStackTrace();
+            Constants.LOGGER.error("Failed to get Forge versions!", exception);
             return new LinkedHashMap<>();
         }
-    }
-
-    public record ForgeUpdate(String version, boolean recommended, boolean removed) {
     }
 
     public static void addUpdateListener(Consumer<List<ForgeUpdate>> listener) {
@@ -113,5 +110,8 @@ public class ForgeVersions {
     public static void init() {
         // Just to make sure the class is loaded
         Constants.LOGGER.info("Loaded Forge versions!");
+    }
+
+    public record ForgeUpdate(String version, boolean recommended, boolean removed) {
     }
 }

@@ -65,9 +65,12 @@ public class RouteManager {
             }
         };
 
+        RegionManager.init();
+        IGDBConnector.init();
+        WordManager.init();
         MinecraftVersions.init();
         ForgeVersions.init();
-        NeoforgeVersions.init();
+        NeoForgeVersions.init();
         FabricVersions.init();
         QuiltVersions.init();
         ParchmentVersions.init();
@@ -79,20 +82,8 @@ public class RouteManager {
         app.get("/", ctx -> ctx.result("Hello World!"));
 
         app.get("/geo/flag", ctx -> {
-            // check for api key
-            String apiKey = ctx.queryParam("apiKey");
-            if (apiKey == null || apiKey.isBlank()) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+            if(!TurtyAPI.validateRequest(ctx, 10))
                 return;
-            }
-
-            // check for valid api key
-            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
-                return;
-            }
-
-            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
 
             try {
                 String cca3 = ctx.queryParam("cca3");
@@ -113,20 +104,8 @@ public class RouteManager {
         });
 
         app.get("/geo/flag/random", ctx -> {
-            // check for api key
-            String apiKey = ctx.queryParam("apiKey");
-            if (apiKey == null || apiKey.isBlank()) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+            if(!TurtyAPI.validateRequest(ctx, 10))
                 return;
-            }
-
-            // check for valid api key
-            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
-                return;
-            }
-
-            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
 
             try {
                 String toExclude = ctx.queryParam("exclude");
@@ -156,20 +135,8 @@ public class RouteManager {
         });
 
         app.get("/geo/outline", ctx -> {
-            // check for api key
-            String apiKey = ctx.queryParam("apiKey");
-            if (apiKey == null || apiKey.isBlank()) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+            if(!TurtyAPI.validateRequest(ctx, 10))
                 return;
-            }
-
-            // check for valid api key
-            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
-                return;
-            }
-
-            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
 
             try {
                 String cca3 = ctx.queryParam("cca3");
@@ -190,20 +157,8 @@ public class RouteManager {
         });
 
         app.get("/geo/outline/random", ctx -> {
-            // check for api key
-            String apiKey = ctx.queryParam("apiKey");
-            if (apiKey == null || apiKey.isBlank()) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+            if(!TurtyAPI.validateRequest(ctx, 10))
                 return;
-            }
-
-            // check for valid api key
-            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
-                return;
-            }
-
-            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
 
             try {
                 String toExclude = ctx.queryParam("exclude");
@@ -233,20 +188,8 @@ public class RouteManager {
         });
 
         app.get("/geo/data", ctx -> {
-            // check for api key
-            String apiKey = ctx.queryParam("apiKey");
-            if (apiKey == null || apiKey.isBlank()) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+            if(!TurtyAPI.validateRequest(ctx, 10))
                 return;
-            }
-
-            // check for valid api key
-            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
-                return;
-            }
-
-            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
 
             try {
                 String cca3 = ctx.queryParam("cca3");
@@ -265,20 +208,8 @@ public class RouteManager {
         });
 
         app.get("/geo/data/random", ctx -> {
-            // check for api key
-            String apiKey = ctx.queryParam("apiKey");
-            if (apiKey == null || apiKey.isBlank()) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+            if(!TurtyAPI.validateRequest(ctx, 10))
                 return;
-            }
-
-            // check for valid api key
-            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
-                return;
-            }
-
-            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
 
             try {
                 String toExclude = ctx.queryParam("exclude");
@@ -303,20 +234,8 @@ public class RouteManager {
         });
 
         app.get("/geo/data/all", ctx -> {
-            // check for api key
-            String apiKey = ctx.queryParam("apiKey");
-            if (apiKey == null || apiKey.isBlank()) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+            if(!TurtyAPI.validateRequest(ctx, 10))
                 return;
-            }
-
-            // check for valid api key
-            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
-                return;
-            }
-
-            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
 
             try {
                 Set<String> regions = RegionManager.getRegions().keySet();
@@ -333,20 +252,8 @@ public class RouteManager {
         });
 
         app.get("/words", ctx -> {
-            // check for api key
-            String apiKey = ctx.queryParam("apiKey");
-            if (apiKey == null || apiKey.isBlank()) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+            if(!TurtyAPI.validateRequest(ctx, 5))
                 return;
-            }
-
-            // check for valid api key
-            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
-                return;
-            }
-
-            NaiveRateLimit.requestPerTimeUnit(ctx, 5, TimeUnit.SECONDS);
 
             int length = ctx.queryParamAsClass("length", Integer.class).getOrDefault(-1);
             if (length <= 0 && length != -1) {
@@ -374,20 +281,8 @@ public class RouteManager {
         });
 
         app.get("/words/random", ctx -> {
-            // check for api key
-            String apiKey = ctx.queryParam("apiKey");
-            if (apiKey == null || apiKey.isBlank()) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+            if(!TurtyAPI.validateRequest(ctx, 5))
                 return;
-            }
-
-            // check for valid api key
-            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
-                return;
-            }
-
-            NaiveRateLimit.requestPerTimeUnit(ctx, 5, TimeUnit.SECONDS);
 
             int length = ctx.queryParamAsClass("length", Integer.class).getOrDefault(-1);
             if (length <= 0 && length != -1) {
@@ -423,20 +318,8 @@ public class RouteManager {
         });
 
         app.get("/words/validate", ctx -> {
-            // check for api key
-            String apiKey = ctx.queryParam("apiKey");
-            if (apiKey == null || apiKey.isBlank()) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+            if(!TurtyAPI.validateRequest(ctx, 5))
                 return;
-            }
-
-            // check for valid api key
-            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
-                return;
-            }
-
-            NaiveRateLimit.requestPerTimeUnit(ctx, 5, TimeUnit.SECONDS);
 
             String word = ctx.queryParam("word");
             if (word == null) {
@@ -449,40 +332,16 @@ public class RouteManager {
         });
 
         app.get("/minecraft/latest", ctx -> {
-            // check for api key
-            String apiKey = ctx.queryParam("apiKey");
-            if (apiKey == null || apiKey.isBlank()) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+            if(!TurtyAPI.validateRequest(ctx, 10))
                 return;
-            }
-
-            // check for valid api key
-            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
-                return;
-            }
-
-            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
 
             Pair<String, String> latest = MinecraftVersions.findLatestMinecraft();
             ctx.contentType(ContentType.JSON).result(JsonBuilder.object().add("release", latest.getFirst()).add("snapshot", latest.getSecond()).toJson());
         });
 
         app.get("/minecraft/all", ctx -> {
-            // check for api key
-            String apiKey = ctx.queryParam("apiKey");
-            if (apiKey == null || apiKey.isBlank()) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+            if(!TurtyAPI.validateRequest(ctx, 10))
                 return;
-            }
-
-            // check for valid api key
-            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
-                return;
-            }
-
-            NaiveRateLimit.requestPerTimeUnit(ctx, 5, TimeUnit.SECONDS);
 
             LinkedHashMap<String, Boolean> versions = MinecraftVersions.getAllMinecraftVersions();
             JsonBuilder.ArrayBuilder builder = JsonBuilder.array();
@@ -491,40 +350,16 @@ public class RouteManager {
         });
 
         app.get("/minecraft/forge/latest", ctx -> {
-            // check for api key
-            String apiKey = ctx.queryParam("apiKey");
-            if (apiKey == null || apiKey.isBlank()) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+            if(!TurtyAPI.validateRequest(ctx, 10))
                 return;
-            }
-
-            // check for valid api key
-            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
-                return;
-            }
-
-            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
 
             Pair<String, String> latest = ForgeVersions.findLatestForge();
             ctx.contentType(ContentType.JSON).result(JsonBuilder.object().add("stable", latest.getFirst()).add("latest", latest.getSecond()).toJson());
         });
 
         app.get("/minecraft/forge/all", ctx -> {
-            // check for api key
-            String apiKey = ctx.queryParam("apiKey");
-            if (apiKey == null || apiKey.isBlank()) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+            if(!TurtyAPI.validateRequest(ctx, 10))
                 return;
-            }
-
-            // check for valid api key
-            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
-                return;
-            }
-
-            NaiveRateLimit.requestPerTimeUnit(ctx, 5, TimeUnit.SECONDS);
 
             LinkedHashMap<String, Boolean> versions = ForgeVersions.getAllForgeVersions();
             JsonBuilder.ArrayBuilder builder = JsonBuilder.array();
@@ -533,82 +368,34 @@ public class RouteManager {
         });
 
         app.get("/minecraft/neoforge/latest", ctx -> {
-            // check for api key
-            String apiKey = ctx.queryParam("apiKey");
-            if (apiKey == null || apiKey.isBlank()) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+            if(!TurtyAPI.validateRequest(ctx, 10))
                 return;
-            }
 
-            // check for valid api key
-            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
-                return;
-            }
-
-            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
-
-            Pair<String, String> latest = NeoforgeVersions.findLatestNeoforge();
+            Pair<String, String> latest = NeoForgeVersions.findLatestNeoForge();
             ctx.contentType(ContentType.JSON).result(JsonBuilder.object().add("stable", latest.getFirst()).add("latest", latest.getSecond()).toJson());
         });
 
         app.get("/minecraft/neoforge/all", ctx -> {
-            // check for api key
-            String apiKey = ctx.queryParam("apiKey");
-            if (apiKey == null || apiKey.isBlank()) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+            if(!TurtyAPI.validateRequest(ctx, 10))
                 return;
-            }
 
-            // check for valid api key
-            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
-                return;
-            }
-
-            NaiveRateLimit.requestPerTimeUnit(ctx, 5, TimeUnit.SECONDS);
-
-            LinkedHashMap<String, Boolean> versions = NeoforgeVersions.getAllNeoforgeVersions();
+            LinkedHashMap<String, Boolean> versions = NeoForgeVersions.getAllNeoForgeVersions();
             JsonBuilder.ArrayBuilder builder = JsonBuilder.array();
             versions.forEach((version, isStable) -> builder.add(JsonBuilder.object().add("version", version).add("isStable", isStable)));
             ctx.contentType(ContentType.JSON).result(builder.toJson());
         });
 
         app.get("/minecraft/fabric/latest", ctx -> {
-            // check for api key
-            String apiKey = ctx.queryParam("apiKey");
-            if (apiKey == null || apiKey.isBlank()) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+            if(!TurtyAPI.validateRequest(ctx, 10))
                 return;
-            }
-
-            // check for valid api key
-            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
-                return;
-            }
-
-            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
 
             Pair<String, String> latest = FabricVersions.findLatestFabric();
             ctx.contentType(ContentType.JSON).result(JsonBuilder.object().add("stable", latest.getFirst()).add("unstable", latest.getSecond()).toJson());
         });
 
         app.get("/minecraft/fabric/all", ctx -> {
-            // check for api key
-            String apiKey = ctx.queryParam("apiKey");
-            if (apiKey == null || apiKey.isBlank()) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+            if(!TurtyAPI.validateRequest(ctx, 10))
                 return;
-            }
-
-            // check for valid api key
-            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
-                return;
-            }
-
-            NaiveRateLimit.requestPerTimeUnit(ctx, 5, TimeUnit.SECONDS);
 
             LinkedHashMap<String, Boolean> versions = FabricVersions.getAllFabricVersions();
             JsonBuilder.ArrayBuilder builder = JsonBuilder.array();
@@ -617,40 +404,16 @@ public class RouteManager {
         });
 
         app.get("/minecraft/quilt/latest", ctx -> {
-            // check for api key
-            String apiKey = ctx.queryParam("apiKey");
-            if (apiKey == null || apiKey.isBlank()) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+            if(!TurtyAPI.validateRequest(ctx, 10))
                 return;
-            }
-
-            // check for valid api key
-            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
-                return;
-            }
-
-            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
 
             Pair<String, String> latest = QuiltVersions.findLatestQuilt();
             ctx.contentType(ContentType.JSON).result(JsonBuilder.object().add("stable", latest.getFirst()).add("unstable", latest.getSecond()).toJson());
         });
 
         app.get("/minecraft/quilt/all", ctx -> {
-            // check for api key
-            String apiKey = ctx.queryParam("apiKey");
-            if (apiKey == null || apiKey.isBlank()) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+            if(!TurtyAPI.validateRequest(ctx, 10))
                 return;
-            }
-
-            // check for valid api key
-            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
-                return;
-            }
-
-            NaiveRateLimit.requestPerTimeUnit(ctx, 5, TimeUnit.SECONDS);
 
             LinkedHashMap<String, Boolean> versions = QuiltVersions.getAllQuiltVersions();
             JsonBuilder.ArrayBuilder builder = JsonBuilder.array();
@@ -659,40 +422,16 @@ public class RouteManager {
         });
 
         app.get("/minecraft/parchment/latest", ctx -> {
-            // check for api key
-            String apiKey = ctx.queryParam("apiKey");
-            if (apiKey == null || apiKey.isBlank()) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+            if(!TurtyAPI.validateRequest(ctx, 10))
                 return;
-            }
-
-            // check for valid api key
-            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
-                return;
-            }
-
-            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
 
             String latest = ParchmentVersions.findLatestParchment();
             ctx.contentType(ContentType.JSON).result(JsonBuilder.object().add("version", latest).toJson());
         });
 
         app.get("/minecraft/parchment/all", ctx -> {
-            // check for api key
-            String apiKey = ctx.queryParam("apiKey");
-            if (apiKey == null || apiKey.isBlank()) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+            if(!TurtyAPI.validateRequest(ctx, 10))
                 return;
-            }
-
-            // check for valid api key
-            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
-                return;
-            }
-
-            NaiveRateLimit.requestPerTimeUnit(ctx, 5, TimeUnit.SECONDS);
 
             LinkedHashMap<String, String> versions = ParchmentVersions.getAllParchmentVersions();
             JsonBuilder.ArrayBuilder builder = JsonBuilder.array();
@@ -701,20 +440,8 @@ public class RouteManager {
         });
 
         app.get("/minecraft/parchment/{version}", ctx -> {
-            // check for api key
-            String apiKey = ctx.queryParam("apiKey");
-            if (apiKey == null || apiKey.isBlank()) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+            if(!TurtyAPI.validateRequest(ctx, 10))
                 return;
-            }
-
-            // check for valid api key
-            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
-                return;
-            }
-
-            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
 
             String version = ParchmentVersions.getParchmentVersion(ctx.pathParam("version"));
             if (version.equalsIgnoreCase("unknown")) {
@@ -727,15 +454,13 @@ public class RouteManager {
 
         app.ws("/minecraft", wsConfig -> {
             wsConfig.onConnect(ctx -> {
-                // check for api key
                 String apiKey = ctx.queryParam("apiKey");
                 if (apiKey == null || apiKey.isBlank()) {
                     ctx.closeSession();
                     return;
                 }
 
-                // check for valid api key
-                if (!apiKey.equals(TurtyAPI.getAPIKey())) {
+                if (!TurtyAPI.isValidApiKey(apiKey)) {
                     ctx.closeSession();
                     return;
                 }
@@ -763,15 +488,13 @@ public class RouteManager {
 
         app.ws("/forge", wsConfig -> {
             wsConfig.onConnect(ctx -> {
-                // check for api key
                 String apiKey = ctx.queryParam("apiKey");
                 if (apiKey == null || apiKey.isBlank()) {
                     ctx.closeSession();
                     return;
                 }
 
-                // check for valid api key
-                if (!apiKey.equals(TurtyAPI.getAPIKey())) {
+                if (!TurtyAPI.isValidApiKey(apiKey)) {
                     ctx.closeSession();
                     return;
                 }
@@ -799,15 +522,13 @@ public class RouteManager {
 
         app.ws("/fabric", wsConfig -> {
             wsConfig.onConnect(ctx -> {
-                // check for api key
                 String apiKey = ctx.queryParam("apiKey");
                 if (apiKey == null || apiKey.isBlank()) {
                     ctx.closeSession();
                     return;
                 }
 
-                // check for valid api key
-                if (!apiKey.equals(TurtyAPI.getAPIKey())) {
+                if (!TurtyAPI.isValidApiKey(apiKey)) {
                     ctx.closeSession();
                     return;
                 }
@@ -835,15 +556,13 @@ public class RouteManager {
 
         app.ws("/parchment", wsConfig -> {
             wsConfig.onConnect(ctx -> {
-                // check for api key
                 String apiKey = ctx.queryParam("apiKey");
                 if (apiKey == null || apiKey.isBlank()) {
                     ctx.closeSession();
                     return;
                 }
 
-                // check for valid api key
-                if (!apiKey.equals(TurtyAPI.getAPIKey())) {
+                if (!TurtyAPI.isValidApiKey(apiKey)) {
                     ctx.closeSession();
                     return;
                 }
@@ -870,20 +589,8 @@ public class RouteManager {
         });
 
         app.get("image/resize", ctx -> {
-            // check for api key
-            String apiKey = ctx.queryParam("apiKey");
-            if (apiKey == null || apiKey.isBlank()) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+            if(!TurtyAPI.validateRequest(ctx, 10))
                 return;
-            }
-
-            // check for valid api key
-            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
-                return;
-            }
-
-            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
 
             String urlStr = ctx.queryParam("url");
 
@@ -920,20 +627,8 @@ public class RouteManager {
         });
 
         app.get("image/rotate", ctx -> {
-            // check for api key
-            String apiKey = ctx.queryParam("apiKey");
-            if (apiKey == null || apiKey.isBlank()) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+            if(!TurtyAPI.validateRequest(ctx, 10))
                 return;
-            }
-
-            // check for valid api key
-            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
-                return;
-            }
-
-            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
 
             String urlStr = ctx.queryParam("url");
 
@@ -969,20 +664,8 @@ public class RouteManager {
         });
 
         app.get("image/flip", ctx -> {
-            // check for api key
-            String apiKey = ctx.queryParam("apiKey");
-            if (apiKey == null || apiKey.isBlank()) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+            if(!TurtyAPI.validateRequest(ctx, 10))
                 return;
-            }
-
-            // check for valid api key
-            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
-                return;
-            }
-
-            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
 
             String urlStr = ctx.queryParam("url");
 
@@ -1017,20 +700,8 @@ public class RouteManager {
         });
 
         app.get("/image/filter", ctx -> {
-            // check for api key
-            String apiKey = ctx.queryParam("apiKey");
-            if (apiKey == null || apiKey.isBlank()) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+            if(!TurtyAPI.validateRequest(ctx, 10))
                 return;
-            }
-
-            // check for valid api key
-            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
-                return;
-            }
-
-            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
 
             String urlStr = ctx.queryParam("url");
 
@@ -1068,20 +739,8 @@ public class RouteManager {
         });
 
         app.get("/image/flag", ctx -> {
-            // check for api key
-            String apiKey = ctx.queryParam("apiKey");
-            if (apiKey == null || apiKey.isBlank()) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+            if(!TurtyAPI.validateRequest(ctx, 10))
                 return;
-            }
-
-            // check for valid api key
-            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
-                return;
-            }
-
-            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
 
             String urlStr = ctx.queryParam("url");
             int colors = ctx.queryParamAsClass("colors", Integer.class).getOrDefault(5);
@@ -1110,20 +769,8 @@ public class RouteManager {
         });
 
         app.get("/image/lgbt", ctx -> {
-            // check for api key
-            String apiKey = ctx.queryParam("apiKey");
-            if (apiKey == null || apiKey.isBlank()) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+            if(!TurtyAPI.validateRequest(ctx, 10))
                 return;
-            }
-
-            // check for valid api key
-            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
-                return;
-            }
-
-            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
 
             String urlStr = ctx.queryParam("url");
 
@@ -1145,20 +792,8 @@ public class RouteManager {
         });
 
         app.get("/geo/guesser", ctx -> {
-            // check for api key
-            String apiKey = ctx.queryParam("apiKey");
-            if (apiKey == null || apiKey.isBlank()) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+            if(!TurtyAPI.validateRequest(ctx, 600))
                 return;
-            }
-
-            // check for valid api key
-            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
-                return;
-            }
-
-            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.MINUTES);
 
             Optional<Pair<String, BufferedImage>> optional = GeoguesserManager.requestStaticImage();
             if (optional.isEmpty()) {
@@ -1174,20 +809,8 @@ public class RouteManager {
         });
 
         app.get("/nsfw/pornstar", ctx -> {
-            // check for api key
-            String apiKey = ctx.queryParam("apiKey");
-            if (apiKey == null || apiKey.isBlank()) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+            if(!TurtyAPI.validateRequest(ctx, 20))
                 return;
-            }
-
-            // check for valid api key
-            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
-                return;
-            }
-
-            NaiveRateLimit.requestPerTimeUnit(ctx, 20, TimeUnit.MINUTES);
 
             Optional<Pornstar> optional = NSFWManager.getRandomPornstarWithPhoto();
             if (optional.isEmpty()) {
@@ -1232,20 +855,8 @@ public class RouteManager {
         });
 
         app.get("/fun/wyr/random", ctx -> {
-            // check for api key
-            String apiKey = ctx.queryParam("apiKey");
-            if (apiKey == null || apiKey.isBlank()) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+            if(!TurtyAPI.validateRequest(ctx, 10))
                 return;
-            }
-
-            // check for valid api key
-            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
-                return;
-            }
-
-            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
 
             boolean includeNSFW = ctx.queryParamAsClass("includeNSFW", Boolean.class).getOrDefault(false);
             boolean nsfw = ctx.queryParamAsClass("nsfw", Boolean.class).getOrDefault(false);
@@ -1267,20 +878,8 @@ public class RouteManager {
         });
 
         app.get("/geo/coordinate", ctx -> {
-            // check for api key
-            String apiKey = ctx.queryParam("apiKey");
-            if (apiKey == null || apiKey.isBlank()) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+            if(!TurtyAPI.validateRequest(ctx, 10))
                 return;
-            }
-
-            // check for valid api key
-            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
-                return;
-            }
-
-            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
 
             boolean land = ctx.queryParamAsClass("land", Boolean.class).getOrDefault(false);
             if (!land) {
@@ -1302,18 +901,8 @@ public class RouteManager {
         });
 
         app.get("/games/search", ctx -> {
-            String apiKey = ctx.queryParam("apiKey");
-            if (apiKey == null || apiKey.isBlank()) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+            if(!TurtyAPI.validateRequest(ctx, 10))
                 return;
-            }
-
-            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
-                return;
-            }
-
-            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
 
             String query = ctx.queryParam("query");
             if (query == null || query.isBlank()) {
@@ -1354,18 +943,8 @@ public class RouteManager {
         });
 
         app.get("/games/artwork", ctx -> {
-            String apiKey = ctx.queryParam("apiKey");
-            if (apiKey == null || apiKey.isBlank()) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+            if(!TurtyAPI.validateRequest(ctx, 10))
                 return;
-            }
-
-            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
-                return;
-            }
-
-            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
 
             String id = ctx.queryParam("id");
             if (id == null || id.isBlank()) {
@@ -1431,18 +1010,8 @@ public class RouteManager {
         });
 
         app.get("/games/cover", ctx -> {
-            String apiKey = ctx.queryParam("apiKey");
-            if (apiKey == null || apiKey.isBlank()) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+            if(!TurtyAPI.validateRequest(ctx, 10))
                 return;
-            }
-
-            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
-                return;
-            }
-
-            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
 
             String id = ctx.queryParam("id");
             if (id == null || id.isBlank()) {
@@ -1508,18 +1077,8 @@ public class RouteManager {
         });
 
         app.get("/games/platform", ctx -> {
-            String apiKey = ctx.queryParam("apiKey");
-            if (apiKey == null || apiKey.isBlank()) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+            if(!TurtyAPI.validateRequest(ctx, 10))
                 return;
-            }
-
-            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
-                return;
-            }
-
-            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
 
             String id = ctx.queryParam("id");
             if (id == null || id.isBlank()) {
@@ -1564,18 +1123,8 @@ public class RouteManager {
         });
 
         app.get("/code/guesser", ctx -> {
-            String apiKey = ctx.queryParam("apiKey");
-            if (apiKey == null || apiKey.isBlank()) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+            if(!TurtyAPI.validateRequest(ctx, 10))
                 return;
-            }
-
-            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
-                return;
-            }
-
-            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
 
             Code code = CodeManager.findCode();
             if (code.code() == null || code.code().isBlank() || code.language() == null) {
@@ -1596,18 +1145,8 @@ public class RouteManager {
         });
 
         app.get("/fun/celebrity/random", ctx -> {
-            String apiKey = ctx.queryParam("apiKey");
-            if (apiKey == null || apiKey.isBlank()) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("You must specify an API key!");
+            if(!TurtyAPI.validateRequest(ctx, 10))
                 return;
-            }
-
-            if (!apiKey.equals(TurtyAPI.getAPIKey())) {
-                ctx.status(HttpStatus.UNAUTHORIZED).result("Invalid API key!");
-                return;
-            }
-
-            NaiveRateLimit.requestPerTimeUnit(ctx, 10, TimeUnit.SECONDS);
 
             Optional<CelebrityManager.Celebrity> celebrityOpt = CelebrityManager.getRandomCelebrity();
             if (celebrityOpt.isEmpty()) {
@@ -1616,7 +1155,6 @@ public class RouteManager {
             }
 
             CelebrityManager.Celebrity celebrity = celebrityOpt.get();
-
             ctx.contentType(ContentType.JSON).result(
                     new JsonBuilder.ObjectBuilder()
                             .add("name", celebrity.name())

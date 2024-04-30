@@ -90,12 +90,9 @@ public class FabricVersions {
 
             return versionsMap;
         } catch (IOException exception) {
-            exception.printStackTrace();
+            Constants.LOGGER.error("Failed to get Fabric versions!", exception);
             return new LinkedHashMap<>();
         }
-    }
-
-    public record FabricUpdate(String version, boolean stable, boolean removed) {
     }
 
     public static void addUpdateListener(Consumer<List<FabricUpdate>> listener) {
@@ -109,5 +106,8 @@ public class FabricVersions {
     public static void init() {
         // Just to make sure the class is loaded
         Constants.LOGGER.info("Loaded Fabric versions!");
+    }
+
+    public record FabricUpdate(String version, boolean stable, boolean removed) {
     }
 }

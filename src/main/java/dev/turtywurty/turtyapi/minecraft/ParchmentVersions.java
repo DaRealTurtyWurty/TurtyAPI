@@ -22,8 +22,7 @@ import java.util.stream.Collectors;
 public class ParchmentVersions {
     private static final String PARCHMENT_MAVEN_META = "https://ldtteam.jfrog.io/artifactory/parchmentmc-public/org/parchmentmc/data/parchment-%s/maven-metadata.xml";
     private static final ScheduledExecutorService EXECUTOR_SERVICE = Executors.newSingleThreadScheduledExecutor();
-    private static final LinkedHashMap<String, String> ALL_PARCHMENT_VERSIONS = internal_getAllParchmentVersions();
-    private static final List<Consumer<List<ParchmentUpdate>>> UPDATE_LISTENERS = new ArrayList<>();
+    private static final List<Consumer<List<ParchmentUpdate>>> UPDATE_LISTENERS = new ArrayList<>();    private static final LinkedHashMap<String, String> ALL_PARCHMENT_VERSIONS = internal_getAllParchmentVersions();
 
     static {
         EXECUTOR_SERVICE.scheduleAtFixedRate(() -> {
@@ -95,12 +94,21 @@ public class ParchmentVersions {
 
             final JsonObject xmlJson = Constants.GSON.fromJson(xmlJsonStr, JsonObject.class);
             final JsonObject versioning = xmlJson.getAsJsonObject("metadata").getAsJsonObject("versioning");
-            final JsonArray versionsArray = versioning.getAsJsonObject("versions").getAsJsonArray("version");
+            final JsonObject versions = versioning.getAsJsonObject("versions");
+
+            JsonArray versionsArray;
+            if (versions.get("version").isJsonPrimitive()) {
+                versionsArray = new JsonArray();
+                versionsArray.add(versions.get("version").getAsString());
+            } else {
+                versionsArray = versions.getAsJsonArray("version");
+            }
 
             List<String> results = new ArrayList<>();
             for (final JsonElement element : versionsArray) {
                 final String version = element.getAsString();
-                if (!Pattern.matches("\\d+\\.\\d+(\\.\\d+)?", version)) continue;
+                if (!Pattern.matches("\\d+\\.\\d+(\\.\\d+)?", version))
+                    continue;
 
                 results.add(version);
             }
@@ -136,9 +144,6 @@ public class ParchmentVersions {
                 (a, b) -> b, LinkedHashMap::new));
     }
 
-    public record ParchmentUpdate(String minecraftVersion, String parchmentVersion, boolean removed) {
-    }
-
     public static void addUpdateListener(Consumer<List<ParchmentUpdate>> listener) {
         UPDATE_LISTENERS.add(listener);
     }
@@ -150,5 +155,8 @@ public class ParchmentVersions {
     public static void init() {
         // Just to make sure the class is loaded
         Constants.LOGGER.info("Loaded Parchment versions!");
+    }
+
+    public record ParchmentUpdate(String minecraftVersion, String parchmentVersion, boolean removed) {
     }
 }

@@ -11,11 +11,16 @@ import java.util.*;
 public class WordManager {
     private static final List<String> WORDS = List.of(getAllWordsRaw());
 
+    public static void init() {
+        // Just to make sure the class is loaded
+        Constants.LOGGER.info("WordManager has been loaded!");
+    }
+
     private static String[] getAllWordsRaw() {
         try {
             return TurtyAPI.getResourceAsString("words/all_words.txt").split("\n");
         } catch (IOException exception) {
-            exception.printStackTrace();
+            Constants.LOGGER.error("Failed to load all words from file!", exception);
             return new String[0];
         }
     }

@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public class RegionManager {
     private static final Map<String, Region> REGIONS = new HashMap<>();
 
-    public static void load() {
+    public static void init() {
         REGIONS.clear();
 
         try {
@@ -25,7 +25,10 @@ public class RegionManager {
             }
         } catch (IOException exception) {
             Constants.LOGGER.error("Failed to load region data!", exception);
+            return;
         }
+
+        Constants.LOGGER.info("Loaded region data!");
     }
 
     public static Region getRegion(String cca3) {

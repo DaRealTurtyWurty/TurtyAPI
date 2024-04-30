@@ -6,6 +6,7 @@ import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.nio.file.Path;
 import java.util.Random;
 
 public class Constants {
@@ -14,4 +15,5 @@ public class Constants {
     public static final short PORT = 8080;
     public static final Random RANDOM = new Random();
     public static final OkHttpClient HTTP_CLIENT = new OkHttpClient();
+    public static final Path API_KEYS_PATH = Path.of("api.keys");
 }

@@ -21,15 +21,15 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-public class NeoforgeVersions {
+public class NeoForgeVersions {
     private static final String NEOFORGE_PROMOS = "https://maven.neoforged.net/net/neoforged/neoforge/maven-metadata.xml";
     private static final ScheduledExecutorService EXECUTOR_SERVICE = Executors.newSingleThreadScheduledExecutor();
-    private static final LinkedHashMap<String, Boolean> ALL_NEOFORGE_VERSIONS = internal_getAllNeoforgeVersions();
-    private static final List<Consumer<List<NeoforgeUpdate>>> UPDATE_LISTENERS = new ArrayList<>();
+    private static final LinkedHashMap<String, Boolean> ALL_NEOFORGE_VERSIONS = internal_getAllNeoForgeVersions();
+    private static final List<Consumer<List<NeoForgeUpdate>>> UPDATE_LISTENERS = new ArrayList<>();
 
     static {
         EXECUTOR_SERVICE.scheduleAtFixedRate(() -> {
-            LinkedHashMap<String, Boolean> newVersions = internal_getAllNeoforgeVersions();
+            LinkedHashMap<String, Boolean> newVersions = internal_getAllNeoForgeVersions();
             LinkedHashMap<String, Boolean> oldVersions = ALL_NEOFORGE_VERSIONS;
 
             LinkedHashMap<String, Boolean> addedVersions = new LinkedHashMap<>();
@@ -49,14 +49,14 @@ public class NeoforgeVersions {
             ALL_NEOFORGE_VERSIONS.clear();
             ALL_NEOFORGE_VERSIONS.putAll(newVersions);
 
-            List<NeoforgeUpdate> updates = new ArrayList<>();
-            addedVersions.forEach((version, release) -> updates.add(new NeoforgeUpdate(version, release, false)));
-            removedVersions.forEach((version, release) -> updates.add(new NeoforgeUpdate(version, release, true)));
+            List<NeoForgeUpdate> updates = new ArrayList<>();
+            addedVersions.forEach((version, release) -> updates.add(new NeoForgeUpdate(version, release, false)));
+            removedVersions.forEach((version, release) -> updates.add(new NeoForgeUpdate(version, release, true)));
             UPDATE_LISTENERS.forEach(listener -> listener.accept(updates));
         }, 5, 5, TimeUnit.MINUTES);
     }
 
-    public static Pair<String, String> findLatestNeoforge() {
+    public static Pair<String, String> findLatestNeoForge() {
         String unstable = null;
         String recommended = null;
 
@@ -73,11 +73,11 @@ public class NeoforgeVersions {
         return new Pair<>(unstable, recommended);
     }
 
-    public static LinkedHashMap<String, Boolean> getAllNeoforgeVersions() {
+    public static LinkedHashMap<String, Boolean> getAllNeoForgeVersions() {
         return new LinkedHashMap<>(ALL_NEOFORGE_VERSIONS);
     }
 
-    private static LinkedHashMap<String, Boolean> internal_getAllNeoforgeVersions() {
+    private static LinkedHashMap<String, Boolean> internal_getAllNeoForgeVersions() {
         try {
             String content = IOUtils.toString(new InputStreamReader(new URL(NEOFORGE_PROMOS).openStream(), StandardCharsets.UTF_8));
             String xmlJsonStr = XML.toJSONObject(content).toString(1);
@@ -113,23 +113,24 @@ public class NeoforgeVersions {
                 return Integer.compare(split1.length, split0.length);
             }).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (entry0, entry1) -> entry0, LinkedHashMap::new));
         } catch (IOException exception) {
-            exception.printStackTrace();
+            Constants.LOGGER.error("Failed to get NeoForge versions!", exception);
             return new LinkedHashMap<>();
         }
     }
 
-    public static void addUpdateListener(Consumer<List<NeoforgeUpdate>> listener) {
+    public static void addUpdateListener(Consumer<List<NeoForgeUpdate>> listener) {
         UPDATE_LISTENERS.add(listener);
     }
 
-    public static void removeUpdateListener(Consumer<List<NeoforgeUpdate>> listener) {
+    public static void removeUpdateListener(Consumer<List<NeoForgeUpdate>> listener) {
         UPDATE_LISTENERS.remove(listener);
     }
 
     public static void init() {
         // Just to make sure the class is loaded
+        Constants.LOGGER.info("Loaded NeoForge versions!");
     }
 
-    public record NeoforgeUpdate(String version, boolean recommended, boolean removed) {
+    public record NeoForgeUpdate(String version, boolean recommended, boolean removed) {
     }
 }

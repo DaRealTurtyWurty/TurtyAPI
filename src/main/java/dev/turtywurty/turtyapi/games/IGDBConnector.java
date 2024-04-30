@@ -57,7 +57,9 @@ public class IGDBConnector {
         );
     }
 
-    public static void load() {}
+    public static void init() {
+        Constants.LOGGER.info("Loaded IGDB!");
+    }
 
     public @Nullable List<Game> searchGames(@NotNull String query, int limit, String... fields) {
         String fieldsString = String.join(",", fields);

@@ -93,12 +93,9 @@ public class QuiltVersions {
 
             return versionsMap;
         } catch (IOException exception) {
-            exception.printStackTrace();
+            Constants.LOGGER.error("Failed to get Quilt versions!", exception);
             return new LinkedHashMap<>();
         }
-    }
-
-    public record QuiltUpdate(String version, boolean stable, boolean removed) {
     }
 
     public static void addUpdateListener(Consumer<List<QuiltUpdate>> listener) {
@@ -112,5 +109,8 @@ public class QuiltVersions {
     public static void init() {
         // Just to make sure the class is loaded
         Constants.LOGGER.info("Loaded Quilt versions!");
+    }
+
+    public record QuiltUpdate(String version, boolean stable, boolean removed) {
     }
 }
