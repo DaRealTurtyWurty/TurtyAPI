@@ -34,7 +34,7 @@ dependencies {
     implementation 'com.github.twitch4j:twitch4j:1.20.0'
     implementation 'io.github.husnjak:igdb-api-jvm:4-test'
     implementation 'org.kohsuke:github-api:1.321'
-
+    implementation 'commons-cli:commons-cli:1.7.0'
     implementation 'org.slf4j:slf4j-simple:2.0.13'
 
     annotationProcessor group: "org.projectlombok", name: "lombok", version: '1.18.32'

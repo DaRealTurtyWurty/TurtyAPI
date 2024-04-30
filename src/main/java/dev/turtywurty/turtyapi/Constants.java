@@ -15,5 +15,4 @@ public class Constants {
     public static final short PORT = 8080;
     public static final Random RANDOM = new Random();
     public static final OkHttpClient HTTP_CLIENT = new OkHttpClient();
-    public static final Path API_KEYS_PATH = Path.of("api.keys");
 }

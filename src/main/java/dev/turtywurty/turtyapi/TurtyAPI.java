@@ -11,6 +11,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 import io.javalin.http.util.NaiveRateLimit;
+import org.apache.commons.cli.*;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -19,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,28 +32,12 @@ public class TurtyAPI {
 
     private static boolean isDev;
     private static Dotenv environment;
+    private static Path keysPath;
 
     public static void main(String[] args) {
-        isDev = args.length > 0 && args[0].equalsIgnoreCase("dev");
-
-        if (isDev) {
-            if(args.length > 2) {
-                String envPath = args[2];
-                environment = Dotenv.configure().directory(envPath).load();
-            }
-        } else {
-            if (args.length > 1) {
-                String envPath = args[1];
-                environment = Dotenv.configure().directory(envPath).load();
-            }
-        }
-
-        if (environment == null) {
-            environment = Dotenv.load();
-        }
-
         Constants.LOGGER.info("Starting TurtyAPI!");
 
+        parseCLIArguments(args);
         loadKeyData();
 
         RouteManager.init();
@@ -64,6 +50,58 @@ public class TurtyAPI {
         }));
 
         Constants.LOGGER.info("Started TurtyAPI!");
+    }
+
+    private static void parseCLIArguments(String[] args) {
+        var options = new Options();
+
+        var devOption = new Option("dev", false, "Run the API in development mode");
+        devOption.setRequired(false);
+        options.addOption(devOption);
+
+        var envOption = new Option("env", true, "Path to the environment file");
+        envOption.setRequired(false);
+        options.addOption(envOption);
+
+        var keysOption = new Option("keys", true, "Path to the API keys file");
+        keysOption.setRequired(false);
+        options.addOption(keysOption);
+
+        var parser = new DefaultParser();
+        var formatter = new HelpFormatter();
+        CommandLine cmd;
+        try {
+            cmd = parser.parse(options, args);
+        } catch (ParseException exception) {
+            Constants.LOGGER.error("Failed to parse command line arguments!", exception);
+            formatter.printHelp("TurtyAPI", options);
+
+            System.exit(1);
+            return;
+        }
+
+        if (cmd.hasOption("dev")) {
+            TurtyAPI.isDev = true;
+        }
+
+        if (cmd.hasOption("env")) {
+            String envPath = cmd.getOptionValue("env");
+            TurtyAPI.environment = Dotenv.configure().directory(envPath).load();
+        } else {
+            TurtyAPI.environment = Dotenv.load();
+        }
+
+        if (cmd.hasOption("keys")) {
+            String keysPath = cmd.getOptionValue("keys");
+            TurtyAPI.keysPath = Path.of(keysPath);
+
+            if (!Files.exists(TurtyAPI.keysPath)) {
+                Constants.LOGGER.error("API keys file does not exist!");
+                System.exit(1);
+            }
+        } else {
+            TurtyAPI.keysPath = Path.of("api.keys");
+        }
     }
 
     public static boolean isDev() {
@@ -116,7 +154,14 @@ public class TurtyAPI {
 
     private static void loadKeyData() {
         try {
-            String content = Files.readString(Constants.API_KEYS_PATH);
+            if(Files.notExists(keysPath)) {
+                Constants.LOGGER.error("API keys file does not exist at path: {}", keysPath.toAbsolutePath());
+                System.exit(1);
+
+                return;
+            }
+
+            String content = Files.readString(keysPath);
             JsonArray keys = Constants.GSON.fromJson(content, JsonArray.class);
             for (JsonElement element : keys) {
                 if (!element.isJsonObject())
