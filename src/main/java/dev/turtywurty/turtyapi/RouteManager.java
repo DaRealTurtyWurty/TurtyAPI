@@ -1620,7 +1620,7 @@ public class RouteManager {
             ctx.contentType(ContentType.JSON).result(
                     new JsonBuilder.ObjectBuilder()
                             .add("name", celebrity.name())
-                            .add("image", celebrity.image())
+                            .add("image", Base64.getEncoder().encodeToString(celebrity.image()))
                             .toJson());
         });
 
@@ -1628,6 +1628,6 @@ public class RouteManager {
     }
 
     public static void shutdown() {
-        app.close();
+        app.stop();
     }
 }
