@@ -34,7 +34,7 @@ public class CelebrityManager {
                     var files = celebrities.listFiles();
                     if(files != null) {
                         for(var file : files) {
-                            if(file.getName().endsWith(".png")) {
+                            if(file.getName().endsWith(".jpg")) {
                                 IMAGE_LIST.add(file.toURI());
                             }
                         }
@@ -53,7 +53,7 @@ public class CelebrityManager {
                         var celebrities = jarFile.entries();
                         while(celebrities.hasMoreElements()) {
                             var celebrity = celebrities.nextElement();
-                            if (celebrity.getName().startsWith("celebrities/") && celebrity.getName().endsWith(".png")) {
+                            if (celebrity.getName().startsWith("celebrities/") && celebrity.getName().endsWith(".jpg")) {
                                 IMAGE_LIST.add(new URI("jar:file:" + runningPath + "!/" + celebrity.getName()));
                             }
                         }
@@ -75,7 +75,7 @@ public class CelebrityManager {
             if(uri.getScheme().equals("file")) {
                 var file = new File(uri);
 
-                String name = file.getName().replace("celebrities/", "").replace(".png", "");
+                String name = file.getName().replace("celebrities/", "").replace(".jpg", "");
                 try(var stream = new FileInputStream(file)) {
                     return Optional.of(new Celebrity(name, stream.readAllBytes()));
                 }
@@ -84,7 +84,7 @@ public class CelebrityManager {
                 try(var jarFile = new JarFile(new File(new URI(uri.getSchemeSpecificPart().split("!")[0])))) {
                     ZipEntry entry = jarFile.getEntry(path);
 
-                    String name = entry.getName().replace("celebrities/", "").replace(".png", "");
+                    String name = entry.getName().replace("celebrities/", "").replace(".jpg", "");
                     try (var stream = jarFile.getInputStream(entry)) {
                         return Optional.of(new Celebrity(name, stream.readAllBytes()));
                     }
