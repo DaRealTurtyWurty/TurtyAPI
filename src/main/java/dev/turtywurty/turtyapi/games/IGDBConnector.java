@@ -1,6 +1,7 @@
 package dev.turtywurty.turtyapi.games;
 
 import com.api.igdb.apicalypse.APICalypse;
+import com.api.igdb.apicalypse.Sort;
 import com.api.igdb.exceptions.RequestException;
 import com.api.igdb.request.IGDBWrapper;
 import com.api.igdb.request.JsonRequestKt;
@@ -69,7 +70,8 @@ public class IGDBConnector {
 
         var apiCalypse = new APICalypse()
                 .fields(fieldsString)
-                .search(query)
+                .where("name ~ \"" + query + "\"*")
+                .sort("rating", Sort.DESCENDING)
                 .limit(limit);
 
         try {
@@ -89,7 +91,7 @@ public class IGDBConnector {
     }
 
     public @Nullable List<Game> searchGames(@NotNull String query, String... fields) {
-        return searchGames(query, 10, fields);
+        return searchGames(query, 100, fields);
     }
 
     public @Nullable List<Game> searchGames(@NotNull String query) {
