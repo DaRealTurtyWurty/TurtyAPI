@@ -25,7 +25,6 @@ import dev.turtywurty.turtyapi.words.WordManager;
 import io.javalin.Javalin;
 import io.javalin.http.ContentType;
 import io.javalin.http.HttpStatus;
-import io.javalin.http.util.NaiveRateLimit;
 import io.javalin.json.JsonMapper;
 import kotlin.Pair;
 import org.jetbrains.annotations.NotNull;

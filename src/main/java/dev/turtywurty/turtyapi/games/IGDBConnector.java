@@ -70,7 +70,7 @@ public class IGDBConnector {
 
         var apiCalypse = new APICalypse()
                 .fields(fieldsString)
-                .where("name ~ \"" + query + "\"*")
+                .where("where name ~ *\"" + query + "\"*;")
                 .sort("rating", Sort.DESCENDING)
                 .limit(limit);
 
