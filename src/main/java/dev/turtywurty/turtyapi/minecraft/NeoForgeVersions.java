@@ -102,11 +102,17 @@ public class NeoForgeVersions {
                 String[] split1 = version1.split("\\.");
 
                 for (int i = 0; i < Math.min(split0.length, split1.length); i++) {
-                    int num0 = Integer.parseInt(split0[i]);
-                    int num1 = Integer.parseInt(split1[i]);
+                    try {
+                        int num0 = Integer.parseInt(split0[i]);
+                        int num1 = Integer.parseInt(split1[i]);
 
-                    if (num0 != num1) {
-                        return Integer.compare(num1, num0);
+                        if (num0 != num1) {
+                            return Integer.compare(num1, num0);
+                        }
+                    } catch (NumberFormatException e) {
+                        // If parsing fails, we assume the version is not comparable
+                        // TODO: Write some better handling for this (somehow?) - "25w14craftmine" is causing it
+                        return version0.compareTo(version1);
                     }
                 }
 
