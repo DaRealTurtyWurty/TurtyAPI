@@ -316,6 +316,73 @@ public class RouteManager {
             ctx.contentType(ContentType.JSON).result(Constants.GSON.toJson(array));
         });
 
+        app.get("/words/common", ctx -> {
+            if(!TurtyAPI.validateRequest(ctx, 5))
+                return;
+
+            int length = ctx.queryParamAsClass("length", Integer.class).getOrDefault(-1);
+            if (length <= 0 && length != -1) {
+                ctx.status(HttpStatus.BAD_REQUEST).result("You must request a word length of at least 1!");
+                return;
+            }
+
+            List<String> words = length == -1 ? WordManager.getAllWords() : WordManager.getAllWords(length);
+
+            String startsWith = ctx.queryParamAsClass("startsWith", String.class).getOrDefault("");
+            if (!startsWith.isBlank()) {
+                words = WordManager.getStartingWith(words, startsWith.toLowerCase(Locale.ROOT));
+            }
+
+            int amount = ctx.queryParamAsClass("amount", Integer.class).getOrDefault(1);
+            if (amount <= 0) {
+                ctx.status(HttpStatus.BAD_REQUEST).result("You must request at least 1 word!");
+                return;
+            }
+
+            words = WordManager.getCommonWords(words, amount, false);
+
+            var array = new JsonArray();
+            words.forEach(array::add);
+            ctx.contentType(ContentType.JSON).result(Constants.GSON.toJson(array));
+        });
+
+        app.get("/words/common/random", ctx -> {
+            if(!TurtyAPI.validateRequest(ctx, 5))
+                return;
+
+            int length = ctx.queryParamAsClass("length", Integer.class).getOrDefault(-1);
+            if (length <= 0 && length != -1) {
+                ctx.status(HttpStatus.BAD_REQUEST).result("You must request a word with a length greater than 0!");
+                return;
+            }
+
+            int minLength = ctx.queryParamAsClass("minLength", Integer.class).getOrDefault(length == -1 ? 1 : length);
+            int maxLength = ctx.queryParamAsClass("maxLength", Integer.class).getOrDefault(length == -1 ? 14 : length);
+            if (minLength > maxLength) {
+                ctx.status(HttpStatus.BAD_REQUEST).result("The minimum length must be less than or equal to the maximum length!");
+                return;
+            }
+
+            List<String> words = WordManager.getAllWords(minLength, maxLength);
+
+            String startsWith = ctx.queryParamAsClass("startsWith", String.class).getOrDefault("");
+            if (!startsWith.isBlank()) {
+                words = WordManager.getStartingWith(words, startsWith.toLowerCase(Locale.ROOT));
+            }
+
+            int amount = ctx.queryParamAsClass("amount", Integer.class).getOrDefault(1);
+            if (amount <= 0) {
+                ctx.status(HttpStatus.BAD_REQUEST).result("You must request at least 1 word!");
+                return;
+            }
+
+            words = WordManager.getCommonWords(words, amount, true);
+
+            var array = new JsonArray();
+            words.forEach(array::add);
+            ctx.contentType(ContentType.JSON).result(Constants.GSON.toJson(array));
+        });
+
         app.get("/words/validate", ctx -> {
             if(!TurtyAPI.validateRequest(ctx, 5))
                 return;
@@ -328,6 +395,25 @@ public class RouteManager {
 
             boolean valid = WordManager.isWord(word);
             ctx.contentType(ContentType.JSON).result(JsonBuilder.object().add("valid", valid).toJson());
+        });
+
+        app.get("/words/definition", ctx -> {
+            if(!TurtyAPI.validateRequest(ctx, 5))
+                return;
+
+            String word = ctx.queryParam("word");
+            if (word == null || word.isBlank()) {
+                ctx.status(HttpStatus.BAD_REQUEST).result("You must specify a word!");
+                return;
+            }
+
+            WordManager.getDefinition(word).ifPresentOrElse(definition ->
+                            ctx.contentType(ContentType.JSON).result(JsonBuilder.object()
+                                    .add("word", definition.word())
+                                    .add("definition", definition.definition())
+                                    .add("partOfSpeech", definition.partOfSpeech())
+                                    .toJson()),
+                    () -> ctx.status(HttpStatus.NOT_FOUND).result("No definition found for that word!"));
         });
 
         app.get("/minecraft/latest", ctx -> {
