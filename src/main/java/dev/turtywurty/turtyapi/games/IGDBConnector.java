@@ -9,6 +9,7 @@ import com.api.igdb.request.TwitchAuthenticator;
 import com.api.igdb.utils.TwitchToken;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import dev.turtywurty.turtyapi.Constants;
 import dev.turtywurty.turtyapi.TurtyAPI;
 import lombok.Getter;
@@ -96,6 +97,56 @@ public class IGDBConnector {
 
     public @Nullable List<Game> searchGames(@NotNull String query) {
         return searchGames(query, "*");
+    }
+
+    public @Nullable Integer findGameIdFromSteamAppId(@NotNull String steamAppId) {
+        var apiCalypse = new APICalypse()
+                .fields("game,uid,name,url,external_game_source")
+                .where("external_game_source = 1 & uid = \"" + steamAppId + "\"")
+                .limit(1);
+
+        try {
+            String jsonString = JsonRequestKt.jsonExternalGames(this.wrapper, apiCalypse);
+            JsonArray array = Constants.GSON.fromJson(jsonString, JsonArray.class);
+
+            if (array.isEmpty())
+                return null;
+
+            JsonObject obj = array.get(0).getAsJsonObject();
+
+            if (!obj.has("game"))
+                return null;
+
+            return obj.get("game").getAsInt();
+        } catch (RequestException exception) {
+            Constants.LOGGER.error("Failed to find IGDB game from Steam app id!", exception);
+            return null;
+        }
+    }
+
+    public @Nullable Game findGameById(int id, String... fields) {
+        String fieldsString = String.join(",", fields);
+        if (fieldsString.isBlank()) {
+            fieldsString = "*";
+        }
+
+        var apiCalypse = new APICalypse()
+                .fields(fieldsString)
+                .where("id = " + id)
+                .limit(1);
+
+        try {
+            String jsonString = JsonRequestKt.jsonGames(this.wrapper, apiCalypse);
+            JsonArray array = Constants.GSON.fromJson(jsonString, JsonArray.class);
+
+            if (array.isEmpty())
+                return null;
+
+            return Constants.GSON.fromJson(array.get(0), Game.class);
+        } catch (RequestException exception) {
+            Constants.LOGGER.error("Failed to find game!", exception);
+            return null;
+        }
     }
 
     public Artwork findArtwork(int id, String... fields) {

@@ -1027,6 +1027,71 @@ public class RouteManager {
             ctx.contentType(ContentType.JSON).result(Constants.GSON.toJson(array));
         });
 
+        app.get("/games", ctx -> {
+            if(!TurtyAPI.validateRequest(ctx, 10))
+                return;
+
+            String id = ctx.queryParam("id");
+            if (id == null || id.isBlank()) {
+                ctx.status(HttpStatus.BAD_REQUEST).result("You must specify an id!");
+                return;
+            }
+
+            int intId;
+            try {
+                intId = Integer.parseInt(id);
+            } catch (NumberFormatException e) {
+                ctx.status(HttpStatus.BAD_REQUEST).result("You must specify a valid id!");
+                return;
+            }
+
+            String fields = ctx.queryParam("fields");
+            if (fields == null || fields.isBlank()) {
+                fields = "*";
+            }
+
+            final List<String> fieldsList = Arrays.asList(fields.split(","));
+            if (fieldsList.isEmpty()) {
+                fieldsList.add("*");
+            }
+
+            Game game = IGDBConnector.INSTANCE.findGameById(intId, fieldsList.toArray(new String[0]));
+            if (game == null) {
+                ctx.status(HttpStatus.INTERNAL_SERVER_ERROR).result("Failed to find game!");
+                return;
+            }
+
+            var object = new JsonObject();
+            Constants.GSON.toJsonTree(game)
+                    .getAsJsonObject()
+                    .entrySet()
+                    .stream()
+                    .filter(entry -> fieldsList.contains("*") || fieldsList.contains(entry.getKey()))
+                    .filter(entry -> !entry.getValue().isJsonPrimitive() || !entry.getValue().getAsJsonPrimitive().isNumber() || entry.getValue().getAsNumber().doubleValue() != -1)
+                    .forEach(entry -> object.add(entry.getKey(), entry.getValue()));
+
+            ctx.contentType(ContentType.JSON).result(Constants.GSON.toJson(object));
+        });
+
+        app.get("/games/steam", ctx -> {
+            if(!TurtyAPI.validateRequest(ctx, 10))
+                return;
+
+            String steamAppId = ctx.queryParam("steamAppId");
+            if (steamAppId == null || steamAppId.isBlank()) {
+                ctx.status(HttpStatus.BAD_REQUEST).result("You must specify a steamAppId!");
+                return;
+            }
+
+            Integer id = IGDBConnector.INSTANCE.findGameIdFromSteamAppId(steamAppId);
+            if (id == null) {
+                ctx.status(HttpStatus.NOT_FOUND).result("Failed to find game!");
+                return;
+            }
+
+            ctx.contentType(ContentType.JSON).result(JsonBuilder.object().add("id", id).toJson());
+        });
+
         app.get("/games/artwork", ctx -> {
             if(!TurtyAPI.validateRequest(ctx, 10))
                 return;
