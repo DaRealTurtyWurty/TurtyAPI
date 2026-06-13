@@ -36,6 +36,13 @@ public class IGDBConnector {
             ));
 
     private IGDBConnector() {
+        TwitchToken token = this.twitchToken.get();
+
+        this.wrapper.setCredentials(
+                TurtyAPI.getTwitchClientId(),
+                token.getAccess_token()
+        );
+
         scheduleRefresh();
     }
 
@@ -71,7 +78,7 @@ public class IGDBConnector {
 
         var apiCalypse = new APICalypse()
                 .fields(fieldsString)
-                .where("where name ~ *\"" + query + "\"*;")
+                .where("name ~ *\"" + query + "\"*")
                 .sort("rating", Sort.DESCENDING)
                 .limit(limit);
 
