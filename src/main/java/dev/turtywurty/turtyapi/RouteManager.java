@@ -78,6 +78,22 @@ public class RouteManager {
 
         Javalin app = Javalin.create(ctx -> ctx.jsonMapper(gsonMapper));
 
+        app.exception(IGDBRequestException.class, (exception, ctx) -> {
+            Constants.LOGGER.error("IGDB request failed while {} (upstream status: {})",
+                    exception.getOperation(), exception.getUpstreamStatus(), exception);
+
+            var error = new JsonBuilder.ObjectBuilder()
+                    .add("error", exception.getErrorCode())
+                    .add("message", exception.getClientMessage());
+            if (exception.getUpstreamStatus() != null) {
+                error.add("upstreamStatus", exception.getUpstreamStatus());
+            }
+
+            ctx.status(exception.getClientStatus())
+                    .contentType(ContentType.JSON)
+                    .result(error.toJson());
+        });
+
         app.get("/", ctx -> ctx.result("Hello World!"));
 
         app.get("/geo/flag", ctx -> {
@@ -1057,7 +1073,7 @@ public class RouteManager {
 
             Game game = IGDBConnector.INSTANCE.findGameById(intId, fieldsList.toArray(new String[0]));
             if (game == null) {
-                ctx.status(HttpStatus.INTERNAL_SERVER_ERROR).result("Failed to find game!");
+                ctx.status(HttpStatus.NOT_FOUND).result("No game was found with that id.");
                 return;
             }
 
@@ -1073,19 +1089,35 @@ public class RouteManager {
             ctx.contentType(ContentType.JSON).result(Constants.GSON.toJson(object));
         });
 
-        app.get("/games/steam", ctx -> {
+        app.get("/games/external", ctx -> {
             if(!TurtyAPI.validateRequest(ctx, 10))
                 return;
 
-            String steamAppId = ctx.queryParam("steamAppId");
-            if (steamAppId == null || steamAppId.isBlank()) {
-                ctx.status(HttpStatus.BAD_REQUEST).result("You must specify a steamAppId!");
+            String platformName = ctx.queryParam("platform");
+            if (platformName == null || platformName.isBlank()) {
+                ctx.status(HttpStatus.BAD_REQUEST).result("You must specify a platform!");
                 return;
             }
 
-            Integer id = IGDBConnector.INSTANCE.findGameIdFromSteamAppId(steamAppId);
+            Optional<ExternalGameSource> source = ExternalGameSource.fromName(platformName);
+            if (source.isEmpty()) {
+                ctx.status(HttpStatus.BAD_REQUEST).result(
+                        "Unsupported platform. The options are: " + ExternalGameSource.supportedNames()
+                );
+                return;
+            }
+
+            String externalId = ctx.queryParam("externalId");
+            if (externalId == null || externalId.isBlank()) {
+                ctx.status(HttpStatus.BAD_REQUEST).result("You must specify an externalId!");
+                return;
+            }
+
+            Integer id = IGDBConnector.INSTANCE.findGameIdFromExternalId(source.get(), externalId);
             if (id == null) {
-                ctx.status(HttpStatus.NOT_FOUND).result("Failed to find game!");
+                ctx.status(HttpStatus.NOT_FOUND).result(
+                        "No game was found for that " + source.get().getName() + " external id."
+                );
                 return;
             }
 
@@ -1122,7 +1154,7 @@ public class RouteManager {
 
             Artwork artwork = IGDBConnector.INSTANCE.findArtwork(intId, fieldsList.toArray(new String[0]));
             if (artwork == null) {
-                ctx.status(HttpStatus.INTERNAL_SERVER_ERROR).result("Failed to find artwork!");
+                ctx.status(HttpStatus.NOT_FOUND).result("No artwork was found with that id.");
                 return;
             }
 
@@ -1189,7 +1221,7 @@ public class RouteManager {
 
             Cover cover = IGDBConnector.INSTANCE.findCover(intId, fieldsList.toArray(new String[0]));
             if (cover == null) {
-                ctx.status(HttpStatus.INTERNAL_SERVER_ERROR).result("Failed to find cover!");
+                ctx.status(HttpStatus.NOT_FOUND).result("No cover was found with that id.");
                 return;
             }
 
@@ -1256,7 +1288,7 @@ public class RouteManager {
 
             GamePlatform platform = IGDBConnector.INSTANCE.findPlatform(intId, fieldsList.toArray(new String[0]));
             if (platform == null) {
-                ctx.status(HttpStatus.INTERNAL_SERVER_ERROR).result("Failed to find platform!");
+                ctx.status(HttpStatus.NOT_FOUND).result("No platform was found with that id.");
                 return;
             }
 

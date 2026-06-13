@@ -10,12 +10,14 @@ import com.api.igdb.utils.TwitchToken;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import dev.turtywurty.turtyapi.Constants;
 import dev.turtywurty.turtyapi.TurtyAPI;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -25,10 +27,16 @@ import java.util.concurrent.atomic.AtomicReference;
 
 @Getter
 public class IGDBConnector {
+    private static final long DEFAULT_CACHE_TTL_SECONDS = 900;
+    private static final int DEFAULT_CACHE_MAX_ENTRIES = 1_000;
     private static final ScheduledExecutorService EXECUTOR_SERVICE = Executors.newSingleThreadScheduledExecutor();
     public static final IGDBConnector INSTANCE = new IGDBConnector();
 
     private final IGDBWrapper wrapper = IGDBWrapper.INSTANCE;
+    private final IGDBResponseCache responseCache = new IGDBResponseCache(
+            environmentInt("IGDB_CACHE_MAX_ENTRIES", DEFAULT_CACHE_MAX_ENTRIES),
+            Duration.ofSeconds(environmentLong("IGDB_CACHE_TTL_SECONDS", DEFAULT_CACHE_TTL_SECONDS))
+    );
     private final AtomicReference<TwitchToken> twitchToken = new AtomicReference<>(
             TwitchAuthenticator.INSTANCE.requestTwitchToken(
                     TurtyAPI.getTwitchClientId(),
@@ -83,7 +91,11 @@ public class IGDBConnector {
                 .limit(limit);
 
         try {
-            String jsonString = JsonRequestKt.jsonGames(this.wrapper, apiCalypse);
+            String cacheKey = cacheKey("games/search", query, limit, fieldsString);
+            String jsonString = this.responseCache.getOrLoad(
+                    cacheKey,
+                    () -> JsonRequestKt.jsonGames(this.wrapper, apiCalypse)
+            );
             JsonArray array = Constants.GSON.fromJson(jsonString, JsonArray.class);
 
             List<Game> games = new ArrayList<>();
@@ -93,8 +105,9 @@ public class IGDBConnector {
 
             return games;
         } catch (RequestException exception) {
-            Constants.LOGGER.error("Failed to search for games!", exception);
-            return null;
+            throw IGDBRequestException.requestFailed("searching for games", exception);
+        } catch (JsonParseException exception) {
+            throw IGDBRequestException.invalidResponse("searching for games", exception);
         }
     }
 
@@ -106,14 +119,25 @@ public class IGDBConnector {
         return searchGames(query, "*");
     }
 
-    public @Nullable Integer findGameIdFromSteamAppId(@NotNull String steamAppId) {
+    public @Nullable Integer findGameIdFromExternalId(
+            @NotNull ExternalGameSource source,
+            @NotNull String externalId
+    ) {
+        String escapedExternalId = externalId
+                .replace("\\", "\\\\")
+                .replace("\"", "\\\"");
+
         var apiCalypse = new APICalypse()
                 .fields("game,uid,name,url,external_game_source")
-                .where("external_game_source = 1 & uid = \"" + steamAppId + "\"")
+                .where("external_game_source = " + source.getId() + " & uid = \"" + escapedExternalId + "\"")
                 .limit(1);
 
         try {
-            String jsonString = JsonRequestKt.jsonExternalGames(this.wrapper, apiCalypse);
+            String cacheKey = cacheKey("external-games/source", source.getId(), externalId);
+            String jsonString = this.responseCache.getOrLoad(
+                    cacheKey,
+                    () -> JsonRequestKt.jsonExternalGames(this.wrapper, apiCalypse)
+            );
             JsonArray array = Constants.GSON.fromJson(jsonString, JsonArray.class);
 
             if (array.isEmpty())
@@ -126,8 +150,15 @@ public class IGDBConnector {
 
             return obj.get("game").getAsInt();
         } catch (RequestException exception) {
-            Constants.LOGGER.error("Failed to find IGDB game from Steam app id!", exception);
-            return null;
+            throw IGDBRequestException.requestFailed(
+                    "finding a game from the " + source.getName() + " external id",
+                    exception
+            );
+        } catch (JsonParseException exception) {
+            throw IGDBRequestException.invalidResponse(
+                    "finding a game from the " + source.getName() + " external id",
+                    exception
+            );
         }
     }
 
@@ -143,7 +174,11 @@ public class IGDBConnector {
                 .limit(1);
 
         try {
-            String jsonString = JsonRequestKt.jsonGames(this.wrapper, apiCalypse);
+            String cacheKey = cacheKey("games/id", id, fieldsString);
+            String jsonString = this.responseCache.getOrLoad(
+                    cacheKey,
+                    () -> JsonRequestKt.jsonGames(this.wrapper, apiCalypse)
+            );
             JsonArray array = Constants.GSON.fromJson(jsonString, JsonArray.class);
 
             if (array.isEmpty())
@@ -151,8 +186,9 @@ public class IGDBConnector {
 
             return Constants.GSON.fromJson(array.get(0), Game.class);
         } catch (RequestException exception) {
-            Constants.LOGGER.error("Failed to find game!", exception);
-            return null;
+            throw IGDBRequestException.requestFailed("finding a game", exception);
+        } catch (JsonParseException exception) {
+            throw IGDBRequestException.invalidResponse("finding a game", exception);
         }
     }
 
@@ -167,15 +203,20 @@ public class IGDBConnector {
                 .where("id = " + id);
 
         try {
-            String jsonString = JsonRequestKt.jsonArtworks(this.wrapper, apiCalypse);
+            String cacheKey = cacheKey("artworks/id", id, fieldsString);
+            String jsonString = this.responseCache.getOrLoad(
+                    cacheKey,
+                    () -> JsonRequestKt.jsonArtworks(this.wrapper, apiCalypse)
+            );
             JsonArray array = Constants.GSON.fromJson(jsonString, JsonArray.class);
             if (array.isEmpty())
                 return null;
 
             return Constants.GSON.fromJson(array.get(0), Artwork.class);
         } catch (RequestException exception) {
-            Constants.LOGGER.error("Failed to search for games!", exception);
-            return null;
+            throw IGDBRequestException.requestFailed("finding artwork", exception);
+        } catch (JsonParseException exception) {
+            throw IGDBRequestException.invalidResponse("finding artwork", exception);
         }
     }
 
@@ -190,15 +231,20 @@ public class IGDBConnector {
                 .where("id = " + id);
 
         try {
-            String jsonString = JsonRequestKt.jsonCovers(this.wrapper, apiCalypse);
+            String cacheKey = cacheKey("covers/id", id, fieldsString);
+            String jsonString = this.responseCache.getOrLoad(
+                    cacheKey,
+                    () -> JsonRequestKt.jsonCovers(this.wrapper, apiCalypse)
+            );
             JsonArray array = Constants.GSON.fromJson(jsonString, JsonArray.class);
             if (array.isEmpty())
                 return null;
 
             return Constants.GSON.fromJson(array.get(0), Cover.class);
         } catch (RequestException exception) {
-            Constants.LOGGER.error("Failed to search for games!", exception);
-            return null;
+            throw IGDBRequestException.requestFailed("finding a cover", exception);
+        } catch (JsonParseException exception) {
+            throw IGDBRequestException.invalidResponse("finding a cover", exception);
         }
     }
 
@@ -213,15 +259,66 @@ public class IGDBConnector {
                 .where("id = " + id);
 
         try {
-            String jsonString = JsonRequestKt.jsonPlatforms(IGDBWrapper.INSTANCE, apiCalypse);
+            String cacheKey = cacheKey("platforms/id", id, fieldsString);
+            String jsonString = this.responseCache.getOrLoad(
+                    cacheKey,
+                    () -> JsonRequestKt.jsonPlatforms(this.wrapper, apiCalypse)
+            );
             JsonArray array = Constants.GSON.fromJson(jsonString, JsonArray.class);
             if (array.isEmpty())
                 return null;
 
             return Constants.GSON.fromJson(array.get(0), GamePlatform.class);
         } catch (RequestException exception) {
-            Constants.LOGGER.error("Failed to search for games!", exception);
-            return null;
+            throw IGDBRequestException.requestFailed("finding a platform", exception);
+        } catch (JsonParseException exception) {
+            throw IGDBRequestException.invalidResponse("finding a platform", exception);
         }
+    }
+
+    public void clearCache() {
+        this.responseCache.clear();
+    }
+
+    public CacheStats getCacheStats() {
+        IGDBResponseCache.CacheStats stats = this.responseCache.stats();
+        return new CacheStats(stats.hits(), stats.misses(), stats.evictions(), stats.size());
+    }
+
+    private static String cacheKey(String endpoint, Object... parts) {
+        var builder = new StringBuilder(endpoint);
+        for (Object part : parts) {
+            String value = String.valueOf(part);
+            builder.append('|').append(value.length()).append(':').append(value);
+        }
+
+        return builder.toString();
+    }
+
+    private static int environmentInt(String key, int defaultValue) {
+        long value = environmentLong(key, defaultValue);
+        if (value < 0 || value > Integer.MAX_VALUE) {
+            Constants.LOGGER.warn("{} must be between 0 and {}; using {}", key, Integer.MAX_VALUE, defaultValue);
+            return defaultValue;
+        }
+
+        return (int) value;
+    }
+
+    private static long environmentLong(String key, long defaultValue) {
+        String configuredValue = TurtyAPI.getEnvironmentValue(key).orElse(null);
+        if (configuredValue == null || configuredValue.isBlank()) {
+            return defaultValue;
+        }
+
+        try {
+            return Long.parseLong(configuredValue);
+        } catch (NumberFormatException exception) {
+            Constants.LOGGER.warn("{} must be an integer; using {}", key, defaultValue);
+            return defaultValue;
+        }
+    }
+
+    public record CacheStats(long hits, long misses, long evictions, int size) {
     }
 }
