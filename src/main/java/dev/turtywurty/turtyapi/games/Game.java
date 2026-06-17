@@ -47,7 +47,7 @@ public class Game {
     private int[] screenshots;
     private int[] similar_games;
     private String slug;
-    private int standalone_expansions = -1;
+    private int[] standalone_expansions;
     private int status = -1;
     private String storyline;
     private String summary;
