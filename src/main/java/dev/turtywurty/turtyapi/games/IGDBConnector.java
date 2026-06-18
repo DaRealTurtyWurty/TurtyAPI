@@ -20,6 +20,7 @@ import org.jetbrains.annotations.Nullable;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -30,6 +31,47 @@ public class IGDBConnector {
     private static final long DEFAULT_CACHE_TTL_SECONDS = 900;
     private static final int DEFAULT_CACHE_MAX_ENTRIES = 1_000;
     private static final ScheduledExecutorService EXECUTOR_SERVICE = Executors.newSingleThreadScheduledExecutor();
+    private static final Set<String> GAME_REFERENCE_FIELDS = Set.of(
+            "collection",
+            "cover",
+            "franchise",
+            "parent_game",
+            "version_parent"
+    );
+    private static final Set<String> GAME_REFERENCE_ARRAY_FIELDS = Set.of(
+            "age_ratings",
+            "alternative_names",
+            "artworks",
+            "bundles",
+            "collections",
+            "dlcs",
+            "expanded_games",
+            "expansions",
+            "external_games",
+            "forks",
+            "franchises",
+            "game_engines",
+            "game_localizations",
+            "game_modes",
+            "genres",
+            "involved_companies",
+            "keywords",
+            "languageSupports",
+            "multiplayer_modes",
+            "platforms",
+            "player_perspectives",
+            "ports",
+            "release_dates",
+            "remakes",
+            "remasters",
+            "screenshots",
+            "similar_games",
+            "standalone_expansions",
+            "tags",
+            "themes",
+            "videos",
+            "websites"
+    );
     public static final IGDBConnector INSTANCE = new IGDBConnector();
 
     private final IGDBWrapper wrapper = IGDBWrapper.INSTANCE;
@@ -100,7 +142,7 @@ public class IGDBConnector {
 
             List<Game> games = new ArrayList<>();
             for (JsonElement element : array) {
-                games.add(Constants.GSON.fromJson(element, Game.class));
+                games.add(parseGame(element));
             }
 
             return games;
@@ -184,7 +226,7 @@ public class IGDBConnector {
             if (array.isEmpty())
                 return null;
 
-            return Constants.GSON.fromJson(array.get(0), Game.class);
+            return parseGame(array.get(0));
         } catch (RequestException exception) {
             throw IGDBRequestException.requestFailed("finding a game", exception);
         } catch (JsonParseException exception) {
@@ -293,6 +335,48 @@ public class IGDBConnector {
         }
 
         return builder.toString();
+    }
+
+    private static Game parseGame(JsonElement element) {
+        if (!element.isJsonObject()) {
+            return Constants.GSON.fromJson(element, Game.class);
+        }
+
+        JsonObject object = element.getAsJsonObject().deepCopy();
+        normalizeReferenceFields(object);
+        return Constants.GSON.fromJson(object, Game.class);
+    }
+
+    private static void normalizeReferenceFields(JsonObject object) {
+        for (String field : GAME_REFERENCE_FIELDS) {
+            if (object.has(field)) {
+                object.add(field, normalizeReferenceValue(object.get(field)));
+            }
+        }
+
+        for (String field : GAME_REFERENCE_ARRAY_FIELDS) {
+            if (!object.has(field) || !object.get(field).isJsonArray()) {
+                continue;
+            }
+
+            JsonArray normalizedArray = new JsonArray();
+            for (JsonElement value : object.getAsJsonArray(field)) {
+                normalizedArray.add(normalizeReferenceValue(value));
+            }
+
+            object.add(field, normalizedArray);
+        }
+    }
+
+    private static JsonElement normalizeReferenceValue(JsonElement value) {
+        if (value != null && value.isJsonObject()) {
+            JsonObject object = value.getAsJsonObject();
+            if (object.has("id")) {
+                return object.get("id");
+            }
+        }
+
+        return value;
     }
 
     private static int environmentInt(String key, int defaultValue) {

@@ -22,7 +22,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class NeoForgeVersions {
-    private static final String NEOFORGE_PROMOS = "https://maven.neoforged.net/net/neoforged/neoforge/maven-metadata.xml";
+    private static final String NEOFORGE_PROMOS = "https://maven.neoforged.net/releases/net/neoforged/neoforge/maven-metadata.xml";
     private static final ScheduledExecutorService EXECUTOR_SERVICE = Executors.newSingleThreadScheduledExecutor();
     private static final LinkedHashMap<String, Boolean> ALL_NEOFORGE_VERSIONS = internal_getAllNeoForgeVersions();
     private static final List<Consumer<List<NeoForgeUpdate>>> UPDATE_LISTENERS = new ArrayList<>();
